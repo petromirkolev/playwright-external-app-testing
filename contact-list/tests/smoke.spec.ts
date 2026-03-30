@@ -1,0 +1,27 @@
+import { test, expect } from '../fixtures/base';
+
+test.describe('Smoke tests', () => {
+  test('Home page loads', async ({ loginPage }) => {
+    await loginPage.gotoHome();
+    await expect(loginPage.page).toHaveTitle(/Contact List App/);
+  });
+
+  test('Login form is visible', async ({ loginPage }) => {
+    await loginPage.gotoHome();
+    await loginPage.expectLoginFormVisible();
+  });
+
+  test('Sign up link works', async ({ loginPage }) => {
+    await loginPage.gotoSignUp();
+    await expect(loginPage.page).toHaveTitle(/Add User/);
+  });
+
+  test('API Docs link is visible', async ({ loginPage }) => {
+    await loginPage.gotoHome();
+    await expect(loginPage.apiDocsLink).toBeVisible();
+    await expect(loginPage.apiDocsLink).toHaveAttribute(
+      'href',
+      /documenter\.getpostman\.com/,
+    );
+  });
+});
