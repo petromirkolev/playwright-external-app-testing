@@ -1,16 +1,30 @@
 export const validInput = {
-  username: 'petromirkolev',
+  firstName: 'Petromir',
+  lastName: 'Kolev',
   email: uniqueEmail(),
   password: 'T3stingP4$$',
 };
 
 export const invalidInput = {
   invalidEmail: {
-    invalidEmptyEmail: '',
-    invalidEmailWithoutDomain: 'a@a',
-    invalidEmailWithoutName: '@test.com',
-    invalidEmailWithoutExt: 'a@a.a',
+    invalidEmptyEmail: {
+      description: 'Invalid empty email',
+      data: '',
+    },
+    invalidEmailWithoutDomain: {
+      description: 'Invalid email without domain',
+      data: 'a@b',
+    },
+    invalidEmailWithoutName: {
+      description: 'Invalid email without name',
+      data: '@abc.com',
+    },
+    invalidEmailWithoutExt: {
+      description: 'Invalid email without extension',
+      data: 'a@b.c',
+    },
   },
+
   invalidPassword: {
     invalidEmptyPassword: '',
     invalidPasswordTooShort: 'abc',
@@ -18,6 +32,6 @@ export const invalidInput = {
   },
 };
 
-export function uniqueEmail(prefix = 'motocare'): string {
-  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}@example.com`;
+export function uniqueEmail(prefix = 'contact'): string {
+  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}@example.com`;
 }
