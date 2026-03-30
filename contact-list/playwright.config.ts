@@ -7,7 +7,7 @@ export default defineConfig({
     browserName: 'chromium',
     headless: true,
     viewport: { width: 1280, height: 720 },
-    baseURL: 'https://parabank.parasoft.com/parabank',
+    baseURL: 'https://thinking-tester-contact-list.herokuapp.com',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'on-first-retry',

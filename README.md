@@ -10,34 +10,29 @@ My other portfolio projects include apps I built and tested myself. This repo co
 
 ## Current app under test
 
-### ParaBank
+### Contact List App
 
-A public demo banking app used for practicing realistic workflow testing.
+A public test application with sign-up, login, contact management flows, and linked API documentation.
 
 Planned coverage:
 
-- registration and login
-- account/workflow navigation
-- transfer or bill-pay flow
-- negative auth scenarios
-- data isolation assumptions and test constraints
-- API exploration if useful for setup or validation
+- sign-up and login
+- logout and session behavior
+- contact creation, editing, and deletion
+- negative validation scenarios
+- UI and API coverage where useful
 
 ## Stack
 
 - Playwright
 - TypeScript
-- Page Object Model where it improves clarity
 - fixtures/helpers for reusable setup
-
-## Repo goal
-
-Build a small set of clean, realistic automation suites for external apps.
+- Page Objects where they improve clarity
 
 ## Planned structure
 
 ```text
-/parabank
+/contact-list
   /tests
   /pages
   /fixtures
