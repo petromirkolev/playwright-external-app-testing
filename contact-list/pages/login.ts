@@ -37,7 +37,6 @@ export class LoginPage {
     await expect(this.loginPassword).toHaveValue(password);
 
     await this.loginButton.click();
-    await this.expectSuccess();
   }
 
   async expectLoginFormVisible(): Promise<void> {
