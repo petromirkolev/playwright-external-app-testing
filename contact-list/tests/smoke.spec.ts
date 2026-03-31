@@ -11,9 +11,10 @@ test.describe('Smoke tests', () => {
     await loginPage.expectLoginFormVisible();
   });
 
-  test('Sign up link works', async ({ loginPage }) => {
-    await loginPage.gotoSignUp();
-    await expect(loginPage.page).toHaveTitle(/Add User/);
+  test('Sign up link works', async ({ loginPage, registrationPage }) => {
+    await loginPage.gotoHome();
+    await registrationPage.gotoSignUp();
+    await registrationPage.expectSignUpFormVisible();
   });
 
   test('API Docs link is visible', async ({ loginPage }) => {

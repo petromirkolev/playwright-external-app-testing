@@ -26,6 +26,9 @@ export class RegistrationPage {
   }
 
   async gotoSignUp(): Promise<void> {
+    await this.page.goto('/');
+    await expect(this.signUpButton).toBeVisible();
+    await expect(this.signUpButton).toBeEnabled();
     await this.signUpButton.click();
     await expect(this.page.getByText(/Add User/)).toBeVisible();
   }
@@ -36,11 +39,18 @@ export class RegistrationPage {
     email: string,
     password: string,
   ): Promise<void> {
-    await this.gotoSignUp();
+    await this.expectSignUpFormVisible();
+
     await this.signUpFirstName.fill(firstName);
     await this.signUpLastName.fill(lastName);
     await this.signUpEmail.fill(email);
     await this.signUpPassword.fill(password);
+
+    await expect(this.signUpFirstName).toHaveValue(firstName);
+    await expect(this.signUpLastName).toHaveValue(lastName);
+    await expect(this.signUpEmail).toHaveValue(email);
+    await expect(this.signUpPassword).toHaveValue(password);
+
     await this.signUpSubmitButton.click();
   }
 
@@ -66,6 +76,6 @@ export class RegistrationPage {
   }
 
   async expectError(message: string): Promise<void> {
-    await expect(this.errorMessage).toContainText(message);
+    await expect(this.errorMessage).toContainText(message, { timeout: 10000 });
   }
 }

@@ -23,19 +23,19 @@ export class LoginPage {
 
   async gotoHome(): Promise<void> {
     await this.page.goto('/');
-  }
 
-  async gotoSignUp(): Promise<void> {
-    await this.page.goto('/');
     await expect(this.page).toHaveTitle(/Contact List App/);
-
-    await expect(this.signUpButton).toBeVisible();
-    await this.signUpButton.click();
   }
 
   async login(email: string, password: string): Promise<void> {
+    await this.expectLoginFormVisible();
+
     await this.loginEmail.fill(email);
     await this.loginPassword.fill(password);
+
+    await expect(this.loginEmail).toHaveValue(email);
+    await expect(this.loginPassword).toHaveValue(password);
+
     await this.loginButton.click();
   }
 
@@ -48,15 +48,20 @@ export class LoginPage {
 
     await expect(this.loginButton).toBeAttached();
     await expect(this.loginButton).toBeVisible();
+    await expect(this.signUpButton).toBeEnabled();
   }
 
-  async expectSuccess(message: string): Promise<void> {
-    await expect(this.errorMessage).toBeVisible();
-    await expect(this.errorMessage).toHaveText(message);
+  async expectSuccess(): Promise<void> {
+    await expect(
+      this.page.getByText(/Click on any contact to view the Contact Details/),
+    ).toBeVisible();
   }
 
   async expectError(message: string): Promise<void> {
-    await expect(this.errorMessage).toBeVisible();
     await expect(this.errorMessage).toHaveText(message);
+
+    await expect(
+      this.page.getByText(/Click on any contact to view the Contact Details/),
+    ).not.toBeVisible();
   }
 }

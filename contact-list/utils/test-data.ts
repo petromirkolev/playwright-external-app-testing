@@ -5,30 +5,45 @@ export const validInput = {
   password: 'T3stingP4$$',
 };
 
-export const invalidInput = {
-  invalidEmail: {
-    invalidEmptyEmail: {
-      description: 'Invalid empty email',
-      data: '',
-    },
-    invalidEmailWithoutDomain: {
-      description: 'Invalid email without domain',
-      data: 'a@b',
-    },
-    invalidEmailWithoutName: {
-      description: 'Invalid email without name',
-      data: '@abc.com',
-    },
-    invalidEmailWithoutExt: {
-      description: 'Invalid email without extension',
-      data: 'a@b.c',
-    },
+export const invalidEmail = {
+  invalidEmptyEmail: {
+    description: 'Sign up with invalid empty email',
+    data: '',
+    message: 'User validation failed: email: Email is invalid',
   },
+  invalidEmailWithoutDomain: {
+    description: 'Sign up with invalid email without domain',
+    data: 'a@b',
+    message: 'User validation failed: email: Email is invalid',
+  },
+  invalidEmailWithoutName: {
+    description: 'Sign up with invalid email without name',
+    data: '@abc.com',
+    message: 'User validation failed: email: Email is invalid',
+  },
+  invalidEmailWithoutExt: {
+    description: 'Sign up with invalid email without extension',
+    data: 'a@b.c',
+    message: 'User validation failed: email: Email is invalid',
+  },
+};
 
-  invalidPassword: {
-    invalidEmptyPassword: '',
-    invalidPasswordTooShort: 'abc',
-    invalidPasswordTooLong: 'abcde'.repeat(10),
+export const invalidPassword = {
+  invalidEmptyPassword: {
+    description: 'Sign up with invalid empty password',
+    data: '',
+    message: 'User validation failed: password: Path `password` is required.',
+  },
+  invalidPasswordTooShort: {
+    description: 'Sign up with invalid password too short',
+    data: 'abcde',
+    message:
+      'User validation failed: password: Path `password` (`abcde`) is shorter than the minimum allowed length (7).',
+  },
+  invalidPasswordTooLong: {
+    description: 'Sign up with invalid password too long',
+    data: 'abcde'.repeat(21),
+    message: `User validation failed: password: Path \`password\` (\`${'abcde'.repeat(21)}\`) is longer than the maximum allowed length (100).`,
   },
 };
 
