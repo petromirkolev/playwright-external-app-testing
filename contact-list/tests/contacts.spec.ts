@@ -1,5 +1,5 @@
 import { test, expect } from '../fixtures/contacts';
-// ready
+
 test.describe('Contact list happy path', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
     await contactsPage.contactListLoaded();
@@ -52,7 +52,7 @@ test.describe('Contact list happy path', () => {
     );
   });
 });
-// ready
+
 test.describe('Contact list add contact', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
     await contactsPage.contactListLoaded();
@@ -137,24 +137,35 @@ test.describe('Contact list add contact', () => {
     );
   });
 });
-// not ready
+
 test.describe('Contact list edit contact', () => {
-  test('Contact name update is accepted', async () => {});
+  test('Contact first name update is accepted', async () => {});
 
-  test('Contact name update is accepted', async () => {});
+  test('Contact last name update is accepted', async () => {});
 
-  // - update one field
-  // - update multiple fields
-  // - validation on invalid edits
-  // - refresh persistence after save
+  test('Contact birth date update is accepted', async () => {});
+
+  test('Contact email update is accepted', async () => {});
+
+  test('Contact phone update is accepted', async () => {});
+
+  test('Contact first and last name, and birth date update is accepted', async () => {});
+
+  test('Contact email and phone update is accepted', async () => {});
+
+  test('Contact birth date update with invalid input is rejected', async () => {});
+
+  test('Contact email update with invalid input is rejected', async () => {});
+
+  test('Contact phone update with invalid input is rejected', async () => {});
 });
-// not ready
+
 test.describe('Contact list delete contact', () => {
   // - delete existing contact
   // - deleted contact disappears from list
   // - delete persists after refresh
 });
-// not ready
+
 test.describe('Contact list integrity', () => {
   // - contact detail view matches created data
   // - edits are reflected in detail/list views
