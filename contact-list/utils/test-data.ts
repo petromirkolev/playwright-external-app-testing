@@ -5,6 +5,20 @@ export const validInput = {
   password: 'T3stingP4$$',
 };
 
+export const validContactInputs = {
+  firstName: 'Petromir',
+  lastName: 'Kolev',
+  birthDate: '1990-03-05',
+  email: 'petromir@test.com',
+  phone: '0888888888',
+};
+
+export const invalidContactInputs = {
+  birthDate: '1990',
+  email: 'petromir@test',
+  phone: '123',
+};
+
 export const invalidEmail = {
   invalidEmptyEmail: {
     description: 'Sign up with invalid empty email',

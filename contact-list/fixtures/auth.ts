@@ -13,6 +13,11 @@ type AuthFixtures = {
     email: string;
     password: string;
   };
+
+  loggedInUser: {
+    email: string;
+    password: string;
+  };
 };
 
 export const test = base.extend<AuthFixtures>({
@@ -44,6 +49,17 @@ export const test = base.extend<AuthFixtures>({
     await registrationPage.logOutButton.click();
 
     await loginPage.expectLoginFormVisible();
+
+    await use({ email, password });
+  },
+
+  loggedInUser: async ({ registeredUser, loginPage }, use) => {
+    const email = registeredUser.email;
+    const password = registeredUser.password;
+
+    await loginPage.expectLoginFormVisible();
+
+    await loginPage.login(email, password);
 
     await use({ email, password });
   },
