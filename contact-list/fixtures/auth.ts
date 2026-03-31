@@ -1,5 +1,5 @@
 import { test as base, expect } from './base';
-import { validInput } from '../utils/test-data';
+import { uniqueEmail, validInput } from '../utils/test-data';
 
 type AuthFixtures = {
   registrationData: {
@@ -19,7 +19,7 @@ export const test = base.extend<AuthFixtures>({
   registrationData: async ({}, use) => {
     const firstName = validInput.firstName;
     const lastName = validInput.lastName;
-    const email = validInput.email;
+    const email = uniqueEmail();
     const password = validInput.password;
 
     await use({ firstName, lastName, email, password });
