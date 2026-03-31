@@ -24,7 +24,7 @@ export class LoginPage {
   async gotoHome(): Promise<void> {
     await this.page.goto('/');
 
-    await expect(this.page).toHaveTitle(/Contact List App/);
+    await expect(this.page.getByText(/Contact List App/i)).toBeVisible();
   }
 
   async login(email: string, password: string): Promise<void> {
@@ -37,6 +37,7 @@ export class LoginPage {
     await expect(this.loginPassword).toHaveValue(password);
 
     await this.loginButton.click();
+    await this.expectSuccess();
   }
 
   async expectLoginFormVisible(): Promise<void> {
@@ -48,6 +49,8 @@ export class LoginPage {
 
     await expect(this.loginButton).toBeAttached();
     await expect(this.loginButton).toBeVisible();
+
+    await expect(this.loginButton).toBeEnabled();
     await expect(this.signUpButton).toBeEnabled();
   }
 

@@ -3,7 +3,6 @@ import { Locator, expect, Page } from '@playwright/test';
 export class ContactsPage {
   readonly page: Page;
   readonly contactTable: Locator;
-  readonly contactTableBody: Locator;
   readonly contactTableRow: Locator;
   readonly addContactForm: Locator;
   readonly addContactButton: Locator;
@@ -12,49 +11,51 @@ export class ContactsPage {
   readonly addContactBirthDate: Locator;
   readonly addContactEmail: Locator;
   readonly addContactPhone: Locator;
-  readonly addContactStreet1: Locator;
-  readonly addContactStreet2: Locator;
-  readonly addContactCity: Locator;
-  readonly addContactState: Locator;
-  readonly addContactPostalCode: Locator;
-  readonly addContactCountry: Locator;
   readonly addContactSubmitButton: Locator;
   readonly addContactCancelSubmitButton: Locator;
   readonly addContactErrorMessage: Locator;
+  readonly editContactButton: Locator;
+  readonly editContactForm: Locator;
+  readonly editContactSubmitButton: Locator;
+  readonly editContactCancelButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
     this.contactTable = this.page.locator('.contactTable');
-    this.contactTableBody = this.page.locator(
-      '#myTable tr.contactTableBodyRow',
-    );
-    this.contactTableRow = this.page.locator('.contactTableBodyRow');
+    this.contactTableRow = this.page.locator('tr.contactTableBodyRow');
     this.addContactForm = this.page.locator('form#add-contact');
-    this.addContactButton = this.page.locator('#add-contact');
-    this.addContactFirstName = this.page.locator('#firstName');
-    this.addContactLastName = this.page.locator('#lastName');
-    this.addContactBirthDate = this.page.locator('#birthdate');
-    this.addContactEmail = this.page.locator('#email');
-    this.addContactPhone = this.page.locator('#phone');
-    this.addContactStreet1 = this.page.locator('#street1');
-    this.addContactStreet2 = this.page.locator('#street2');
-    this.addContactCity = this.page.locator('#city');
-    this.addContactState = this.page.locator('#stateProvince');
-    this.addContactPostalCode = this.page.locator('#postalCode');
-    this.addContactCountry = this.page.locator('#country');
-    this.addContactSubmitButton = this.page.locator('#submit');
-    this.addContactCancelSubmitButton = this.page.locator('#cancel');
-    this.addContactErrorMessage = this.page.locator('#error');
+    this.addContactButton = this.page.locator('button#add-contact');
+    this.addContactFirstName = this.page.locator('input#firstName');
+    this.addContactLastName = this.page.locator('input#lastName');
+    this.addContactBirthDate = this.page.locator('input#birthdate');
+    this.addContactEmail = this.page.locator('input#email');
+    this.addContactPhone = this.page.locator('input#phone');
+    this.addContactSubmitButton = this.page.locator('button#submit');
+    this.addContactCancelSubmitButton = this.page.locator('button#cancel');
+    this.addContactErrorMessage = this.page.locator('span#error');
+    this.editContactButton = this.page.locator('button#edit-contact');
+    this.editContactForm = this.page.locator('form#edit-contact');
+    this.editContactSubmitButton = this.page.locator('button#submit');
+    this.editContactCancelButton = this.page.locator('button#cancel');
   }
 
-  async contactListLoaded(): Promise<void> {
-    await expect(this.page).toHaveTitle(/Contact List/);
+  async contactTableLoaded(): Promise<void> {
+    await expect(this.page.getByText(/Contact List/)).toBeVisible();
     await expect(this.contactTable).toBeVisible();
   }
 
   async openAddContactForm(): Promise<void> {
     await this.addContactButton.click();
     await this.expectAddContactFormVisible();
+  }
+
+  async openEditContactForm(): Promise<void> {
+    await this.contactTableRow.click();
+
+    await expect(this.editContactButton).toBeVisible();
+    await expect(this.editContactButton).toBeEnabled();
+
+    await this.editContactButton.click();
   }
 
   async expectAddContactFormVisible(): Promise<void> {
@@ -71,13 +72,6 @@ export class ContactsPage {
     if (input.birthDate) await this.addContactBirthDate.fill(input.birthDate);
     if (input.email) await this.addContactEmail.fill(input.email);
     if (input.phone) await this.addContactPhone.fill(input.phone);
-    if (input.street1) await this.addContactStreet1.fill(input.street1);
-    if (input.street2) await this.addContactStreet2.fill(input.street2);
-    if (input.city) await this.addContactCity.fill(input.city);
-    if (input.state) await this.addContactState.fill(input.state);
-    if (input.postalCode)
-      await this.addContactPostalCode.fill(input.postalCode);
-    if (input.country) await this.addContactCountry.fill(input.country);
   }
 
   async submitContactForm(): Promise<void> {

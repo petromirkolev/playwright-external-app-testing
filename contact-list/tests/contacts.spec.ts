@@ -2,14 +2,14 @@ import { test, expect } from '../fixtures/contacts';
 
 test.describe('Contact list happy path', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-    await contactsPage.contactListLoaded();
+    await contactsPage.contactTableLoaded();
   });
 
   test('Contact list table is empty', async ({
     loggedInUser,
     contactsPage,
   }) => {
-    await expect(contactsPage.contactTableBody).toHaveCount(0);
+    await expect(contactsPage.contactTableRow).toHaveCount(0);
   });
 
   test('Contact list updates after contact creation', async ({
@@ -55,7 +55,7 @@ test.describe('Contact list happy path', () => {
 
 test.describe('Contact list add contact', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-    await contactsPage.contactListLoaded();
+    await contactsPage.contactTableLoaded();
   });
 
   test('Cancel add contact returns to contacts page', async ({
@@ -139,7 +139,12 @@ test.describe('Contact list add contact', () => {
 });
 
 test.describe('Contact list edit contact', () => {
-  test('Contact first name update is accepted', async () => {});
+  test('Contact first name update is accepted', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.openEditContactForm();
+  });
 
   test('Contact last name update is accepted', async () => {});
 

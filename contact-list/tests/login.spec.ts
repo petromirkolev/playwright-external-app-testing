@@ -47,8 +47,6 @@ test.describe('Login', () => {
   }) => {
     await loginPage.login(registeredUser.email, registeredUser.password);
 
-    await loginPage.expectSuccess();
-
     await registrationPage.logOutButton.click();
 
     await loginPage.expectLoginFormVisible();
