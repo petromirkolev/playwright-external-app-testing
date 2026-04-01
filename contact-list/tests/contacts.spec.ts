@@ -139,6 +139,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContact(loggedInUserWithOneContact.firstName, {
       firstName: 'Georgi',
     });
@@ -152,6 +154,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContact(loggedInUserWithOneContact.lastName, {
       lastName: 'Petrov',
     });
@@ -165,6 +169,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContact(loggedInUserWithOneContact.birthDate, {
       birthDate: '1993-04-04',
     });
@@ -178,6 +184,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContact(loggedInUserWithOneContact.email, {
       email: 'test@test.com',
     });
@@ -191,6 +199,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContact(loggedInUserWithOneContact.phone, {
       phone: '12345678',
     });
@@ -204,6 +214,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContactAndExpectError(
       { birthDate: '1234' },
       loggedInUserWithOneContact.birthDate,
@@ -215,6 +227,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContactAndExpectError(
       { email: '1234' },
       loggedInUserWithOneContact.email,
@@ -226,6 +240,8 @@ test.describe('Contact list edit contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
+    await contactsPage.openEditContactForm();
+
     await contactsPage.editContactAndExpectError(
       { phone: 'abc' },
       loggedInUserWithOneContact.phone,
