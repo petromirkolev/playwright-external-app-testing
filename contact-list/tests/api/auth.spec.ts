@@ -21,6 +21,7 @@ test.describe('Registration', () => {
     expect(body.user.firstName).toBe(registrationData.firstName);
     expect(body.user.lastName).toBe(registrationData.lastName);
     expect(body.user.email).toBe(email);
+    expect(body.token).toBeTruthy();
   });
 
   test('Duplicate registration is rejected', async ({
@@ -34,13 +35,7 @@ test.describe('Registration', () => {
       email,
     });
 
-    const body = await response.json();
-
     expect(response.status()).toBe(201);
-
-    expect(body.user.firstName).toBe(registrationData.firstName);
-    expect(body.user.lastName).toBe(registrationData.lastName);
-    expect(body.user.email).toBe(email);
 
     const duplicateResponse = await api.register(request, {
       ...registrationData,
