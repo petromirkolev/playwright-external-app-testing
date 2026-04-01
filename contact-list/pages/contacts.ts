@@ -1,4 +1,5 @@
 import { Locator, expect, Page, Dialog } from '@playwright/test';
+import { ContactInput } from '../types/contact';
 
 export class ContactsPage {
   readonly page: Page;
