@@ -1,4 +1,4 @@
-type ContactInput = {
+export type ContactInput = {
   firstName: string;
   lastName: string;
   birthDate?: string;

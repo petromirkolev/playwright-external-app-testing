@@ -1,7 +1,6 @@
 export const validInput = {
   firstName: 'Petromir',
   lastName: 'Kolev',
-  email: uniqueEmail(),
   password: 'T3stingP4$$',
 };
 
