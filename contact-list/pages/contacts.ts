@@ -1,4 +1,4 @@
-import { Locator, expect, Page } from '@playwright/test';
+import { Locator, expect, Page, Dialog } from '@playwright/test';
 
 export class ContactsPage {
   readonly page: Page;
@@ -24,6 +24,7 @@ export class ContactsPage {
   readonly editContactSubmitButton: Locator;
   readonly editContactCancelButton: Locator;
   readonly editContactErrorMessage: Locator;
+  readonly deleteContactButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -49,6 +50,7 @@ export class ContactsPage {
     this.editContactSubmitButton = this.page.locator('button#submit');
     this.editContactCancelButton = this.page.locator('button#cancel');
     this.editContactErrorMessage = this.page.locator('span#error');
+    this.deleteContactButton = this.page.locator('button#delete');
   }
 
   async contactTableLoaded(): Promise<void> {
@@ -61,19 +63,37 @@ export class ContactsPage {
     await this.expectAddContactFormVisible();
   }
 
+  async addContact(input: Partial<ContactInput>): Promise<void> {
+    await this.openAddContactForm();
+
+    if (input.firstName) await this.addContactFirstName.fill(input.firstName);
+    if (input.lastName) await this.addContactLastName.fill(input.lastName);
+    if (input.birthDate) await this.addContactBirthDate.fill(input.birthDate);
+    if (input.email) await this.addContactEmail.fill(input.email);
+    if (input.phone) await this.addContactPhone.fill(input.phone);
+
+    await this.submitAddContactForm();
+  }
+
+  async submitAddContactForm(): Promise<void> {
+    await this.addContactSubmitButton.click();
+  }
+
+  async cancelSubmitAddContactForm(): Promise<void> {
+    await this.addContactCancelSubmitButton.click();
+  }
+
   async openEditContactForm(): Promise<void> {
     await this.contactTableRow.click();
+  }
 
+  async editContact(text: string, input: Partial<ContactInput>): Promise<void> {
     await expect(this.editContactButton).toBeEnabled();
     await expect(this.editContactButton).toBeVisible();
 
     await this.editContactButton.click();
 
     await expect(this.editContactForm).toBeVisible();
-  }
-
-  async editContact(text: string, input: Partial<ContactInput>): Promise<void> {
-    await this.openEditContactForm();
 
     if (input.firstName) {
       await expect(this.editContactInputFirstName).toHaveValue(text);
@@ -114,18 +134,6 @@ export class ContactsPage {
     await expect(this.addContactForm).toBeHidden();
   }
 
-  async fillContactForm(input: Partial<ContactInput>): Promise<void> {
-    if (input.firstName) await this.addContactFirstName.fill(input.firstName);
-    if (input.lastName) await this.addContactLastName.fill(input.lastName);
-    if (input.birthDate) await this.addContactBirthDate.fill(input.birthDate);
-    if (input.email) await this.addContactEmail.fill(input.email);
-    if (input.phone) await this.addContactPhone.fill(input.phone);
-  }
-
-  async submitContactForm(): Promise<void> {
-    await this.addContactSubmitButton.click();
-  }
-
   async expectContactVisible(
     firstName: string,
     lastName: string,
@@ -135,19 +143,15 @@ export class ContactsPage {
     );
   }
 
-  async cancelSubmitContactForm(): Promise<void> {
-    await this.addContactCancelSubmitButton.click();
+  async expectContactNotVisible(): Promise<void> {
+    await expect(this.contactTableRow).toHaveCount(0);
   }
 
   async createContactAndExpectError(
     input: Partial<ContactInput>,
     message: string,
   ): Promise<void> {
-    await this.openAddContactForm();
-
-    await this.fillContactForm(input);
-
-    await this.submitContactForm();
+    await this.addContact(input);
 
     await expect(this.addContactErrorMessage).toContainText(message);
   }
@@ -160,5 +164,18 @@ export class ContactsPage {
     await this.editContact(text, input);
 
     await expect(this.editContactErrorMessage).toContainText(message);
+  }
+
+  async deleteContact(): Promise<void> {
+    await expect(this.deleteContactButton).toBeEnabled();
+    await expect(this.deleteContactButton).toBeVisible();
+
+    this.page.once('dialog', async (dialog: Dialog) => {
+      expect(dialog.type()).toBe('confirm');
+      expect(dialog.message()).toContain('delete');
+      await dialog.accept();
+    });
+
+    await this.deleteContactButton.click();
   }
 }

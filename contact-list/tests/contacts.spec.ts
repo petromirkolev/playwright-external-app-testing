@@ -1,142 +1,138 @@
 import { test, expect } from '../fixtures/contacts';
 
-// test.describe('Contact list happy path', () => {
-//   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-//     await contactsPage.contactTableLoaded();
-//   });
+test.describe('Contact list happy path', () => {
+  test.beforeEach(async ({ loggedInUser, contactsPage }) => {
+    await contactsPage.contactTableLoaded();
+  });
 
-//   test('Contact list table is empty', async ({
-//     loggedInUser,
-//     contactsPage,
-//   }) => {
-//     await expect(contactsPage.contactTableRow).toHaveCount(0);
-//   });
+  test('Contact list table is empty', async ({
+    loggedInUser,
+    contactsPage,
+  }) => {
+    await expect(contactsPage.contactTableRow).toHaveCount(0);
+  });
 
-//   test('Contact list updates after contact creation', async ({
-//     loggedInUser,
-//     contactsPage,
-//     validContactInputs,
-//   }) => {
-//     await contactsPage.openAddContactForm();
+  test('Contact list updates after contact creation', async ({
+    loggedInUser,
+    contactsPage,
+    validContactInputs,
+  }) => {
+    await contactsPage.addContact({
+      firstName: validContactInputs.firstName,
+      lastName: validContactInputs.lastName,
+      birthDate: validContactInputs.birthDate,
+      email: validContactInputs.email,
+      phone: validContactInputs.phone,
+    });
 
-//     await contactsPage.fillContactForm({
-//       firstName: validContactInputs.firstName,
-//       lastName: validContactInputs.lastName,
-//       birthDate: validContactInputs.birthDate,
-//       email: validContactInputs.email,
-//       phone: validContactInputs.phone,
-//     });
+    await contactsPage.expectContactVisible(
+      validContactInputs.firstName,
+      validContactInputs.lastName,
+    );
+  });
 
-//     await contactsPage.submitContactForm();
+  test('Contact list keeps created contact after page reload', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.expectContactVisible(
+      loggedInUserWithOneContact.firstName,
+      loggedInUserWithOneContact.lastName,
+    );
 
-//     await contactsPage.expectContactVisible(
-//       validContactInputs.firstName,
-//       validContactInputs.lastName,
-//     );
-//   });
+    await contactsPage.page.reload();
 
-//   test('Contact list keeps created contact after page reload', async ({
-//     loggedInUserWithOneContact,
-//     contactsPage,
-//   }) => {
-//     await contactsPage.expectContactVisible(
-//       loggedInUserWithOneContact.firstName,
-//       loggedInUserWithOneContact.lastName,
-//     );
+    await contactsPage.expectContactVisible(
+      loggedInUserWithOneContact.firstName,
+      loggedInUserWithOneContact.lastName,
+    );
+  });
+});
 
-//     await contactsPage.page.reload();
+test.describe('Contact list add contact', () => {
+  test.beforeEach(async ({ loggedInUser, contactsPage }) => {
+    await contactsPage.contactTableLoaded();
+  });
 
-//     await contactsPage.expectContactVisible(
-//       loggedInUserWithOneContact.firstName,
-//       loggedInUserWithOneContact.lastName,
-//     );
-//   });
-// });
+  test('Cancel add contact returns to contacts page', async ({
+    loggedInUser,
+    contactsPage,
+  }) => {
+    await contactsPage.openAddContactForm();
+    await contactsPage.cancelSubmitAddContactForm();
+    await contactsPage.expectAddContactFormNotVisible();
+  });
 
-// test.describe('Contact list add contact', () => {
-//   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-//     await contactsPage.contactTableLoaded();
-//   });
+  test('Add contact without required first name', async ({
+    loggedInUser,
+    contactsPage,
+    validContactInputs,
+  }) => {
+    await contactsPage.createContactAndExpectError(
+      { firstName: '', lastName: validContactInputs.lastName },
+      'Contact validation failed: firstName:',
+    );
+  });
 
-//   test('Cancel add contact returns to contacts page', async ({
-//     loggedInUser,
-//     contactsPage,
-//   }) => {
-//     await contactsPage.openAddContactForm();
-//     await contactsPage.cancelSubmitContactForm();
-//     await contactsPage.expectAddContactFormNotVisible();
-//   });
+  test('Add contact without required last name', async ({
+    loggedInUser,
+    contactsPage,
+    validContactInputs,
+  }) => {
+    await contactsPage.createContactAndExpectError(
+      { firstName: validContactInputs.firstName, lastName: '' },
+      'Contact validation failed: lastName:',
+    );
+  });
 
-//   test('Add contact without required first name', async ({
-//     loggedInUser,
-//     contactsPage,
-//     validContactInputs,
-//   }) => {
-//     await contactsPage.createContactAndExpectError(
-//       { firstName: '', lastName: validContactInputs.lastName },
-//       'Contact validation failed: firstName:',
-//     );
-//   });
+  test('Add contact with invalid birth date', async ({
+    loggedInUser,
+    validContactInputs,
+    invalidContactInputs,
+    contactsPage,
+  }) => {
+    await contactsPage.createContactAndExpectError(
+      {
+        firstName: validContactInputs.firstName,
+        lastName: validContactInputs.lastName,
+        birthDate: invalidContactInputs.birthDate,
+      },
+      'Contact validation failed: birthdate:',
+    );
+  });
 
-//   test('Add contact without required last name', async ({
-//     loggedInUser,
-//     contactsPage,
-//     validContactInputs,
-//   }) => {
-//     await contactsPage.createContactAndExpectError(
-//       { firstName: validContactInputs.firstName, lastName: '' },
-//       'Contact validation failed: lastName:',
-//     );
-//   });
+  test('Add contact with invalid email', async ({
+    loggedInUser,
+    validContactInputs,
+    invalidContactInputs,
+    contactsPage,
+  }) => {
+    await contactsPage.createContactAndExpectError(
+      {
+        firstName: validContactInputs.firstName,
+        lastName: validContactInputs.lastName,
+        email: invalidContactInputs.email,
+      },
+      'Contact validation failed: email:',
+    );
+  });
 
-//   test('Add contact with invalid birth date', async ({
-//     loggedInUser,
-//     validContactInputs,
-//     invalidContactInputs,
-//     contactsPage,
-//   }) => {
-//     await contactsPage.createContactAndExpectError(
-//       {
-//         firstName: validContactInputs.firstName,
-//         lastName: validContactInputs.lastName,
-//         birthDate: invalidContactInputs.birthDate,
-//       },
-//       'Contact validation failed: birthdate:',
-//     );
-//   });
-
-//   test('Add contact with invalid email', async ({
-//     loggedInUser,
-//     validContactInputs,
-//     invalidContactInputs,
-//     contactsPage,
-//   }) => {
-//     await contactsPage.createContactAndExpectError(
-//       {
-//         firstName: validContactInputs.firstName,
-//         lastName: validContactInputs.lastName,
-//         email: invalidContactInputs.email,
-//       },
-//       'Contact validation failed: email:',
-//     );
-//   });
-
-//   test('Add contact with invalid phone number', async ({
-//     loggedInUser,
-//     validContactInputs,
-//     invalidContactInputs,
-//     contactsPage,
-//   }) => {
-//     await contactsPage.createContactAndExpectError(
-//       {
-//         firstName: validContactInputs.firstName,
-//         lastName: validContactInputs.lastName,
-//         phone: invalidContactInputs.phone,
-//       },
-//       'Contact validation failed: phone:',
-//     );
-//   });
-// });
+  test('Add contact with invalid phone number', async ({
+    loggedInUser,
+    validContactInputs,
+    invalidContactInputs,
+    contactsPage,
+  }) => {
+    await contactsPage.createContactAndExpectError(
+      {
+        firstName: validContactInputs.firstName,
+        lastName: validContactInputs.lastName,
+        phone: invalidContactInputs.phone,
+      },
+      'Contact validation failed: phone:',
+    );
+  });
+});
 
 test.describe('Contact list edit contact', () => {
   test('Contact first name update is accepted', async ({
@@ -239,13 +235,29 @@ test.describe('Contact list edit contact', () => {
 });
 
 test.describe('Contact list delete contact', () => {
-  // - delete existing contact
-  // - deleted contact disappears from list
-  // - delete persists after refresh
-});
+  test('Delete existing contact removes it from the list', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.openEditContactForm();
 
-test.describe('Contact list integrity', () => {
-  // - contact detail view matches created data
-  // - edits are reflected in detail/list views
-  // - deleted contact is not accessible afterward
+    await contactsPage.deleteContact();
+
+    await contactsPage.expectContactNotVisible();
+  });
+
+  test('Contact delete persists after page reload', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.openEditContactForm();
+
+    await contactsPage.deleteContact();
+
+    await contactsPage.expectContactNotVisible();
+
+    await contactsPage.page.reload();
+
+    await contactsPage.expectContactNotVisible();
+  });
 });

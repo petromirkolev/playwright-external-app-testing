@@ -60,19 +60,13 @@ export const test = base.extend<ContactsFixture>({
     const email = validContactInputs.email;
     const phone = validContactInputs.phone;
 
-    await contactsPage.addContactButton.click();
-
-    await expect(contactsPage.addContactForm).toBeVisible();
-
-    await contactsPage.fillContactForm({
+    await contactsPage.addContact({
       firstName: validContactInputs.firstName,
       lastName: validContactInputs.lastName,
       birthDate: validContactInputs.birthDate,
       email: validContactInputs.email,
       phone: validContactInputs.phone,
     });
-
-    await contactsPage.submitContactForm();
 
     await expect(contactsPage.contactTableRow).toBeAttached();
 
