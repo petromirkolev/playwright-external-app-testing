@@ -16,8 +16,14 @@ export class ContactsPage {
   readonly addContactErrorMessage: Locator;
   readonly editContactButton: Locator;
   readonly editContactForm: Locator;
+  readonly editContactInputFirstName: Locator;
+  readonly editContactInputLastName: Locator;
+  readonly editContactInputBirthDate: Locator;
+  readonly editContactInputEmail: Locator;
+  readonly editContactInputPhone: Locator;
   readonly editContactSubmitButton: Locator;
   readonly editContactCancelButton: Locator;
+  readonly editContactErrorMessage: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -35,8 +41,14 @@ export class ContactsPage {
     this.addContactErrorMessage = this.page.locator('span#error');
     this.editContactButton = this.page.locator('button#edit-contact');
     this.editContactForm = this.page.locator('form#edit-contact');
+    this.editContactInputFirstName = this.page.locator('input#firstName');
+    this.editContactInputLastName = this.page.locator('input#lastName');
+    this.editContactInputBirthDate = this.page.locator('input#birthdate');
+    this.editContactInputEmail = this.page.locator('input#email');
+    this.editContactInputPhone = this.page.locator('input#phone');
     this.editContactSubmitButton = this.page.locator('button#submit');
     this.editContactCancelButton = this.page.locator('button#cancel');
+    this.editContactErrorMessage = this.page.locator('span#error');
   }
 
   async contactTableLoaded(): Promise<void> {
@@ -52,10 +64,46 @@ export class ContactsPage {
   async openEditContactForm(): Promise<void> {
     await this.contactTableRow.click();
 
-    await expect(this.editContactButton).toBeVisible();
     await expect(this.editContactButton).toBeEnabled();
+    await expect(this.editContactButton).toBeVisible();
 
     await this.editContactButton.click();
+
+    await expect(this.editContactForm).toBeVisible();
+  }
+
+  async editContact(text: string, input: Partial<ContactInput>): Promise<void> {
+    await this.openEditContactForm();
+
+    if (input.firstName) {
+      await expect(this.editContactInputFirstName).toHaveValue(text);
+      await this.editContactInputFirstName.fill(input.firstName);
+    }
+    if (input.lastName) {
+      await expect(this.editContactInputLastName).toHaveValue(text);
+      await this.editContactInputLastName.fill(input.lastName);
+    }
+    if (input.birthDate) {
+      await expect(this.editContactInputBirthDate).toHaveValue(text);
+      await this.editContactInputBirthDate.fill(input.birthDate);
+    }
+    if (input.email) {
+      await expect(this.editContactInputEmail).toHaveValue(text);
+      await this.editContactInputEmail.fill(input.email);
+    }
+    if (input.phone) {
+      await expect(this.editContactInputPhone).toHaveValue(text);
+      await this.editContactInputPhone.fill(input.phone);
+    }
+
+    await this.submitEditContactForm();
+  }
+
+  async submitEditContactForm(): Promise<void> {
+    await expect(this.editContactSubmitButton).toBeEnabled();
+    await expect(this.editContactSubmitButton).toBeVisible();
+
+    await this.editContactSubmitButton.click();
   }
 
   async expectAddContactFormVisible(): Promise<void> {
@@ -102,5 +150,15 @@ export class ContactsPage {
     await this.submitContactForm();
 
     await expect(this.addContactErrorMessage).toContainText(message);
+  }
+
+  async editContactAndExpectError(
+    input: Partial<ContactInput>,
+    text: string,
+    message: string,
+  ): Promise<void> {
+    await this.editContact(text, input);
+
+    await expect(this.editContactErrorMessage).toContainText(message);
   }
 }

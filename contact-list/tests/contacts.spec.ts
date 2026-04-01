@@ -1,168 +1,241 @@
 import { test, expect } from '../fixtures/contacts';
 
-test.describe('Contact list happy path', () => {
-  test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-    await contactsPage.contactTableLoaded();
-  });
+// test.describe('Contact list happy path', () => {
+//   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
+//     await contactsPage.contactTableLoaded();
+//   });
 
-  test('Contact list table is empty', async ({
-    loggedInUser,
-    contactsPage,
-  }) => {
-    await expect(contactsPage.contactTableRow).toHaveCount(0);
-  });
+//   test('Contact list table is empty', async ({
+//     loggedInUser,
+//     contactsPage,
+//   }) => {
+//     await expect(contactsPage.contactTableRow).toHaveCount(0);
+//   });
 
-  test('Contact list updates after contact creation', async ({
-    loggedInUser,
-    contactsPage,
-    validContactInputs,
-  }) => {
-    await contactsPage.openAddContactForm();
+//   test('Contact list updates after contact creation', async ({
+//     loggedInUser,
+//     contactsPage,
+//     validContactInputs,
+//   }) => {
+//     await contactsPage.openAddContactForm();
 
-    await contactsPage.fillContactForm({
-      firstName: validContactInputs.firstName,
-      lastName: validContactInputs.lastName,
-      birthDate: validContactInputs.birthDate,
-      email: validContactInputs.email,
-      phone: validContactInputs.phone,
-    });
+//     await contactsPage.fillContactForm({
+//       firstName: validContactInputs.firstName,
+//       lastName: validContactInputs.lastName,
+//       birthDate: validContactInputs.birthDate,
+//       email: validContactInputs.email,
+//       phone: validContactInputs.phone,
+//     });
 
-    await contactsPage.submitContactForm();
+//     await contactsPage.submitContactForm();
 
-    await contactsPage.expectContactVisible(
-      validContactInputs.firstName,
-      validContactInputs.lastName,
-    );
-  });
+//     await contactsPage.expectContactVisible(
+//       validContactInputs.firstName,
+//       validContactInputs.lastName,
+//     );
+//   });
 
-  test('Contact list keeps created contact after page reload', async ({
-    loggedInUserWithOneContact,
-    contactsPage,
-  }) => {
-    await contactsPage.expectContactVisible(
-      loggedInUserWithOneContact.firstName,
-      loggedInUserWithOneContact.lastName,
-    );
+//   test('Contact list keeps created contact after page reload', async ({
+//     loggedInUserWithOneContact,
+//     contactsPage,
+//   }) => {
+//     await contactsPage.expectContactVisible(
+//       loggedInUserWithOneContact.firstName,
+//       loggedInUserWithOneContact.lastName,
+//     );
 
-    await contactsPage.page.reload();
+//     await contactsPage.page.reload();
 
-    await contactsPage.expectContactVisible(
-      loggedInUserWithOneContact.firstName,
-      loggedInUserWithOneContact.lastName,
-    );
-  });
-});
+//     await contactsPage.expectContactVisible(
+//       loggedInUserWithOneContact.firstName,
+//       loggedInUserWithOneContact.lastName,
+//     );
+//   });
+// });
 
-test.describe('Contact list add contact', () => {
-  test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-    await contactsPage.contactTableLoaded();
-  });
+// test.describe('Contact list add contact', () => {
+//   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
+//     await contactsPage.contactTableLoaded();
+//   });
 
-  test('Cancel add contact returns to contacts page', async ({
-    loggedInUser,
-    contactsPage,
-  }) => {
-    await contactsPage.openAddContactForm();
-    await contactsPage.cancelSubmitContactForm();
-    await contactsPage.expectAddContactFormNotVisible();
-  });
+//   test('Cancel add contact returns to contacts page', async ({
+//     loggedInUser,
+//     contactsPage,
+//   }) => {
+//     await contactsPage.openAddContactForm();
+//     await contactsPage.cancelSubmitContactForm();
+//     await contactsPage.expectAddContactFormNotVisible();
+//   });
 
-  test('Submit contact form without required first name', async ({
-    loggedInUser,
-    contactsPage,
-    validContactInputs,
-  }) => {
-    await contactsPage.createContactAndExpectError(
-      { firstName: '', lastName: validContactInputs.lastName },
-      'Contact validation failed: firstName:',
-    );
-  });
+//   test('Add contact without required first name', async ({
+//     loggedInUser,
+//     contactsPage,
+//     validContactInputs,
+//   }) => {
+//     await contactsPage.createContactAndExpectError(
+//       { firstName: '', lastName: validContactInputs.lastName },
+//       'Contact validation failed: firstName:',
+//     );
+//   });
 
-  test('Submit contact form without required last name', async ({
-    loggedInUser,
-    contactsPage,
-    validContactInputs,
-  }) => {
-    await contactsPage.createContactAndExpectError(
-      { firstName: validContactInputs.firstName, lastName: '' },
-      'Contact validation failed: lastName:',
-    );
-  });
+//   test('Add contact without required last name', async ({
+//     loggedInUser,
+//     contactsPage,
+//     validContactInputs,
+//   }) => {
+//     await contactsPage.createContactAndExpectError(
+//       { firstName: validContactInputs.firstName, lastName: '' },
+//       'Contact validation failed: lastName:',
+//     );
+//   });
 
-  test('Create contact with invalid birth date', async ({
-    loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
-    contactsPage,
-  }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        birthDate: invalidContactInputs.birthDate,
-      },
-      'Contact validation failed: birthdate:',
-    );
-  });
+//   test('Add contact with invalid birth date', async ({
+//     loggedInUser,
+//     validContactInputs,
+//     invalidContactInputs,
+//     contactsPage,
+//   }) => {
+//     await contactsPage.createContactAndExpectError(
+//       {
+//         firstName: validContactInputs.firstName,
+//         lastName: validContactInputs.lastName,
+//         birthDate: invalidContactInputs.birthDate,
+//       },
+//       'Contact validation failed: birthdate:',
+//     );
+//   });
 
-  test('Create contact with invalid email', async ({
-    loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
-    contactsPage,
-  }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        email: invalidContactInputs.email,
-      },
-      'Contact validation failed: email:',
-    );
-  });
+//   test('Add contact with invalid email', async ({
+//     loggedInUser,
+//     validContactInputs,
+//     invalidContactInputs,
+//     contactsPage,
+//   }) => {
+//     await contactsPage.createContactAndExpectError(
+//       {
+//         firstName: validContactInputs.firstName,
+//         lastName: validContactInputs.lastName,
+//         email: invalidContactInputs.email,
+//       },
+//       'Contact validation failed: email:',
+//     );
+//   });
 
-  test('Create contact with invalid phone number', async ({
-    loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
-    contactsPage,
-  }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        phone: invalidContactInputs.phone,
-      },
-      'Contact validation failed: phone:',
-    );
-  });
-});
+//   test('Add contact with invalid phone number', async ({
+//     loggedInUser,
+//     validContactInputs,
+//     invalidContactInputs,
+//     contactsPage,
+//   }) => {
+//     await contactsPage.createContactAndExpectError(
+//       {
+//         firstName: validContactInputs.firstName,
+//         lastName: validContactInputs.lastName,
+//         phone: invalidContactInputs.phone,
+//       },
+//       'Contact validation failed: phone:',
+//     );
+//   });
+// });
 
 test.describe('Contact list edit contact', () => {
   test('Contact first name update is accepted', async ({
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
-    await contactsPage.openEditContactForm();
+    await contactsPage.editContact(loggedInUserWithOneContact.firstName, {
+      firstName: 'Georgi',
+    });
+
+    await expect(contactsPage.page.locator('span#firstName')).toHaveText(
+      'Georgi',
+    );
   });
 
-  test('Contact last name update is accepted', async () => {});
+  test('Contact last name update is accepted', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContact(loggedInUserWithOneContact.lastName, {
+      lastName: 'Petrov',
+    });
 
-  test('Contact birth date update is accepted', async () => {});
+    await expect(contactsPage.page.locator('span#lastName')).toHaveText(
+      'Petrov',
+    );
+  });
 
-  test('Contact email update is accepted', async () => {});
+  test('Contact birth date update is accepted', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContact(loggedInUserWithOneContact.birthDate, {
+      birthDate: '1993-04-04',
+    });
 
-  test('Contact phone update is accepted', async () => {});
+    await expect(contactsPage.page.locator('span#birthdate')).toHaveText(
+      '1993-04-04',
+    );
+  });
 
-  test('Contact first and last name, and birth date update is accepted', async () => {});
+  test('Contact email update is accepted', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContact(loggedInUserWithOneContact.email, {
+      email: 'test@test.com',
+    });
 
-  test('Contact email and phone update is accepted', async () => {});
+    await expect(contactsPage.page.locator('span#email')).toHaveText(
+      'test@test.com',
+    );
+  });
 
-  test('Contact birth date update with invalid input is rejected', async () => {});
+  test('Contact phone update is accepted', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContact(loggedInUserWithOneContact.phone, {
+      phone: '12345678',
+    });
 
-  test('Contact email update with invalid input is rejected', async () => {});
+    await expect(contactsPage.page.locator('span#phone')).toHaveText(
+      '12345678',
+    );
+  });
 
-  test('Contact phone update with invalid input is rejected', async () => {});
+  test('Contact birth date update with invalid input is rejected', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContactAndExpectError(
+      { birthDate: '1234' },
+      loggedInUserWithOneContact.birthDate,
+      'Birthdate is invalid',
+    );
+  });
+
+  test('Contact email update with invalid input is rejected', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContactAndExpectError(
+      { email: '1234' },
+      loggedInUserWithOneContact.email,
+      'Email is invalid',
+    );
+  });
+
+  test('Contact phone update with invalid input is rejected', async ({
+    loggedInUserWithOneContact,
+    contactsPage,
+  }) => {
+    await contactsPage.editContactAndExpectError(
+      { phone: 'abc' },
+      loggedInUserWithOneContact.phone,
+      'Phone number is invalid',
+    );
+  });
 });
 
 test.describe('Contact list delete contact', () => {

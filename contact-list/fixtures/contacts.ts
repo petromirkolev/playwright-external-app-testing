@@ -19,6 +19,9 @@ type ContactsFixture = {
   loggedInUserWithOneContact: {
     firstName: string;
     lastName: string;
+    birthDate: string;
+    email: string;
+    phone: string;
   };
 };
 
@@ -53,6 +56,9 @@ export const test = base.extend<ContactsFixture>({
   ) => {
     const firstName = validContactInputs.firstName;
     const lastName = validContactInputs.lastName;
+    const birthDate = validContactInputs.birthDate;
+    const email = validContactInputs.email;
+    const phone = validContactInputs.phone;
 
     await contactsPage.addContactButton.click();
 
@@ -75,7 +81,7 @@ export const test = base.extend<ContactsFixture>({
       validContactInputs.lastName,
     );
 
-    await use({ firstName, lastName });
+    await use({ firstName, lastName, birthDate, email, phone });
   },
 });
 
