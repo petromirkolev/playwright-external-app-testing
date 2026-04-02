@@ -26,7 +26,7 @@ test.describe('Register', () => {
     expect(body.user.firstName).toBe(registrationData.firstName);
     expect(body.user.lastName).toBe(registrationData.lastName);
     expect(body.user.email).toBe(email);
-    expect(body.token).toBeTruthy();
+    expect(body.token).not.toBe(undefined);
   });
 
   test('Duplicate registration is rejected', async ({

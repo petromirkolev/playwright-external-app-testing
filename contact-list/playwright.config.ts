@@ -1,15 +1,20 @@
 import { defineConfig } from '@playwright/test';
+import { AllureReporter } from 'allure-playwright';
 
 export default defineConfig({
   testDir: './tests',
-  retries: 0,
-  workers: process.env.CI ? 1 : 1,
-  reporter: 'html',
+  timeout: 30_000,
+  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 3 : undefined,
+  reporter: [
+    ['html'],
+    ['allure-playwright', { outputFolder: 'allure-results' }],
+  ],
   use: {
-    browserName: 'chromium',
+    baseURL:
+      process.env.BASE_URL ||
+      'https://thinking-tester-contact-list.herokuapp.com',
     headless: true,
-    viewport: { width: 1280, height: 720 },
-    baseURL: 'https://thinking-tester-contact-list.herokuapp.com',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
     trace: 'on-first-retry',

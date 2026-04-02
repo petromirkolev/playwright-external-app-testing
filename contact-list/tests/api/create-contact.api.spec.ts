@@ -66,22 +66,20 @@ test.describe('Create', () => {
     expect(body.message).toBe(REQUIRED_CONTACT_LAST_NAME);
   });
 
-  test.skip('Defect on the live app', () => {
-    test('Contact create with invalid birth date is rejected', async ({
-      request,
-      loggedInUser,
-    }) => {
-      const response = await api.addContact(request, loggedInUser.token, {
-        ...validContactInput,
-        birthDate: invalidContactInput.birthDate,
-      });
-
-      expect(response.status()).toBe(400);
-
-      const body = await response.json();
-
-      expect(body.message).toBe(REQUIRED_CONTACT_LAST_NAME);
+  test.skip('Contact create with invalid birth date is rejected', async ({
+    request,
+    loggedInUser,
+  }) => {
+    const response = await api.addContact(request, loggedInUser.token, {
+      ...validContactInput,
+      birthDate: invalidContactInput.birthDate,
     });
+
+    expect(response.status()).toBe(400);
+
+    const body = await response.json();
+
+    expect(body.message).toBe(REQUIRED_CONTACT_LAST_NAME);
   });
 
   test('Contact create with invalid phone is rejected', async ({
