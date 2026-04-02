@@ -31,6 +31,14 @@ export const validContactInput = {
   phone: '0888888888',
 };
 
+export const validContactUpdateInput = {
+  firstName: 'Georgi',
+  lastName: 'Petrov',
+  birthDate: '1990-04-04',
+  email: 'georgi@test.com',
+  phone: '0888888889',
+};
+
 export const invalidContactInput = {
   firstName: '',
   lastName: '',

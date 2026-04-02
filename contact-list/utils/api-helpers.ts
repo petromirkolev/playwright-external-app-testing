@@ -82,7 +82,7 @@ export const api = {
     token: string,
     data: Partial<ContactData>,
   ): Promise<APIResponse> {
-    const response = request.post(`${BASE_URL}/contacts`, {
+    const response = await request.post(`${BASE_URL}/contacts`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -102,8 +102,28 @@ export const api = {
     request: APIRequestContext,
     token: string,
   ): Promise<APIResponse> {
-    const response = request.get(`${BASE_URL}/contacts`, {
+    const response = await request.get(`${BASE_URL}/contacts`, {
       headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return response;
+  },
+
+  async updateContact(
+    request: APIRequestContext,
+    token: string,
+    data: Partial<ContactData>,
+  ): Promise<APIResponse> {
+    const response = await request.put(`${BASE_URL}/contacts`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        birthdate: data.birthDate,
+        email: data.email,
+        phone: data.phone,
+      },
+      timeout: 3000,
     });
 
     return response;

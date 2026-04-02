@@ -1,12 +1,25 @@
 import { test as base, expect, request } from '@playwright/test';
-import { LoggedInUser, RegisteredUser, RegistrationData } from '../types/api';
+import {
+  ContactData,
+  LoggedInUser,
+  RegisteredUser,
+  RegistrationData,
+} from '../types/api';
 import { api, registrationData } from '../utils/api-helpers';
-import { uniqueEmail, validUserInput } from '../utils/test-data';
+import {
+  uniqueEmail,
+  validContactInput,
+  validUserInput,
+} from '../utils/test-data';
 
 type ApiFixtures = {
   registrationData: RegistrationData;
   registeredUser: RegisteredUser;
   loggedInUser: LoggedInUser;
+  userWithOneContact: {
+    token: string;
+    contact: ContactData;
+  };
 };
 
 export const test = base.extend<ApiFixtures>({
@@ -40,6 +53,20 @@ export const test = base.extend<ApiFixtures>({
     const data = await response.json();
 
     await use(data);
+  },
+
+  userWithOneContact: async ({ loggedInUser, request }, use) => {
+    const token = loggedInUser.token;
+
+    await api.addContact(request, token, {
+      ...validContactInput,
+    });
+
+    const response = await api.getContact(request, token);
+
+    const contact = await response.json();
+
+    await use({ token, contact: { ...contact[0] } });
   },
 });
 
