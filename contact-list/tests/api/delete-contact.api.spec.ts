@@ -23,7 +23,7 @@ test.describe('Delete', () => {
     expect(contactResponse.status()).toBe(404);
   });
 
-  test('Delete contact with non-exisitng id is rejected', async ({
+  test('Delete contact with non-existing id is rejected', async ({
     request,
     userWithOneContact,
   }) => {

@@ -30,7 +30,7 @@ test.describe('Update', () => {
     await api.verifyContact({ ...validContactUpdateInput }, { ...body });
   });
 
-  test('Update contact with non-exisitng id is rejected', async ({
+  test('Update contact with non-existing id is rejected', async ({
     request,
     userWithOneContact,
   }) => {

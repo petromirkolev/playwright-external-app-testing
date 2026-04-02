@@ -111,23 +111,23 @@ export class ContactsPage {
 
     await expect(this.editContactForm).toBeVisible();
 
-    if (input.firstName) {
+    if (input.firstName !== undefined) {
       await expect(this.editContactInputFirstName).toHaveValue(text);
       await this.editContactInputFirstName.fill(input.firstName);
     }
-    if (input.lastName) {
+    if (input.lastName !== undefined) {
       await expect(this.editContactInputLastName).toHaveValue(text);
       await this.editContactInputLastName.fill(input.lastName);
     }
-    if (input.birthDate) {
+    if (input.birthDate !== undefined) {
       await expect(this.editContactInputBirthDate).toHaveValue(text);
       await this.editContactInputBirthDate.fill(input.birthDate);
     }
-    if (input.email) {
+    if (input.email !== undefined) {
       await expect(this.editContactInputEmail).toHaveValue(text);
       await this.editContactInputEmail.fill(input.email);
     }
-    if (input.phone) {
+    if (input.phone !== undefined) {
       await expect(this.editContactInputPhone).toHaveValue(text);
       await this.editContactInputPhone.fill(input.phone);
     }

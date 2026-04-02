@@ -37,20 +37,20 @@ export class RegistrationPage {
   async signUp(data: Partial<RegistrationData>): Promise<void> {
     await this.expectSignUpFormVisible();
 
-    if (data.firstName) {
+    if (data.firstName !== undefined) {
       await this.signUpFirstName.fill(data.firstName);
       await expect(this.signUpFirstName).toHaveValue(data.firstName);
     }
 
-    if (data.lastName) {
+    if (data.lastName !== undefined) {
       await this.signUpLastName.fill(data.lastName);
       await expect(this.signUpLastName).toHaveValue(data.lastName);
     }
-    if (data.email) {
+    if (data.email !== undefined) {
       await this.signUpEmail.fill(data.email);
       await expect(this.signUpEmail).toHaveValue(data.email);
     }
-    if (data.password) {
+    if (data.password !== undefined) {
       await this.signUpPassword.fill(data.password);
       await expect(this.signUpPassword).toHaveValue(data.password);
     }

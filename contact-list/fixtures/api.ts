@@ -1,10 +1,6 @@
 import { test as base, expect, request } from '@playwright/test';
-import {
-  ContactData,
-  LoggedInUser,
-  RegisteredUser,
-  RegistrationData,
-} from '../types/api';
+import { LoggedInUser, RegisteredUser } from '../types/api';
+import { RegistrationData } from '../types/auth';
 import { api, registrationData } from '../utils/api-helpers';
 import {
   uniqueEmail,
