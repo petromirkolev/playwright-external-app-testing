@@ -1,7 +1,7 @@
 import { test as base, expect, request } from '@playwright/test';
 import { RegisteredUser, RegistrationData } from '../types/api';
 import { api, registrationData } from '../utils/api-helpers';
-import { uniqueEmail, validInput } from '../utils/test-data';
+import { uniqueEmail, validUserInput } from '../utils/test-data';
 
 type ApiFixtures = {
   registrationData: RegistrationData;
@@ -19,7 +19,7 @@ export const test = base.extend<ApiFixtures>({
 
   registeredUser: async ({ registrationData, request }, use) => {
     const email = uniqueEmail();
-    const password = validInput.password;
+    const password = validUserInput.password;
 
     const response = await api.register(request, {
       ...registrationData,

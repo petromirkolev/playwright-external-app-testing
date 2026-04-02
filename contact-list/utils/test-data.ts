@@ -1,16 +1,29 @@
-export const validInput = {
+import {
+  INVALID_EMAIL,
+  INVALID_PASSWORD_TOO_LONG,
+  INVALID_PASSWORD_TOO_SHORT,
+  REQUIRED_PASSWORD,
+} from './constants';
+
+export const validUserInput = {
   firstName: 'Petromir',
   lastName: 'Kolev',
   password: 'T3stingP4$$',
 };
 
-export const invalidInput = {
-  email: 'petromir@test',
+export const invalidUserInput = {
+  email: 'invalidtestingemail@test.com',
+  emailEmpty: '',
+  emailNoExt: 'a@b',
+  emailNoName: '@abc.com',
+  emailInvalidExt: 'a@b.c',
+  password: 'invalidtestingpassword',
+  passwordEmpty: '',
   passwordTooShort: '123',
   passwordTooLong: '12345'.repeat(21),
 };
 
-export const validContactInputs = {
+export const validContactInput = {
   firstName: 'Petromir',
   lastName: 'Kolev',
   birthDate: '1990-03-05',
@@ -18,7 +31,7 @@ export const validContactInputs = {
   phone: '0888888888',
 };
 
-export const invalidContactInputs = {
+export const invalidContactInput = {
   birthDate: '1990',
   email: 'petromir@test',
   phone: '123',
@@ -27,42 +40,41 @@ export const invalidContactInputs = {
 export const invalidEmail = {
   invalidEmptyEmail: {
     description: 'Sign up with invalid empty email',
-    data: '',
-    message: 'User validation failed: email: Email is invalid',
+    data: invalidUserInput.emailEmpty,
+    message: INVALID_EMAIL,
   },
-  invalidEmailWithoutDomain: {
-    description: 'Sign up with invalid email without domain',
-    data: 'a@b',
-    message: 'User validation failed: email: Email is invalid',
+  invalidEmailWithoutDomainExt: {
+    description: 'Sign up with invalid email without domain extension',
+    data: invalidUserInput.emailNoExt,
+    message: INVALID_EMAIL,
   },
   invalidEmailWithoutName: {
     description: 'Sign up with invalid email without name',
-    data: '@abc.com',
-    message: 'User validation failed: email: Email is invalid',
+    data: invalidUserInput.emailNoName,
+    message: INVALID_EMAIL,
   },
-  invalidEmailWithoutExt: {
-    description: 'Sign up with invalid email without extension',
-    data: 'a@b.c',
-    message: 'User validation failed: email: Email is invalid',
+  invalidEmailDomainExt: {
+    description: 'Sign up with invalid email with invalid domain extension',
+    data: invalidUserInput.emailInvalidExt,
+    message: INVALID_EMAIL,
   },
 };
 
 export const invalidPassword = {
   invalidEmptyPassword: {
     description: 'Sign up with invalid empty password',
-    data: '',
-    message: 'User validation failed: password: Path `password` is required.',
+    data: invalidUserInput.passwordEmpty,
+    message: REQUIRED_PASSWORD,
   },
   invalidPasswordTooShort: {
     description: 'Sign up with invalid password too short',
-    data: 'abcde',
-    message:
-      'User validation failed: password: Path `password` (`abcde`) is shorter than the minimum allowed length (7).',
+    data: invalidUserInput.passwordTooShort,
+    message: INVALID_PASSWORD_TOO_SHORT,
   },
   invalidPasswordTooLong: {
     description: 'Sign up with invalid password too long',
-    data: 'abcde'.repeat(21),
-    message: `User validation failed: password: Path \`password\` (\`${'abcde'.repeat(21)}\`) is longer than the maximum allowed length (100).`,
+    data: invalidUserInput.passwordTooLong,
+    message: INVALID_PASSWORD_TOO_LONG,
   },
 };
 

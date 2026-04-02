@@ -1,4 +1,11 @@
 import { test } from '../fixtures/auth';
+import {
+  EMAIL_IN_USE,
+  REQUIRED_EMAIL,
+  REQUIRED_FIRST_NAME,
+  REQUIRED_LAST_NAME,
+  REQUIRED_PASSWORD,
+} from '../utils/constants';
 import { invalidEmail, invalidPassword } from '../utils/test-data';
 
 test.describe('Register', () => {
@@ -10,12 +17,7 @@ test.describe('Register', () => {
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      registrationData.firstName,
-      registrationData.lastName,
-      registrationData.email,
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData });
 
     await registrationPage.expectSignUpFormNotVisible();
   });
@@ -24,12 +26,7 @@ test.describe('Register', () => {
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      registrationData.firstName,
-      registrationData.lastName,
-      registrationData.email,
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData });
 
     await registrationPage.expectSignUpFormNotVisible();
 
@@ -37,70 +34,45 @@ test.describe('Register', () => {
 
     await registrationPage.gotoSignUp();
 
-    await registrationPage.signUp(
-      registrationData.firstName,
-      registrationData.lastName,
-      registrationData.email,
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData });
 
-    await registrationPage.expectError('Email address is already in use');
+    await registrationPage.expectError(EMAIL_IN_USE);
   });
 
   test('Sign up with missing first name is rejected', async ({
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      '',
-      registrationData.lastName,
-      registrationData.email,
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData, firstName: '' });
 
-    await registrationPage.expectError('User validation failed: firstName');
+    await registrationPage.expectError(REQUIRED_FIRST_NAME);
   });
 
   test('Sign up with missing last name is rejected', async ({
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      registrationData.firstName,
-      '',
-      registrationData.email,
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData, lastName: '' });
 
-    await registrationPage.expectError('User validation failed: lastName');
+    await registrationPage.expectError(REQUIRED_LAST_NAME);
   });
 
   test('Sign up with missing email is rejected', async ({
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      registrationData.firstName,
-      registrationData.lastName,
-      '',
-      registrationData.password,
-    );
+    await registrationPage.signUp({ ...registrationData, email: '' });
 
-    await registrationPage.expectError('User validation failed: email');
+    await registrationPage.expectError(REQUIRED_EMAIL);
   });
 
   test('Sign up with missing password is rejected', async ({
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp(
-      registrationData.firstName,
-      registrationData.lastName,
-      registrationData.email,
-      '',
-    );
+    await registrationPage.signUp({ ...registrationData, password: '' });
 
-    await registrationPage.expectError('User validation failed: password');
+    await registrationPage.expectError(REQUIRED_PASSWORD);
   });
 
   for (const key of Object.keys(invalidEmail) as Array<
@@ -109,12 +81,7 @@ test.describe('Register', () => {
     const { description, data, message } = invalidEmail[key];
 
     test(description, async ({ registrationPage, registrationData }) => {
-      await registrationPage.signUp(
-        registrationData.firstName,
-        registrationData.lastName,
-        data,
-        registrationData.password,
-      );
+      await registrationPage.signUp({ ...registrationData, email: data });
 
       await registrationPage.expectError(message);
     });
@@ -126,12 +93,7 @@ test.describe('Register', () => {
     const { description, data, message } = invalidPassword[key];
 
     test(description, async ({ registrationPage, registrationData }) => {
-      await registrationPage.signUp(
-        registrationData.firstName,
-        registrationData.lastName,
-        registrationData.email,
-        data,
-      );
+      await registrationPage.signUp({ ...registrationData, password: data });
 
       await registrationPage.expectError(message);
     });

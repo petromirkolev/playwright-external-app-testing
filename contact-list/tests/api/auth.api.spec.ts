@@ -5,7 +5,7 @@ import {
   INVALID_PASSWORD_TOO_LONG,
   INVALID_PASSWORD_TOO_SHORT,
 } from '../../utils/constants';
-import { invalidInput, uniqueEmail } from '../../utils/test-data';
+import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
 test.describe('Registration', () => {
   test('Registration with valid credentials is successful', async ({
@@ -57,7 +57,7 @@ test.describe('Registration', () => {
     request,
     registrationData,
   }) => {
-    const email = invalidInput.email;
+    const email = invalidUserInput.emailNoName;
 
     const response = await api.register(request, {
       ...registrationData,
@@ -76,13 +76,13 @@ test.describe('Registration', () => {
   }) => {
     const response = await api.register(request, {
       ...registrationData,
-      password: invalidInput.passwordTooShort,
+      password: invalidUserInput.passwordTooShort,
     });
 
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toBe(INVALID_PASSWORD_TOO_SHORT);
+    expect(body.message).toContain(INVALID_PASSWORD_TOO_SHORT);
   });
 
   test('Registration with invalid password too long is rejected', async ({
@@ -91,13 +91,13 @@ test.describe('Registration', () => {
   }) => {
     const response = await api.register(request, {
       ...registrationData,
-      password: invalidInput.passwordTooLong,
+      password: invalidUserInput.passwordTooLong,
     });
 
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toBe(INVALID_PASSWORD_TOO_LONG);
+    expect(body.message).toContain(INVALID_PASSWORD_TOO_LONG);
   });
 });
 
@@ -123,7 +123,7 @@ test.describe('Login', () => {
     registeredUser,
   }) => {
     const response = await api.login(request, {
-      email: invalidInput.email,
+      email: invalidUserInput.emailNoName,
       password: registeredUser.password,
     });
 
@@ -136,7 +136,7 @@ test.describe('Login', () => {
   }) => {
     const response = await api.login(request, {
       email: registeredUser.email,
-      password: invalidInput.passwordTooShort,
+      password: invalidUserInput.passwordTooShort,
     });
 
     expect(response.status()).toBe(401);

@@ -1,4 +1,6 @@
 import { test } from '../fixtures/auth';
+import { INCORRECT_USERNAME_PASSWORD } from '../utils/constants';
+import { invalidUserInput } from '../utils/test-data';
 
 test.describe('Login', () => {
   test.beforeEach(async ({ loginPage }) => {
@@ -14,10 +16,24 @@ test.describe('Login', () => {
     await loginPage.expectSuccess();
   });
 
-  test('Login with invalid credentials is rejected', async ({ loginPage }) => {
-    await loginPage.login('nonexistinguser@testing.com', '12345678');
+  test('Login with invalid email is rejected', async ({
+    loginPage,
+    registeredUser,
+  }) => {
+    await loginPage.login(invalidUserInput.email, registeredUser.password);
 
-    await loginPage.expectError('Incorrect username or password');
+    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
+
+    await loginPage.expectLoginFormVisible();
+  });
+
+  test('Login with invalid password is rejected', async ({
+    loginPage,
+    registeredUser,
+  }) => {
+    await loginPage.login(registeredUser.email, invalidUserInput.password);
+
+    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
 
     await loginPage.expectLoginFormVisible();
   });
@@ -28,7 +44,7 @@ test.describe('Login', () => {
   }) => {
     await loginPage.login('', registeredUser.password);
 
-    await loginPage.expectError('Incorrect username or password');
+    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
   });
 
   test('Login with empty password is rejected', async ({
@@ -37,7 +53,7 @@ test.describe('Login', () => {
   }) => {
     await loginPage.login(registeredUser.email, '');
 
-    await loginPage.expectError('Incorrect username or password');
+    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
   });
 
   test('Logout loads the login screen', async ({

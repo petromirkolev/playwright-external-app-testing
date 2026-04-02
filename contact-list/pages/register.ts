@@ -1,4 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
+import { RegistrationData } from '../types/auth';
 
 export class RegistrationPage {
   readonly page: Page;
@@ -33,23 +34,26 @@ export class RegistrationPage {
     await expect(this.page.getByText(/Add User/)).toBeVisible();
   }
 
-  async signUp(
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  ): Promise<void> {
+  async signUp(data: Partial<RegistrationData>): Promise<void> {
     await this.expectSignUpFormVisible();
 
-    await this.signUpFirstName.fill(firstName);
-    await this.signUpLastName.fill(lastName);
-    await this.signUpEmail.fill(email);
-    await this.signUpPassword.fill(password);
+    if (data.firstName) {
+      await this.signUpFirstName.fill(data.firstName);
+      await expect(this.signUpFirstName).toHaveValue(data.firstName);
+    }
 
-    await expect(this.signUpFirstName).toHaveValue(firstName);
-    await expect(this.signUpLastName).toHaveValue(lastName);
-    await expect(this.signUpEmail).toHaveValue(email);
-    await expect(this.signUpPassword).toHaveValue(password);
+    if (data.lastName) {
+      await this.signUpLastName.fill(data.lastName);
+      await expect(this.signUpLastName).toHaveValue(data.lastName);
+    }
+    if (data.email) {
+      await this.signUpEmail.fill(data.email);
+      await expect(this.signUpEmail).toHaveValue(data.email);
+    }
+    if (data.password) {
+      await this.signUpPassword.fill(data.password);
+      await expect(this.signUpPassword).toHaveValue(data.password);
+    }
 
     await this.signUpSubmitButton.click();
   }
