@@ -7,7 +7,7 @@ import {
 } from '../../utils/constants';
 import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
-test.describe('Registration', () => {
+test.describe('Register', () => {
   test('Registration with valid credentials is successful', async ({
     request,
     registrationData,

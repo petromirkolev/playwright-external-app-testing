@@ -1,13 +1,17 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { RegisteredUser, RegistrationData } from '../types/api';
+import { BASE_URL } from './constants';
+import {
+  ContactData,
+  RegisteredUser,
+  RegistrationData,
+  UpdateData,
+} from '../types/api';
 
 export const registrationData: RegistrationData = {
   firstName: 'Petromir',
   lastName: 'Kolev',
   password: 'T3stingP4$$',
 };
-
-export const BASE_URL = 'https://thinking-tester-contact-list.herokuapp.com';
 
 export const api = {
   async register(
@@ -35,6 +39,71 @@ export const api = {
         email: data.email,
         password: data.password,
       },
+    });
+
+    return response;
+  },
+
+  async update(
+    request: APIRequestContext,
+    token: string,
+    data: Partial<UpdateData>,
+  ): Promise<APIResponse> {
+    const response = await request.patch(`${BASE_URL}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+      },
+    });
+
+    return response;
+  },
+
+  async delete(
+    request: APIRequestContext,
+    token: string,
+  ): Promise<APIResponse> {
+    const response = await request.delete(`${BASE_URL}/users/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response;
+  },
+
+  async addContact(
+    request: APIRequestContext,
+    token: string,
+    data: Partial<ContactData>,
+  ): Promise<APIResponse> {
+    const response = request.post(`${BASE_URL}/contacts`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        birthDate: data.birthDate,
+        email: data.email,
+        phone: data.phone,
+      },
+    });
+
+    return response;
+  },
+
+  async getContact(
+    request: APIRequestContext,
+    token: string,
+  ): Promise<APIResponse> {
+    const response = request.get(`${BASE_URL}/contacts`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return response;
