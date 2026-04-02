@@ -66,6 +66,8 @@ utils/
 └── constants.ts
 ```
 
+---
+
 ## 🚀 How to Run
 
 ### Install dependencies
@@ -104,6 +106,8 @@ npm run test:ui
 npm run test:headed
 ```
 
+---
+
 ## 📊 What’s Covered
 
 ### UI Tests
@@ -117,5 +121,3 @@ npm run test:headed
 - User registration, login, update, delete
 - Contact create, read, update, delete
 - Full validation & error message checking
-
-Made with ❤️ as a QA Automation portfolio project.
