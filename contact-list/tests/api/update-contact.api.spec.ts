@@ -11,7 +11,7 @@ import {
   validContactUpdateInput,
 } from '../../utils/test-data';
 
-test.describe('Update', () => {
+test.describe('Contacts API - Update contact', () => {
   test('Update contact with valid data succeeds', async ({
     request,
     userWithOneContact,
@@ -27,7 +27,20 @@ test.describe('Update', () => {
 
     const body = await response.json();
 
-    await api.verifyContact({ ...validContactUpdateInput }, { ...body });
+    expect(body._id).toBe(userWithOneContact.contact_id);
+    expect(body.firstName).toBe(validContactUpdateInput.firstName);
+    expect(body.lastName).toBe(validContactUpdateInput.lastName);
+
+    const getResponse = await api.getContact(
+      request,
+      userWithOneContact.token,
+      userWithOneContact.contact_id,
+    );
+
+    expect(getResponse.status()).toBe(200);
+    const updatedBody = await getResponse.json();
+
+    await api.verifyContact({ ...validContactUpdateInput }, { ...updatedBody });
   });
 
   test('Update contact with non-existing id is rejected', async ({

@@ -4,26 +4,41 @@
 
 A complete **UI + API** automation test suite for the [Thinking Tester Contact List](https://thinking-tester-contact-list.herokuapp.com/) demo application.
 
-Built as a **QA Automation portfolio project** to demonstrate modern testing practices, clean architecture, and production-ready test setup.
+This project is part of my QA Automation portfolio and focuses on testing a third-party/public app that I do not control. The goal is to show practical QA skills: test design, UI automation, API validation, reusable fixtures/helpers, and mechanical debugging of live public environments.
 
 ---
 
 ## ✨ Highlights
 
-- Full **UI test suite** with Page Object Model
-- Full **API test suite** with comprehensive validation
-- **Allure HTML reporting** for beautiful test reports
-- Parallel execution, retries, and CI-ready config
+- UI coverage with Page Object Model
+- API coverage for core user and contact flows
+- Reusable fixtures, helpers, and typed test data
+- CI workflow with Playwright
+- Allure reporting support
+
+---
+
+## Important note about the public app
+
+This suite targets a live public demo application. Because the backend is external, behavior can occasionally differ from the documented contract or become temporarily unstable.
+
+When that happens, the goal is not to "force green tests", but to:
+
+- verify the request contract
+- compare behavior across Playwright and Postman
+- distinguish test issues from live API defects
+- document known external issues clearly
 
 ---
 
 ## 🛠 Tech Stack
 
-- **Playwright** v1.58+
-- **TypeScript**
-- Page Object Model + Fixtures
-- API testing (Playwright Request)
-- **Allure** reporting
+- Playwright
+- TypeScript
+- Playwright Request API
+- Fixtures + reusable helpers
+- Page Object Model
+- Allure reporting
 
 ---
 

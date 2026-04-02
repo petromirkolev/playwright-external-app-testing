@@ -21,6 +21,8 @@ export const REQUIRED_CONTACT_FIRST_NAME =
   'Contact validation failed: firstName: Path `firstName` is required.';
 export const REQUIRED_CONTACT_LAST_NAME =
   'Contact validation failed: lastName: Path `lastName` is required.';
+export const INVALID_CONTACT_BIRTH_DATE =
+  'Contact validation failed: birthDate: Birth date is invalid';
 export const INVALID_CONTACT_EMAIL =
   'Contact validation failed: email: Email is invalid';
 export const INVALID_CONTACT_PHONE =

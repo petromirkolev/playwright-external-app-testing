@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/api';
 import { api } from '../../utils/api-helpers';
 
-test.describe('Delete', () => {
+test.describe('Contacts API - Delete user', () => {
   test('Delete registered user succeeds', async ({ request, loggedInUser }) => {
     const response = await api.delete(request, loggedInUser.token);
 

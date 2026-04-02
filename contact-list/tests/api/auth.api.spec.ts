@@ -7,7 +7,7 @@ import {
 } from '../../utils/constants';
 import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
-test.describe('Register', () => {
+test.describe('Contacts API - Register user', () => {
   test('Registration with valid credentials is successful', async ({
     request,
     registrationData,
@@ -101,7 +101,7 @@ test.describe('Register', () => {
   });
 });
 
-test.describe('Login', () => {
+test.describe('Contacts API - Login user', () => {
   test('Login with registered credentials is successful', async ({
     request,
     registeredUser,

@@ -2,6 +2,7 @@ import { test, expect } from '../../fixtures/api';
 import { api } from '../../utils/api-helpers';
 import {
   EMPTY_PAYLOAD,
+  INVALID_CONTACT_BIRTH_DATE,
   INVALID_CONTACT_EMAIL,
   INVALID_CONTACT_PHONE,
   REQUIRED_CONTACT_FIRST_NAME,
@@ -9,7 +10,7 @@ import {
 } from '../../utils/constants';
 import { validContactInput, invalidContactInput } from '../../utils/test-data';
 
-test.describe('Create', () => {
+test.describe('Contacts API - Create contact', () => {
   test('Contact create with valid data succeeds', async ({
     request,
     loggedInUser,
@@ -21,13 +22,17 @@ test.describe('Create', () => {
     expect(response.status()).toBe(201);
 
     const body = await response.json();
-    const contact_id = body._id;
+
+    expect(body._id).toBeTruthy();
+    expect(body.firstName).toBe(validContactInput.firstName);
+    expect(body.lastName).toBe(validContactInput.lastName);
 
     const contactResponse = await api.getContact(
       request,
       loggedInUser.token,
-      contact_id,
+      body._id,
     );
+    expect(contactResponse.status()).toBe(200);
 
     const contactBody = await contactResponse.json();
 
@@ -66,7 +71,7 @@ test.describe('Create', () => {
     expect(body.message).toBe(REQUIRED_CONTACT_LAST_NAME);
   });
 
-  test.skip('Contact create with invalid birth date is rejected', async ({
+  test.fixme('Contact create with invalid birth date is rejected; Public API validation for invalid birth date is currently inconsistent/unreliable on the live app.', async ({
     request,
     loggedInUser,
   }) => {
@@ -79,7 +84,7 @@ test.describe('Create', () => {
 
     const body = await response.json();
 
-    expect(body.message).toBe(REQUIRED_CONTACT_LAST_NAME);
+    expect(body.message).toBe(INVALID_CONTACT_BIRTH_DATE);
   });
 
   test('Contact create with invalid phone is rejected', async ({
