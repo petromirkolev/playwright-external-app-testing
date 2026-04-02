@@ -18,7 +18,7 @@ type ApiFixtures = {
   loggedInUser: LoggedInUser;
   userWithOneContact: {
     token: string;
-    contact: ContactData;
+    contact_id: string;
   };
 };
 
@@ -58,15 +58,14 @@ export const test = base.extend<ApiFixtures>({
   userWithOneContact: async ({ loggedInUser, request }, use) => {
     const token = loggedInUser.token;
 
-    await api.addContact(request, token, {
+    const contactResponse = await api.addContact(request, token, {
       ...validContactInput,
     });
 
-    const response = await api.getContact(request, token);
+    const contactBody = await contactResponse.json();
+    const contact_id = contactBody._id;
 
-    const contact = await response.json();
-
-    await use({ token, contact: { ...contact[0] } });
+    await use({ token, contact_id });
   },
 });
 

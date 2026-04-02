@@ -101,8 +101,9 @@ export const api = {
   async getContact(
     request: APIRequestContext,
     token: string,
+    id: string,
   ): Promise<APIResponse> {
-    const response = await request.get(`${BASE_URL}/contacts`, {
+    const response = await request.get(`${BASE_URL}/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -112,9 +113,10 @@ export const api = {
   async updateContact(
     request: APIRequestContext,
     token: string,
+    id: string,
     data: Partial<ContactData>,
   ): Promise<APIResponse> {
-    const response = await request.put(`${BASE_URL}/contacts`, {
+    const response = await request.put(`${BASE_URL}/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       data: {
         firstName: data.firstName,
@@ -123,7 +125,18 @@ export const api = {
         email: data.email,
         phone: data.phone,
       },
-      timeout: 3000,
+    });
+
+    return response;
+  },
+
+  async deleteContact(
+    request: APIRequestContext,
+    token: string,
+    id: string,
+  ): Promise<APIResponse> {
+    const response = await request.delete(`${BASE_URL}/contacts/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
     });
 
     return response;
