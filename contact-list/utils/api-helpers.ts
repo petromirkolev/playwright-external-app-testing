@@ -1,4 +1,4 @@
-import { APIRequestContext, APIResponse } from '@playwright/test';
+import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 import { BASE_URL } from './constants';
 import {
   ContactData,
@@ -6,6 +6,7 @@ import {
   RegistrationData,
   UpdateData,
 } from '../types/api';
+import { ContactInput } from '../types/contact';
 
 export const registrationData: RegistrationData = {
   firstName: 'Petromir',
@@ -140,5 +141,14 @@ export const api = {
     });
 
     return response;
+  },
+
+  async verifyContact(input: ContactInput, output: ContactData): Promise<void> {
+    expect(output.firstName).toBe(input.firstName);
+    expect(output.lastName).toBe(input.lastName);
+    if (input.birthDate && output.birthDate)
+      expect(output.birthDate).toBe(input.birthDate);
+    expect(output.email).toBe(input.email);
+    expect(output.phone).toBe(input.phone);
   },
 };

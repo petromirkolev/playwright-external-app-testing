@@ -1,5 +1,4 @@
 import { test, expect } from '../../fixtures/api';
-import { ContactData } from '../../types/api';
 import { api } from '../../utils/api-helpers';
 import {
   EMPTY_PAYLOAD,
@@ -21,16 +20,18 @@ test.describe('Create', () => {
 
     expect(response.status()).toBe(201);
 
-    const contactResponse = await api.getContact(request, loggedInUser.token);
+    const body = await response.json();
+    const contact_id = body._id;
+
+    const contactResponse = await api.getContact(
+      request,
+      loggedInUser.token,
+      contact_id,
+    );
 
     const contactBody = await contactResponse.json();
 
-    expect(
-      contactBody.find(
-        (contact: ContactData) =>
-          contact.firstName === validContactInput.firstName,
-      ),
-    ).toBeTruthy();
+    await api.verifyContact({ ...validContactInput }, { ...contactBody });
   });
 
   test('Contact create with missing required first name is rejected', async ({
