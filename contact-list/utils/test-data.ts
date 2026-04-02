@@ -32,6 +32,8 @@ export const validContactInput = {
 };
 
 export const invalidContactInput = {
+  firstName: '',
+  lastName: '',
   birthDate: '1990',
   email: 'petromir@test',
   phone: '123',

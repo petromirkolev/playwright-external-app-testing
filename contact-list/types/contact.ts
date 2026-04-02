@@ -1,6 +1,6 @@
 export type ContactInput = {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   birthDate?: string;
   email?: string;
   phone?: string;

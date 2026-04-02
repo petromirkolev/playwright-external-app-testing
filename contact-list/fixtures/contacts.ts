@@ -1,8 +1,8 @@
-import { invalidContactInputs, validContactInputs } from '../utils/test-data';
+import { invalidContactInput, validContactInput } from '../utils/test-data';
 import { test as base, expect } from './auth';
 
 type ContactsFixture = {
-  validContactInputs: {
+  validContactInput: {
     firstName: string;
     lastName: string;
     birthDate: string;
@@ -10,7 +10,7 @@ type ContactsFixture = {
     phone: string;
   };
 
-  invalidContactInputs: {
+  invalidContactInput: {
     birthDate: string;
     email: string;
     phone: string;
@@ -26,12 +26,12 @@ type ContactsFixture = {
 };
 
 export const test = base.extend<ContactsFixture>({
-  validContactInputs: async ({}, use) => {
-    const firstName = validContactInputs.firstName;
-    const lastName = validContactInputs.lastName;
-    const birthDate = validContactInputs.birthDate;
-    const email = validContactInputs.email;
-    const phone = validContactInputs.phone;
+  validContactInput: async ({}, use) => {
+    const firstName = validContactInput.firstName;
+    const lastName = validContactInput.lastName;
+    const birthDate = validContactInput.birthDate;
+    const email = validContactInput.email;
+    const phone = validContactInput.phone;
 
     await use({
       firstName,
@@ -42,37 +42,37 @@ export const test = base.extend<ContactsFixture>({
     });
   },
 
-  invalidContactInputs: async ({}, use) => {
-    const birthDate = invalidContactInputs.birthDate;
-    const email = invalidContactInputs.email;
-    const phone = invalidContactInputs.phone;
+  invalidContactInput: async ({}, use) => {
+    const birthDate = invalidContactInput.birthDate;
+    const email = invalidContactInput.email;
+    const phone = invalidContactInput.phone;
 
     await use({ birthDate, email, phone });
   },
 
   loggedInUserWithOneContact: async (
-    { loggedInUser, validContactInputs, contactsPage },
+    { loggedInUser, validContactInput, contactsPage },
     use,
   ) => {
-    const firstName = validContactInputs.firstName;
-    const lastName = validContactInputs.lastName;
-    const birthDate = validContactInputs.birthDate;
-    const email = validContactInputs.email;
-    const phone = validContactInputs.phone;
+    const firstName = validContactInput.firstName;
+    const lastName = validContactInput.lastName;
+    const birthDate = validContactInput.birthDate;
+    const email = validContactInput.email;
+    const phone = validContactInput.phone;
 
     await contactsPage.addContact({
-      firstName: validContactInputs.firstName,
-      lastName: validContactInputs.lastName,
-      birthDate: validContactInputs.birthDate,
-      email: validContactInputs.email,
-      phone: validContactInputs.phone,
+      firstName: validContactInput.firstName,
+      lastName: validContactInput.lastName,
+      birthDate: validContactInput.birthDate,
+      email: validContactInput.email,
+      phone: validContactInput.phone,
     });
 
     await expect(contactsPage.contactTableRow).toBeAttached();
 
     await contactsPage.expectContactVisible(
-      validContactInputs.firstName,
-      validContactInputs.lastName,
+      validContactInput.firstName,
+      validContactInput.lastName,
     );
 
     await use({ firstName, lastName, birthDate, email, phone });

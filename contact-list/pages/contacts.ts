@@ -67,11 +67,26 @@ export class ContactsPage {
   async addContact(input: Partial<ContactInput>): Promise<void> {
     await this.openAddContactForm();
 
-    if (input.firstName) await this.addContactFirstName.fill(input.firstName);
-    if (input.lastName) await this.addContactLastName.fill(input.lastName);
-    if (input.birthDate) await this.addContactBirthDate.fill(input.birthDate);
-    if (input.email) await this.addContactEmail.fill(input.email);
-    if (input.phone) await this.addContactPhone.fill(input.phone);
+    if (input.firstName) {
+      await this.addContactFirstName.fill(input.firstName);
+      await expect(this.addContactFirstName).toHaveValue(input.firstName);
+    }
+    if (input.lastName) {
+      await this.addContactLastName.fill(input.lastName);
+      await expect(this.addContactLastName).toHaveValue(input.lastName);
+    }
+    if (input.birthDate) {
+      await this.addContactBirthDate.fill(input.birthDate);
+      await expect(this.addContactBirthDate).toHaveValue(input.birthDate);
+    }
+    if (input.email) {
+      await this.addContactEmail.fill(input.email);
+      await expect(this.addContactEmail).toHaveValue(input.email);
+    }
+    if (input.phone) {
+      await this.addContactPhone.fill(input.phone);
+      await expect(this.addContactPhone).toHaveValue(input.phone);
+    }
 
     await this.submitAddContactForm();
   }

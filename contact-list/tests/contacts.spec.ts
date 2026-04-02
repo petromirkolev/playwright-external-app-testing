@@ -15,19 +15,13 @@ test.describe('Contact list happy path', () => {
   test('Contact list updates after contact creation', async ({
     loggedInUser,
     contactsPage,
-    validContactInputs,
+    validContactInput,
   }) => {
-    await contactsPage.addContact({
-      firstName: validContactInputs.firstName,
-      lastName: validContactInputs.lastName,
-      birthDate: validContactInputs.birthDate,
-      email: validContactInputs.email,
-      phone: validContactInputs.phone,
-    });
+    await contactsPage.addContact({ ...validContactInput });
 
     await contactsPage.expectContactVisible(
-      validContactInputs.firstName,
-      validContactInputs.lastName,
+      validContactInput.firstName,
+      validContactInput.lastName,
     );
   });
 
@@ -66,10 +60,10 @@ test.describe('Contact list add contact', () => {
   test('Add contact without required first name', async ({
     loggedInUser,
     contactsPage,
-    validContactInputs,
+    validContactInput,
   }) => {
     await contactsPage.createContactAndExpectError(
-      { firstName: '', lastName: validContactInputs.lastName },
+      { ...validContactInput, firstName: '' },
       'Contact validation failed: firstName:',
     );
   });
@@ -77,25 +71,24 @@ test.describe('Contact list add contact', () => {
   test('Add contact without required last name', async ({
     loggedInUser,
     contactsPage,
-    validContactInputs,
+    validContactInput,
   }) => {
     await contactsPage.createContactAndExpectError(
-      { firstName: validContactInputs.firstName, lastName: '' },
+      { ...validContactInput, lastName: '' },
       'Contact validation failed: lastName:',
     );
   });
 
   test('Add contact with invalid birth date', async ({
     loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
+    validContactInput,
+    invalidContactInput,
     contactsPage,
   }) => {
     await contactsPage.createContactAndExpectError(
       {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        birthDate: invalidContactInputs.birthDate,
+        ...validContactInput,
+        birthDate: invalidContactInput.birthDate,
       },
       'Contact validation failed: birthdate:',
     );
@@ -103,15 +96,14 @@ test.describe('Contact list add contact', () => {
 
   test('Add contact with invalid email', async ({
     loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
+    validContactInput,
+    invalidContactInput,
     contactsPage,
   }) => {
     await contactsPage.createContactAndExpectError(
       {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        email: invalidContactInputs.email,
+        ...validContactInput,
+        email: invalidContactInput.email,
       },
       'Contact validation failed: email:',
     );
@@ -119,15 +111,14 @@ test.describe('Contact list add contact', () => {
 
   test('Add contact with invalid phone number', async ({
     loggedInUser,
-    validContactInputs,
-    invalidContactInputs,
+    validContactInput,
+    invalidContactInput,
     contactsPage,
   }) => {
     await contactsPage.createContactAndExpectError(
       {
-        firstName: validContactInputs.firstName,
-        lastName: validContactInputs.lastName,
-        phone: invalidContactInputs.phone,
+        ...validContactInput,
+        phone: invalidContactInput.phone,
       },
       'Contact validation failed: phone:',
     );
