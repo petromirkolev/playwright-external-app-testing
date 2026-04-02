@@ -1,5 +1,7 @@
 # Contact List App - Playwright UI + API Test Suite
 
+[![Playwright Tests](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/contact-list.yml/badge.svg)](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/contact-list.yml)
+
 A complete **UI + API** automation test suite for the [Thinking Tester Contact List](https://thinking-tester-contact-list.herokuapp.com/) demo application.
 
 Built as a **QA Automation portfolio project** to demonstrate modern testing practices, clean architecture, and production-ready test setup.
@@ -100,8 +102,5 @@ npm run test:headed
 - User registration, login, update, delete
 - Contact create, read, update, delete
 - Full validation & error message checking
-
-Status:
-<img src="https://github.com/petromirkolev/contact-list/actions/workflows/playwright.yml/badge.svg" alt="Playwright Tests">
 
 Made with ❤️ as a QA Automation portfolio project.
