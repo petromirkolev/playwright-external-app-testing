@@ -4,3 +4,9 @@ export type RegistrationData = {
   email?: string;
   password: string;
 };
+
+export type RegisteredUser = {
+  email: string;
+  password: string;
+  token: string;
+};

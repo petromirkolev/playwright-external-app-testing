@@ -4,6 +4,12 @@ export const validInput = {
   password: 'T3stingP4$$',
 };
 
+export const invalidInput = {
+  email: 'petromir@test',
+  passwordTooShort: '123',
+  passwordTooLong: '12345'.repeat(21),
+};
+
 export const validContactInputs = {
   firstName: 'Petromir',
   lastName: 'Kolev',
