@@ -51,37 +51,37 @@ utils/
 
 ## 🚀 How to Run
 
-# Install dependencies
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-# Run all tests (UI + API)
+### Run all tests (UI + API)
 
 ```bash
 npm test
 ```
 
-# Run only API tests
+### Run only API tests
 
 ```bash
 npm run test:api
 ```
 
-# Run with Allure HTML report
+### Run with Allure HTML report
 
 ```bash
 npm run test:allure
 ```
 
-# Run with UI mode (debugging)
+### Run with UI mode (debugging)
 
 ```bash
 npm run test:ui
 ```
 
-# Run headed
+### Run headed
 
 ```bash
 npm run test:headed
