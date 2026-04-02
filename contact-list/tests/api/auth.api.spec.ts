@@ -85,7 +85,7 @@ test.describe('Registration', () => {
     expect(body.message).toBe(INVALID_PASSWORD_TOO_SHORT);
   });
 
-  test('Registration with invalid password too long rejected', async ({
+  test('Registration with invalid password too long is rejected', async ({
     request,
     registrationData,
   }) => {
