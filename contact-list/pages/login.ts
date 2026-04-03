@@ -1,4 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
+import { LoginInput } from '../types/auth';
 
 export class LoginPage {
   readonly page: Page;
@@ -27,14 +28,15 @@ export class LoginPage {
     await expect(this.page.getByText(/Contact List App/i)).toBeVisible();
   }
 
-  async login(email: string, password: string): Promise<void> {
+  async login(input: LoginInput): Promise<void> {
     await this.expectLoginFormVisible();
 
-    await this.loginEmail.fill(email);
-    await this.loginPassword.fill(password);
+    if (input.email !== undefined) await this.loginEmail.fill(input.email);
+    if (input.password !== undefined)
+      await this.loginPassword.fill(input.password);
 
-    await expect(this.loginEmail).toHaveValue(email);
-    await expect(this.loginPassword).toHaveValue(password);
+    await expect(this.loginEmail).toHaveValue(input.email);
+    await expect(this.loginPassword).toHaveValue(input.password);
 
     await this.loginButton.click();
   }

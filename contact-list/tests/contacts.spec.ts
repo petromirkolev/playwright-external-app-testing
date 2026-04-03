@@ -1,4 +1,5 @@
 import { test, expect } from '../fixtures/contacts';
+import { msg } from '../utils/constants';
 
 test.describe('Contact list happy path', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
@@ -17,29 +18,19 @@ test.describe('Contact list happy path', () => {
     contactsPage,
     validContactInput,
   }) => {
-    await contactsPage.addContact({ ...validContactInput });
-
-    await contactsPage.expectContactVisible(
-      validContactInput.firstName,
-      validContactInput.lastName,
-    );
+    await contactsPage.addContact(validContactInput);
+    await contactsPage.expectContactVisible(validContactInput);
   });
 
   test('Contact list keeps created contact after page reload', async ({
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
-    await contactsPage.expectContactVisible(
-      loggedInUserWithOneContact.firstName,
-      loggedInUserWithOneContact.lastName,
-    );
+    await contactsPage.expectContactVisible(loggedInUserWithOneContact);
 
     await contactsPage.page.reload();
 
-    await contactsPage.expectContactVisible(
-      loggedInUserWithOneContact.firstName,
-      loggedInUserWithOneContact.lastName,
-    );
+    await contactsPage.expectContactVisible(loggedInUserWithOneContact);
   });
 });
 
@@ -64,7 +55,7 @@ test.describe('Contact list add contact', () => {
   }) => {
     await contactsPage.createContactAndExpectError(
       { ...validContactInput, firstName: '' },
-      'Contact validation failed: firstName:',
+      msg.PREFIX_CONT_FIRST_NAME,
     );
   });
 
@@ -75,7 +66,7 @@ test.describe('Contact list add contact', () => {
   }) => {
     await contactsPage.createContactAndExpectError(
       { ...validContactInput, lastName: '' },
-      'Contact validation failed: lastName:',
+      msg.PREFIX_CONT_LAST_NAME,
     );
   });
 
@@ -90,7 +81,7 @@ test.describe('Contact list add contact', () => {
         ...validContactInput,
         birthDate: invalidContactInput.birthDate,
       },
-      'Contact validation failed: birthdate:',
+      msg.PREFIX_CONT_BDATE,
     );
   });
 
@@ -105,7 +96,7 @@ test.describe('Contact list add contact', () => {
         ...validContactInput,
         email: invalidContactInput.email,
       },
-      'Contact validation failed: email:',
+      msg.PREFIX_CONT_EMAIL,
     );
   });
 
@@ -120,7 +111,7 @@ test.describe('Contact list add contact', () => {
         ...validContactInput,
         phone: invalidContactInput.phone,
       },
-      'Contact validation failed: phone:',
+      msg.PREFIX_CONT_PHONE,
     );
   });
 });
@@ -210,7 +201,7 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.editContactAndExpectError(
       { birthDate: '1234' },
       loggedInUserWithOneContact.birthDate,
-      'Birthdate is invalid',
+      msg.GENERIC_INV_BDATE,
     );
   });
 
@@ -223,7 +214,7 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.editContactAndExpectError(
       { email: '1234' },
       loggedInUserWithOneContact.email,
-      'Email is invalid',
+      msg.GENERIC_INV_EMAIL,
     );
   });
 
@@ -236,7 +227,7 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.editContactAndExpectError(
       { phone: 'abc' },
       loggedInUserWithOneContact.phone,
-      'Phone number is invalid',
+      msg.GENERIC_INV_PHONE,
     );
   });
 });
@@ -247,9 +238,7 @@ test.describe('Contact list delete contact', () => {
     contactsPage,
   }) => {
     await contactsPage.openEditContactForm();
-
     await contactsPage.deleteContact();
-
     await contactsPage.expectContactNotVisible();
   });
 
@@ -258,9 +247,7 @@ test.describe('Contact list delete contact', () => {
     contactsPage,
   }) => {
     await contactsPage.openEditContactForm();
-
     await contactsPage.deleteContact();
-
     await contactsPage.expectContactNotVisible();
 
     await contactsPage.page.reload();

@@ -150,12 +150,9 @@ export class ContactsPage {
     await expect(this.addContactForm).toBeHidden();
   }
 
-  async expectContactVisible(
-    firstName: string,
-    lastName: string,
-  ): Promise<void> {
+  async expectContactVisible(input: Partial<ContactInput>): Promise<void> {
     await expect(this.contactTableRow).toContainText(
-      new RegExp(`${firstName} ${lastName}`),
+      new RegExp(`${input.firstName} ${input.lastName}`),
     );
   }
 
@@ -168,7 +165,6 @@ export class ContactsPage {
     message: string,
   ): Promise<void> {
     await this.addContact(input);
-
     await expect(this.addContactErrorMessage).toContainText(message);
   }
 
@@ -178,7 +174,6 @@ export class ContactsPage {
     message: string,
   ): Promise<void> {
     await this.editContact(text, input);
-
     await expect(this.editContactErrorMessage).toContainText(message);
   }
 

@@ -17,7 +17,7 @@ test.describe('Register', () => {
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp({ ...registrationData });
+    await registrationPage.signUp(registrationData);
 
     await registrationPage.expectSignUpFormNotVisible();
   });
@@ -26,15 +26,13 @@ test.describe('Register', () => {
     registrationPage,
     registrationData,
   }) => {
-    await registrationPage.signUp({ ...registrationData });
-
+    await registrationPage.signUp(registrationData);
     await registrationPage.expectSignUpFormNotVisible();
 
     await registrationPage.logOutButton.click();
 
     await registrationPage.gotoSignUp();
-
-    await registrationPage.signUp({ ...registrationData });
+    await registrationPage.signUp(registrationData);
 
     await registrationPage.expectError(EMAIL_IN_USE);
   });

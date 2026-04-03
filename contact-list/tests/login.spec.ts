@@ -11,8 +11,7 @@ test.describe('Login', () => {
     registeredUser,
     loginPage,
   }) => {
-    await loginPage.login(registeredUser.email, registeredUser.password);
-
+    await loginPage.login(registeredUser);
     await loginPage.expectSuccess();
   });
 
@@ -20,10 +19,12 @@ test.describe('Login', () => {
     loginPage,
     registeredUser,
   }) => {
-    await loginPage.login(invalidUserInput.email, registeredUser.password);
+    await loginPage.login({
+      ...registeredUser,
+      password: invalidUserInput.password,
+    });
 
     await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
-
     await loginPage.expectLoginFormVisible();
   });
 
@@ -31,10 +32,12 @@ test.describe('Login', () => {
     loginPage,
     registeredUser,
   }) => {
-    await loginPage.login(registeredUser.email, invalidUserInput.password);
+    await loginPage.login({
+      ...registeredUser,
+      password: invalidUserInput.password,
+    });
 
     await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
-
     await loginPage.expectLoginFormVisible();
   });
 
@@ -42,8 +45,7 @@ test.describe('Login', () => {
     registeredUser,
     loginPage,
   }) => {
-    await loginPage.login('', registeredUser.password);
-
+    await loginPage.login({ ...registeredUser, email: '' });
     await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
   });
 
@@ -51,8 +53,7 @@ test.describe('Login', () => {
     registeredUser,
     loginPage,
   }) => {
-    await loginPage.login(registeredUser.email, '');
-
+    await loginPage.login({ ...registeredUser, password: '' });
     await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
   });
 
@@ -61,7 +62,7 @@ test.describe('Login', () => {
     loginPage,
     registrationPage,
   }) => {
-    await loginPage.login(registeredUser.email, registeredUser.password);
+    await loginPage.login(registeredUser);
 
     await registrationPage.logOutButton.click();
 
@@ -72,12 +73,10 @@ test.describe('Login', () => {
     registeredUser,
     loginPage,
   }) => {
-    await loginPage.login(registeredUser.email, registeredUser.password);
-
+    await loginPage.login(registeredUser);
     await loginPage.expectSuccess();
 
     await loginPage.page.reload();
-
     await loginPage.expectSuccess();
   });
 });

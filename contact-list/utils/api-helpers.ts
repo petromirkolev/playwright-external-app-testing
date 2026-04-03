@@ -1,12 +1,8 @@
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
 import { BASE_URL } from './constants';
-import {
-  ContactData,
-  RegisteredUser,
-  RegistrationData,
-  UpdateData,
-} from '../types/api';
+import { ContactData, RegisteredUser, UpdateData } from '../types/api';
 import { ContactInput } from '../types/contact';
+import { RegistrationData } from '../types/auth';
 
 export const registrationData: RegistrationData = {
   firstName: 'Petromir',

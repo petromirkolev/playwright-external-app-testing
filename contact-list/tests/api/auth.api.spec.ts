@@ -1,10 +1,6 @@
 import { test, expect } from '../../fixtures/api';
 import { api } from '../../utils/api-helpers';
-import {
-  INVALID_EMAIL,
-  INVALID_PASSWORD_TOO_LONG,
-  INVALID_PASSWORD_TOO_SHORT,
-} from '../../utils/constants';
+import { msg } from '../../utils/constants';
 import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
 test.describe('Contacts API - Register user', () => {
@@ -50,7 +46,7 @@ test.describe('Contacts API - Register user', () => {
     const duplicateBody = await duplicateResponse.json();
 
     expect(duplicateResponse.status()).toBe(400);
-    expect(duplicateBody.message).toBe('Email address is already in use');
+    expect(duplicateBody.message).toBe(msg.AUTH_DUP_EMAIL);
   });
 
   test('Registration with invalid email is rejected', async ({
@@ -67,7 +63,7 @@ test.describe('Contacts API - Register user', () => {
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toBe(INVALID_EMAIL);
+    expect(body.message).toBe(msg.AUTH_INV_EMAIL);
   });
 
   test('Registration with invalid password too short is rejected', async ({
@@ -82,7 +78,7 @@ test.describe('Contacts API - Register user', () => {
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toContain(INVALID_PASSWORD_TOO_SHORT);
+    expect(body.message).toContain(msg.AUTH_INV_PASS_SHORT);
   });
 
   test('Registration with invalid password too long is rejected', async ({
@@ -97,7 +93,7 @@ test.describe('Contacts API - Register user', () => {
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toContain(INVALID_PASSWORD_TOO_LONG);
+    expect(body.message).toContain(msg.AUTH_INV_PASS_LONG);
   });
 });
 

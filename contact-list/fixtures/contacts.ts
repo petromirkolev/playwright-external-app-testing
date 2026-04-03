@@ -27,55 +27,22 @@ type ContactsFixture = {
 
 export const test = base.extend<ContactsFixture>({
   validContactInput: async ({}, use) => {
-    const firstName = validContactInput.firstName;
-    const lastName = validContactInput.lastName;
-    const birthDate = validContactInput.birthDate;
-    const email = validContactInput.email;
-    const phone = validContactInput.phone;
-
-    await use({
-      firstName,
-      lastName,
-      birthDate,
-      email,
-      phone,
-    });
+    await use(validContactInput);
   },
 
   invalidContactInput: async ({}, use) => {
-    const birthDate = invalidContactInput.birthDate;
-    const email = invalidContactInput.email;
-    const phone = invalidContactInput.phone;
-
-    await use({ birthDate, email, phone });
+    await use(invalidContactInput);
   },
 
   loggedInUserWithOneContact: async (
     { loggedInUser, validContactInput, contactsPage },
     use,
   ) => {
-    const firstName = validContactInput.firstName;
-    const lastName = validContactInput.lastName;
-    const birthDate = validContactInput.birthDate;
-    const email = validContactInput.email;
-    const phone = validContactInput.phone;
-
-    await contactsPage.addContact({
-      firstName: validContactInput.firstName,
-      lastName: validContactInput.lastName,
-      birthDate: validContactInput.birthDate,
-      email: validContactInput.email,
-      phone: validContactInput.phone,
-    });
-
+    await contactsPage.addContact(validContactInput);
     await expect(contactsPage.contactTableRow).toBeAttached();
+    await contactsPage.expectContactVisible(validContactInput);
 
-    await contactsPage.expectContactVisible(
-      validContactInput.firstName,
-      validContactInput.lastName,
-    );
-
-    await use({ firstName, lastName, birthDate, email, phone });
+    await use(validContactInput);
   },
 });
 
