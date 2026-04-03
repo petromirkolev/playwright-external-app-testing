@@ -41,7 +41,6 @@ export class RegistrationPage {
       await this.signUpFirstName.fill(data.firstName);
       await expect(this.signUpFirstName).toHaveValue(data.firstName);
     }
-
     if (data.lastName !== undefined) {
       await this.signUpLastName.fill(data.lastName);
       await expect(this.signUpLastName).toHaveValue(data.lastName);
