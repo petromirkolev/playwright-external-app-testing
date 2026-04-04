@@ -11,7 +11,6 @@ test.describe('Contacts API - Delete contact', () => {
       userWithOneContact.token,
       userWithOneContact.contact_id,
     );
-
     expect(response.status()).toBe(200);
 
     const contactResponse = await api.getContact(
@@ -19,7 +18,6 @@ test.describe('Contacts API - Delete contact', () => {
       userWithOneContact.token,
       userWithOneContact.contact_id,
     );
-
     expect(contactResponse.status()).toBe(404);
   });
 
@@ -32,7 +30,6 @@ test.describe('Contacts API - Delete contact', () => {
       userWithOneContact.token,
       '123',
     );
-
     expect(response.status()).toBe(400);
   });
 });

@@ -44,7 +44,7 @@ test.describe('Contacts API - Update contact', () => {
     const response = await api.updateContact(
       request,
       userWithOneContact.token,
-      '',
+      'nonexisting',
       validContactUpdateInput,
     );
     expect(response.status()).toBe(400);
