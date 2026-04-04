@@ -26,6 +26,7 @@ export class ContactsPage {
   readonly editContactCancelButton: Locator;
   readonly editContactErrorMessage: Locator;
   readonly deleteContactButton: Locator;
+  readonly logOutButton: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -52,6 +53,7 @@ export class ContactsPage {
     this.editContactCancelButton = this.page.locator('button#cancel');
     this.editContactErrorMessage = this.page.locator('span#error');
     this.deleteContactButton = this.page.locator('button#delete');
+    this.logOutButton = this.page.locator('#logout');
   }
 
   async contactTableLoaded(): Promise<void> {
@@ -186,5 +188,12 @@ export class ContactsPage {
       await dialog.accept();
     });
     await this.deleteContactButton.click();
+  }
+
+  async logout(): Promise<void> {
+    await expect(this.logOutButton).toBeEnabled();
+    await expect(this.logOutButton).toBeVisible();
+
+    await this.logOutButton.click();
   }
 }

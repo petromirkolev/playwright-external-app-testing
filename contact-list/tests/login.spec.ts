@@ -1,5 +1,5 @@
 import { test } from '../fixtures/auth';
-import { INCORRECT_USERNAME_PASSWORD } from '../utils/constants';
+import { msg } from '../utils/constants';
 import { invalidUserInput } from '../utils/test-data';
 
 test.describe('Login', () => {
@@ -24,7 +24,7 @@ test.describe('Login', () => {
       password: invalidUserInput.password,
     });
 
-    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
+    await loginPage.expectError(msg.AUTH_INV_USER_PASS);
     await loginPage.expectLoginFormVisible();
   });
 
@@ -37,7 +37,7 @@ test.describe('Login', () => {
       password: invalidUserInput.password,
     });
 
-    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
+    await loginPage.expectError(msg.AUTH_INV_USER_PASS);
     await loginPage.expectLoginFormVisible();
   });
 
@@ -46,7 +46,7 @@ test.describe('Login', () => {
     loginPage,
   }) => {
     await loginPage.login({ ...registeredUser, email: '' });
-    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
+    await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 
   test('Login with empty password is rejected', async ({
@@ -54,29 +54,26 @@ test.describe('Login', () => {
     loginPage,
   }) => {
     await loginPage.login({ ...registeredUser, password: '' });
-    await loginPage.expectError(INCORRECT_USERNAME_PASSWORD);
+    await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 
   test('Logout loads the login screen', async ({
-    registeredUser,
+    loggedInUser,
     loginPage,
-    registrationPage,
+    contactsPage,
   }) => {
-    await loginPage.login(registeredUser);
-
-    await registrationPage.logOutButton.click();
-
+    await contactsPage.logOutButton.click();
     await loginPage.expectLoginFormVisible();
   });
 
-  test('Logged in state persists after page reload', async ({
-    registeredUser,
+  test.only('Logged in state persists after page reload', async ({
+    loggedInUser,
     loginPage,
   }) => {
-    await loginPage.login(registeredUser);
     await loginPage.expectSuccess();
 
     await loginPage.page.reload();
+
     await loginPage.expectSuccess();
   });
 });

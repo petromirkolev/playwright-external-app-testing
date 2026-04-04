@@ -10,7 +10,6 @@ export class RegistrationPage {
   readonly signUpPassword: Locator;
   readonly signUpButton: Locator;
   readonly signUpSubmitButton: Locator;
-  readonly logOutButton: Locator;
   readonly errorMessage: Locator;
 
   constructor(page: Page) {
@@ -22,7 +21,6 @@ export class RegistrationPage {
     this.signUpEmail = this.signUpForm.getByPlaceholder('Email');
     this.signUpPassword = this.signUpForm.getByPlaceholder('Password');
     this.signUpSubmitButton = this.page.locator('#submit');
-    this.logOutButton = this.page.locator('#logout');
     this.errorMessage = this.page.locator('#error');
   }
 

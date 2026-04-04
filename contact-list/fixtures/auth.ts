@@ -30,16 +30,18 @@ export const test = base.extend<AuthFixtures>({
     });
   },
 
-  registeredUser: async ({ registrationData, registrationPage }, use) => {
+  registeredUser: async (
+    { registrationData, registrationPage, contactsPage },
+    use,
+  ) => {
     await registrationPage.gotoSignUp();
     await registrationPage.signUp(registrationData);
-    await registrationPage.logOutButton.click();
+    await contactsPage.logout();
 
     await use(registrationData);
   },
 
   loggedInUser: async ({ registeredUser, loginPage }, use) => {
-    await loginPage.expectLoginFormVisible();
     await loginPage.login(registeredUser);
 
     await use(registeredUser);
