@@ -39,6 +39,7 @@ export const test = base.extend<ContactsFixture>({
     use,
   ) => {
     await contactsPage.addContact(validContactInput);
+
     await expect(contactsPage.contactTableRow).toBeAttached();
     await contactsPage.expectContactVisible(validContactInput);
 

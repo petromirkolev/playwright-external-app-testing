@@ -1,11 +1,6 @@
 import { test, expect } from '../../fixtures/api';
 import { api } from '../../utils/api-helpers';
-import {
-  EDIT_EMPTY_PAYLOAD,
-  INVALID_EDIT_BIRTH_DATE,
-  INVALID_EDIT_EMAIL,
-  INVALID_EDIT_PHONE,
-} from '../../utils/constants';
+import { msg } from '../../utils/constants';
 import {
   invalidContactInput,
   validContactUpdateInput,
@@ -20,9 +15,8 @@ test.describe('Contacts API - Update contact', () => {
       request,
       userWithOneContact.token,
       userWithOneContact.contact_id,
-      { ...validContactUpdateInput },
+      validContactUpdateInput,
     );
-
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -40,7 +34,7 @@ test.describe('Contacts API - Update contact', () => {
     expect(getResponse.status()).toBe(200);
     const updatedBody = await getResponse.json();
 
-    await api.verifyContact({ ...validContactUpdateInput }, { ...updatedBody });
+    await api.verifyContact(validContactUpdateInput, updatedBody);
   });
 
   test('Update contact with non-existing id is rejected', async ({
@@ -50,10 +44,9 @@ test.describe('Contacts API - Update contact', () => {
     const response = await api.updateContact(
       request,
       userWithOneContact.token,
-      '123',
-      { ...validContactUpdateInput },
+      '',
+      validContactUpdateInput,
     );
-
     expect(response.status()).toBe(400);
   });
 
@@ -67,12 +60,11 @@ test.describe('Contacts API - Update contact', () => {
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, birthDate: invalidContactInput.birthDate },
     );
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toBe(INVALID_EDIT_BIRTH_DATE);
+    expect(body.message).toBe(msg.CONTACT_EDIT_INV_BDATE);
   });
 
   test('Update contact with invalid email is rejected', async ({
@@ -85,12 +77,11 @@ test.describe('Contacts API - Update contact', () => {
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, email: invalidContactInput.email },
     );
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toBe(INVALID_EDIT_EMAIL);
+    expect(body.message).toBe(msg.CONTACT_EDIT_INV_EMAIL);
   });
 
   test('Update contact with invalid phone is rejected', async ({
@@ -103,12 +94,11 @@ test.describe('Contacts API - Update contact', () => {
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, phone: invalidContactInput.phone },
     );
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toBe(INVALID_EDIT_PHONE);
+    expect(body.message).toBe(msg.CONTACT_EDIT_INV_PHONE);
   });
 
   test('Update contact with empty payload is rejected', async ({
@@ -121,11 +111,10 @@ test.describe('Contacts API - Update contact', () => {
       userWithOneContact.contact_id,
       {},
     );
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toBe(EDIT_EMPTY_PAYLOAD);
+    expect(body.message).toBe(msg.CONTACT_EDIT_EMPTY);
   });
 });

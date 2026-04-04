@@ -1,9 +1,4 @@
-import {
-  INVALID_EMAIL,
-  INVALID_PASSWORD_TOO_LONG,
-  INVALID_PASSWORD_TOO_SHORT,
-  REQUIRED_PASSWORD,
-} from './constants';
+import { msg } from './constants';
 
 export const validUserInput = {
   firstName: 'Petromir',
@@ -51,22 +46,22 @@ export const invalidEmail = {
   invalidEmptyEmail: {
     description: 'Sign up with invalid empty email',
     data: invalidUserInput.emailEmpty,
-    message: INVALID_EMAIL,
+    message: msg.AUTH_INV_EMAIL,
   },
   invalidEmailWithoutDomainExt: {
     description: 'Sign up with invalid email without domain extension',
     data: invalidUserInput.emailNoExt,
-    message: INVALID_EMAIL,
+    message: msg.AUTH_INV_EMAIL,
   },
   invalidEmailWithoutName: {
     description: 'Sign up with invalid email without name',
     data: invalidUserInput.emailNoName,
-    message: INVALID_EMAIL,
+    message: msg.AUTH_INV_EMAIL,
   },
   invalidEmailDomainExt: {
     description: 'Sign up with invalid email with invalid domain extension',
     data: invalidUserInput.emailInvalidExt,
-    message: INVALID_EMAIL,
+    message: msg.AUTH_INV_EMAIL,
   },
 };
 
@@ -74,17 +69,17 @@ export const invalidPassword = {
   invalidEmptyPassword: {
     description: 'Sign up with invalid empty password',
     data: invalidUserInput.passwordEmpty,
-    message: REQUIRED_PASSWORD,
+    message: msg.USER_REQ_PASS,
   },
   invalidPasswordTooShort: {
     description: 'Sign up with invalid password too short',
     data: invalidUserInput.passwordTooShort,
-    message: INVALID_PASSWORD_TOO_SHORT,
+    message: msg.AUTH_INV_PASS_SHORT,
   },
   invalidPasswordTooLong: {
     description: 'Sign up with invalid password too long',
     data: invalidUserInput.passwordTooLong,
-    message: INVALID_PASSWORD_TOO_LONG,
+    message: msg.CONTACT_REQ_LAST_NAME,
   },
 };
 

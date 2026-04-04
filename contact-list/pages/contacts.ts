@@ -131,7 +131,6 @@ export class ContactsPage {
       await expect(this.editContactInputPhone).toHaveValue(text);
       await this.editContactInputPhone.fill(input.phone);
     }
-
     await this.submitEditContactForm();
   }
 
@@ -186,7 +185,6 @@ export class ContactsPage {
       expect(dialog.message()).toContain('delete');
       await dialog.accept();
     });
-
     await this.deleteContactButton.click();
   }
 }

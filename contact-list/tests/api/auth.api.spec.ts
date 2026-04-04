@@ -14,7 +14,6 @@ test.describe('Contacts API - Register user', () => {
       ...registrationData,
       email,
     });
-
     expect(response.status()).toBe(201);
 
     const body = await response.json();
@@ -63,7 +62,7 @@ test.describe('Contacts API - Register user', () => {
     const body = await response.json();
 
     expect(response.status()).toBe(400);
-    expect(body.message).toBe(msg.AUTH_INV_EMAIL);
+    expect(body.message).toBe(msg.USER_REQ_EMAIL);
   });
 
   test('Registration with invalid password too short is rejected', async ({

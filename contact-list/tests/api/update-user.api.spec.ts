@@ -1,13 +1,10 @@
 import { test, expect } from '../../fixtures/api';
 import { api } from '../../utils/api-helpers';
-import {
-  INVALID_EMAIL,
-  INVALID_PASSWORD_TOO_LONG,
-  INVALID_PASSWORD_TOO_SHORT,
-} from '../../utils/constants';
+import { msg } from '../../utils/constants';
 import {
   invalidUserInput,
   uniqueEmail,
+  validContactUpdateInput,
   validUserInput,
 } from '../../utils/test-data';
 
@@ -17,13 +14,12 @@ test.describe('Contacts API - Update user', () => {
     loggedInUser,
   }) => {
     const response = await api.update(request, loggedInUser.token, {
-      firstName: 'Georgi',
+      firstName: validContactUpdateInput.firstName,
     });
-
     const data = await response.json();
 
     expect(response.status()).toBe(200);
-    expect(data.firstName).toBe('Georgi');
+    expect(data.firstName).toBe(validContactUpdateInput.firstName);
   });
 
   test('Update last name with valid data succeeds', async ({
@@ -31,13 +27,12 @@ test.describe('Contacts API - Update user', () => {
     loggedInUser,
   }) => {
     const response = await api.update(request, loggedInUser.token, {
-      lastName: 'Petrov',
+      lastName: validContactUpdateInput.lastName,
     });
-
     const data = await response.json();
 
     expect(response.status()).toBe(200);
-    expect(data.lastName).toBe('Petrov');
+    expect(data.lastName).toBe(validContactUpdateInput.lastName);
   });
 
   test('Update email with valid data succeeds', async ({
@@ -48,7 +43,6 @@ test.describe('Contacts API - Update user', () => {
     const response = await api.update(request, loggedInUser.token, {
       email,
     });
-
     const data = await response.json();
 
     expect(response.status()).toBe(200);
@@ -62,7 +56,6 @@ test.describe('Contacts API - Update user', () => {
     const response = await api.update(request, loggedInUser.token, {
       password: validUserInput.password,
     });
-
     expect(response.status()).toBe(200);
   });
 
@@ -73,12 +66,11 @@ test.describe('Contacts API - Update user', () => {
     const response = await api.update(request, loggedInUser.token, {
       email: invalidUserInput.emailNoName,
     });
-
     expect(response.status()).toBe(400);
 
     const data = await response.json();
 
-    expect(data.message).toContain(INVALID_EMAIL);
+    expect(data.message).toContain(msg.USER_REQ_EMAIL);
   });
 
   test('Update password with invalid password too short is rejected', async ({
@@ -88,12 +80,11 @@ test.describe('Contacts API - Update user', () => {
     const response = await api.update(request, loggedInUser.token, {
       password: invalidUserInput.passwordTooShort,
     });
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toContain(INVALID_PASSWORD_TOO_SHORT);
+    expect(body.message).toContain(msg.AUTH_INV_PASS_SHORT);
   });
 
   test('Update password with invalid password too long is rejected', async ({
@@ -103,11 +94,10 @@ test.describe('Contacts API - Update user', () => {
     const response = await api.update(request, loggedInUser.token, {
       password: invalidUserInput.passwordTooLong,
     });
-
     expect(response.status()).toBe(400);
 
     const body = await response.json();
 
-    expect(body.message).toContain(INVALID_PASSWORD_TOO_LONG);
+    expect(body.message).toContain(msg.AUTH_INV_PASS_LONG);
   });
 });

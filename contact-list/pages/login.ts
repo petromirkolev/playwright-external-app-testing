@@ -24,7 +24,6 @@ export class LoginPage {
 
   async gotoHome(): Promise<void> {
     await this.page.goto('/');
-
     await expect(this.page.getByText(/Contact List App/i)).toBeVisible();
   }
 
@@ -63,7 +62,6 @@ export class LoginPage {
 
   async expectError(message: string): Promise<void> {
     await expect(this.errorMessage).toContainText(message);
-
     await expect(
       this.page.getByText(/Click on any contact to view the Contact Details/),
     ).not.toBeVisible();

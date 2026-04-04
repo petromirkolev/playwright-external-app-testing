@@ -27,7 +27,6 @@ export const test = base.extend<ApiFixtures>({
       email,
       password,
     });
-
     const data = await response.json();
 
     await use({ email, password, token: data.user.token });
@@ -35,7 +34,6 @@ export const test = base.extend<ApiFixtures>({
 
   loggedInUser: async ({ registeredUser, request }, use) => {
     const response = await api.login(request, registeredUser);
-
     const data = await response.json();
 
     await use(data);
@@ -43,13 +41,11 @@ export const test = base.extend<ApiFixtures>({
 
   userWithOneContact: async ({ loggedInUser, request }, use) => {
     const token = loggedInUser.token;
-
     const contactResponse = await api.addContact(
       request,
       token,
       validContactInput,
     );
-
     const contactBody = await contactResponse.json();
 
     await use({ token, contact_id: contactBody._id });
