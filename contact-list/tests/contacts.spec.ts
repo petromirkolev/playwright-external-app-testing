@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/contacts';
 import { msg } from '../utils/constants';
+import { validContactUpdateInput } from '../utils/test-data';
 
 test.describe('Contact list happy path', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
@@ -124,11 +125,11 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.openEditContactForm();
 
     await contactsPage.editContact(loggedInUserWithOneContact.firstName, {
-      firstName: 'Georgi',
+      firstName: validContactUpdateInput.firstName,
     });
 
     await expect(contactsPage.page.locator('span#firstName')).toHaveText(
-      'Georgi',
+      validContactUpdateInput.firstName,
     );
   });
 
@@ -139,11 +140,11 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.openEditContactForm();
 
     await contactsPage.editContact(loggedInUserWithOneContact.lastName, {
-      lastName: 'Petrov',
+      lastName: validContactUpdateInput.lastName,
     });
 
     await expect(contactsPage.page.locator('span#lastName')).toHaveText(
-      'Petrov',
+      validContactUpdateInput.lastName,
     );
   });
 
@@ -154,11 +155,11 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.openEditContactForm();
 
     await contactsPage.editContact(loggedInUserWithOneContact.birthDate, {
-      birthDate: '1993-04-04',
+      birthDate: validContactUpdateInput.birthDate,
     });
 
     await expect(contactsPage.page.locator('span#birthdate')).toHaveText(
-      '1993-04-04',
+      validContactUpdateInput.birthDate,
     );
   });
 
@@ -169,11 +170,11 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.openEditContactForm();
 
     await contactsPage.editContact(loggedInUserWithOneContact.email, {
-      email: 'test@test.com',
+      email: validContactUpdateInput.email,
     });
 
     await expect(contactsPage.page.locator('span#email')).toHaveText(
-      'test@test.com',
+      validContactUpdateInput.email,
     );
   });
 
@@ -184,11 +185,11 @@ test.describe('Contact list edit contact', () => {
     await contactsPage.openEditContactForm();
 
     await contactsPage.editContact(loggedInUserWithOneContact.phone, {
-      phone: '12345678',
+      phone: validContactUpdateInput.phone,
     });
 
     await expect(contactsPage.page.locator('span#phone')).toHaveText(
-      '12345678',
+      validContactUpdateInput.phone,
     );
   });
 

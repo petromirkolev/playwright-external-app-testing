@@ -66,7 +66,7 @@ test.describe('Login', () => {
     await loginPage.expectLoginFormVisible();
   });
 
-  test.only('Logged in state persists after page reload', async ({
+  test('Logged in state persists after page reload', async ({
     loggedInUser,
     loginPage,
   }) => {

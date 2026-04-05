@@ -4,24 +4,13 @@ import { ContactData, RegisteredUser, UpdateData } from '../types/api';
 import { ContactInput } from '../types/contact';
 import { RegistrationData } from '../types/auth';
 
-export const registrationData: RegistrationData = {
-  firstName: 'Petromir',
-  lastName: 'Kolev',
-  password: 'T3stingP4$$',
-};
-
 export const api = {
   async register(
     request: APIRequestContext,
     data: Partial<RegistrationData>,
   ): Promise<APIResponse> {
     const response = await request.post(`${BASE_URL}/users`, {
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-      },
+      data,
     });
 
     return response;
@@ -32,10 +21,7 @@ export const api = {
     data: Partial<RegisteredUser>,
   ): Promise<APIResponse> {
     const response = await request.post(`${BASE_URL}/users/login`, {
-      data: {
-        email: data.email,
-        password: data.password,
-      },
+      data,
     });
 
     return response;
@@ -50,12 +36,7 @@ export const api = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-      },
+      data,
     });
 
     return response;
@@ -83,13 +64,7 @@ export const api = {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        birthDate: data.birthDate,
-        email: data.email,
-        phone: data.phone,
-      },
+      data,
     });
 
     return response;
@@ -115,13 +90,7 @@ export const api = {
   ): Promise<APIResponse> {
     const response = await request.put(`${BASE_URL}/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
-      data: {
-        firstName: data.firstName,
-        lastName: data.lastName,
-        birthdate: data.birthDate,
-        email: data.email,
-        phone: data.phone,
-      },
+      data,
     });
 
     return response;
