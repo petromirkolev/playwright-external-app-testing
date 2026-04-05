@@ -1,7 +1,6 @@
-import { test as base, expect, request } from '@playwright/test';
-import { LoggedInUser, RegisteredUser } from '../types/api';
-import { RegistrationData } from '../types/auth';
-import { api } from '../utils/api-helpers';
+import { test as base, expect } from '@playwright/test';
+import { ContactListApi } from '../utils/api-helpers';
+import { RegistrationInput } from '../types/domain';
 import {
   uniqueEmail,
   validContactInput,
@@ -9,51 +8,65 @@ import {
 } from '../utils/test-data';
 
 type ApiFixtures = {
-  registrationData: RegistrationData;
-  registeredUser: RegisteredUser;
-  loggedInUser: LoggedInUser;
+  apiClient: ContactListApi;
+  registrationData: RegistrationInput;
+  registeredUser: {
+    email: string;
+    password: string;
+    token: string;
+  };
+  loggedInUser: {
+    email: string;
+    password: string;
+    token: string;
+  };
   userWithOneContact: {
     token: string;
-    contact_id: string;
+    contactId: string;
   };
 };
 
 export const test = base.extend<ApiFixtures>({
+  apiClient: async ({ request }, use) => {
+    await use(new ContactListApi(request));
+  },
+
   registrationData: async ({}, use) => {
-    await use(validUserInput);
-  },
-
-  registeredUser: async ({ registrationData, request }, use) => {
-    const email = uniqueEmail();
-    const password = registrationData.password!;
-    const response = await api.register(request, {
+    await use({
       ...validUserInput,
-      email,
-      password,
+      email: uniqueEmail(),
     });
-    const data = await response.json();
-
-    await use({ email, password, token: data.user.token });
   },
 
-  loggedInUser: async ({ registeredUser, request }, use) => {
-    const response = await api.login(request, registeredUser);
-    const data = await response.json();
-
-    await use(data);
+  registeredUser: async ({ apiClient, registrationData }, use) => {
+    const user = await apiClient.registerAndGetToken(registrationData);
+    await use(user);
   },
 
-  userWithOneContact: async ({ loggedInUser, request }, use) => {
-    const token = loggedInUser.token;
-    const contactResponse = await api.addContact(
-      request,
-      token,
+  loggedInUser: async ({ apiClient, registeredUser }, use) => {
+    const response = await apiClient.login(registeredUser);
+    expect(response.status()).toBe(200);
+
+    const body = await response.json();
+    await use({
+      ...registeredUser,
+      token: body.token ?? body.user?.token,
+    });
+  },
+
+  userWithOneContact: async ({ apiClient, loggedInUser }, use) => {
+    const response = await apiClient.createContact(
+      loggedInUser.token,
       validContactInput,
     );
-    const contactBody = await contactResponse.json();
+    expect(response.status()).toBe(201);
 
-    await use({ token, contact_id: contactBody._id });
+    const body = await response.json();
+    await use({
+      token: loggedInUser.token,
+      contactId: body._id,
+    });
   },
 });
 
-export { expect, request };
+export { expect };

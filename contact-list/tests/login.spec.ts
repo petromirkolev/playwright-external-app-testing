@@ -21,7 +21,7 @@ test.describe('Login', () => {
   }) => {
     await loginPage.login({
       ...registeredUser,
-      password: invalidUserInput.password,
+      email: invalidUserInput.emailNoName,
     });
 
     await loginPage.expectError(msg.AUTH_INV_USER_PASS);

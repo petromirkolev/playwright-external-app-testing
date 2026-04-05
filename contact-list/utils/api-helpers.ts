@@ -1,119 +1,132 @@
 import { APIRequestContext, APIResponse, expect } from '@playwright/test';
+import {
+  ContactResponse,
+  LoginResponse,
+  RegisteredUserResponse,
+} from '../types/api-contract';
+import {
+  ContactInput,
+  ContactUpdateInput,
+  RegistrationInput,
+  UserCredentials,
+} from '../types/domain';
 import { BASE_URL } from './constants';
-import { ContactData, RegisteredUser, UpdateData } from '../types/api';
-import { ContactInput } from '../types/contact';
-import { RegistrationData } from '../types/auth';
 
-export const api = {
-  async register(
-    request: APIRequestContext,
-    data: Partial<RegistrationData>,
-  ): Promise<APIResponse> {
-    const response = await request.post(`${BASE_URL}/users`, {
-      data,
-    });
+function extractToken(body: RegisteredUserResponse | LoginResponse): string {
+  const token = body.token ?? body.user?.token;
+  if (!token) {
+    throw new Error('Token not found in API response');
+  }
+  return token;
+}
 
-    return response;
-  },
+// Public Contact List API is inconsistent: Create uses birthDate, Update uses birthdate.
+function toCreateContactPayload(input: Partial<ContactInput>) {
+  return {
+    firstName: input.firstName,
+    lastName: input.lastName,
+    birthDate: input.birthDate,
+    email: input.email,
+    phone: input.phone,
+  };
+}
 
-  async login(
-    request: APIRequestContext,
-    data: Partial<RegisteredUser>,
-  ): Promise<APIResponse> {
-    const response = await request.post(`${BASE_URL}/users/login`, {
-      data,
-    });
+function toUpdateContactPayload(input: ContactUpdateInput) {
+  return {
+    firstName: input.firstName,
+    lastName: input.lastName,
+    birthdate: input.birthDate,
+    email: input.email,
+    phone: input.phone,
+  };
+}
 
-    return response;
-  },
+function getBirthDate(output: ContactResponse): string | undefined {
+  return output.birthDate ?? output.birthdate;
+}
 
-  async update(
-    request: APIRequestContext,
+export class ContactListApi {
+  constructor(private readonly request: APIRequestContext) {}
+
+  async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
+    return this.request.post(`${BASE_URL}/users`, { data: input });
+  }
+
+  async login(input: Partial<UserCredentials>): Promise<APIResponse> {
+    return this.request.post(`${BASE_URL}/users/login`, { data: input });
+  }
+
+  async updateUser(
     token: string,
-    data: Partial<UpdateData>,
+    input: Partial<RegistrationInput>,
   ): Promise<APIResponse> {
-    const response = await request.patch(`${BASE_URL}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data,
+    return this.request.patch(`${BASE_URL}/users/me`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: input,
     });
+  }
 
-    return response;
-  },
-
-  async delete(
-    request: APIRequestContext,
-    token: string,
-  ): Promise<APIResponse> {
-    const response = await request.delete(`${BASE_URL}/users/me`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response;
-  },
-
-  async addContact(
-    request: APIRequestContext,
-    token: string,
-    data: Partial<ContactData>,
-  ): Promise<APIResponse> {
-    const response = await request.post(`${BASE_URL}/contacts`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data,
-    });
-
-    return response;
-  },
-
-  async getContact(
-    request: APIRequestContext,
-    token: string,
-    id: string,
-  ): Promise<APIResponse> {
-    const response = await request.get(`${BASE_URL}/contacts/${id}`, {
+  async deleteUser(token: string): Promise<APIResponse> {
+    return this.request.delete(`${BASE_URL}/users/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+  }
 
-    return response;
-  },
+  async createContact(
+    token: string,
+    input: Partial<ContactInput>,
+  ): Promise<APIResponse> {
+    return this.request.post(`${BASE_URL}/contacts`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: toCreateContactPayload(input),
+    });
+  }
+
+  async getContact(token: string, id: string): Promise<APIResponse> {
+    return this.request.get(`${BASE_URL}/contacts/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
 
   async updateContact(
-    request: APIRequestContext,
     token: string,
     id: string,
-    data: Partial<ContactData>,
+    input: ContactUpdateInput,
   ): Promise<APIResponse> {
-    const response = await request.put(`${BASE_URL}/contacts/${id}`, {
+    return this.request.put(`${BASE_URL}/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
-      data,
+      data: toUpdateContactPayload(input),
     });
+  }
 
-    return response;
-  },
-
-  async deleteContact(
-    request: APIRequestContext,
-    token: string,
-    id: string,
-  ): Promise<APIResponse> {
-    const response = await request.delete(`${BASE_URL}/contacts/${id}`, {
+  async deleteContact(token: string, id: string): Promise<APIResponse> {
+    return this.request.delete(`${BASE_URL}/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+  }
 
-    return response;
-  },
+  async registerAndGetToken(input: RegistrationInput): Promise<{
+    email: string;
+    password: string;
+    token: string;
+  }> {
+    const response = await this.register(input);
+    expect(response.status()).toBe(201);
 
-  async verifyContact(input: ContactInput, output: ContactData): Promise<void> {
+    const body = (await response.json()) as RegisteredUserResponse;
+
+    return {
+      email: input.email,
+      password: input.password,
+      token: extractToken(body),
+    };
+  }
+
+  static expectContactMatches(input: ContactInput, output: ContactResponse) {
     expect(output.firstName).toBe(input.firstName);
     expect(output.lastName).toBe(input.lastName);
-    if (input.birthDate && output.birthDate)
-      expect(output.birthDate).toBe(input.birthDate);
+    expect(getBirthDate(output)).toBe(input.birthDate);
     expect(output.email).toBe(input.email);
     expect(output.phone).toBe(input.phone);
-  },
-};
+  }
+}

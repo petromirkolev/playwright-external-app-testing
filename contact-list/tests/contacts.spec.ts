@@ -124,7 +124,7 @@ test.describe('Contact list edit contact', () => {
   }) => {
     await contactsPage.openEditContactForm();
 
-    await contactsPage.editContact(loggedInUserWithOneContact.firstName, {
+    await contactsPage.editContact({
       firstName: validContactUpdateInput.firstName,
     });
 
@@ -139,7 +139,7 @@ test.describe('Contact list edit contact', () => {
   }) => {
     await contactsPage.openEditContactForm();
 
-    await contactsPage.editContact(loggedInUserWithOneContact.lastName, {
+    await contactsPage.editContact({
       lastName: validContactUpdateInput.lastName,
     });
 
@@ -154,7 +154,7 @@ test.describe('Contact list edit contact', () => {
   }) => {
     await contactsPage.openEditContactForm();
 
-    await contactsPage.editContact(loggedInUserWithOneContact.birthDate, {
+    await contactsPage.editContact({
       birthDate: validContactUpdateInput.birthDate,
     });
 
@@ -169,7 +169,7 @@ test.describe('Contact list edit contact', () => {
   }) => {
     await contactsPage.openEditContactForm();
 
-    await contactsPage.editContact(loggedInUserWithOneContact.email, {
+    await contactsPage.editContact({
       email: validContactUpdateInput.email,
     });
 
@@ -184,7 +184,7 @@ test.describe('Contact list edit contact', () => {
   }) => {
     await contactsPage.openEditContactForm();
 
-    await contactsPage.editContact(loggedInUserWithOneContact.phone, {
+    await contactsPage.editContact({
       phone: validContactUpdateInput.phone,
     });
 
@@ -201,7 +201,6 @@ test.describe('Contact list edit contact', () => {
 
     await contactsPage.editContactAndExpectError(
       { birthDate: '1234' },
-      loggedInUserWithOneContact.birthDate,
       msg.GENERIC_INV_BDATE,
     );
   });
@@ -214,7 +213,6 @@ test.describe('Contact list edit contact', () => {
 
     await contactsPage.editContactAndExpectError(
       { email: '1234' },
-      loggedInUserWithOneContact.email,
       msg.GENERIC_INV_EMAIL,
     );
   });
@@ -227,7 +225,6 @@ test.describe('Contact list edit contact', () => {
 
     await contactsPage.editContactAndExpectError(
       { phone: 'abc' },
-      loggedInUserWithOneContact.phone,
       msg.GENERIC_INV_PHONE,
     );
   });

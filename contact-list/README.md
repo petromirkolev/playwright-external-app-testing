@@ -52,7 +52,7 @@ tests/
 ├── contacts.spec.ts
 └── api/ ← Full API test suite
 ├── auth.api.spec.ts
-├── create-contact.api.spec.ts
+├── update-contact.api.spec.ts
 ├── edit-contact.api.spec.ts
 ├── delete-contact.api.spec.ts
 ├── update-user.api.spec.ts
@@ -61,7 +61,6 @@ fixtures/ # Shared UI + API fixtures
 pages/ # Page Objects
 utils/
 ├── api-helpers.ts
-├── test-data-factory.ts ← New: Test data factory
 ├── test-data.ts
 └── constants.ts
 ```

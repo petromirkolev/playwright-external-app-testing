@@ -30,11 +30,10 @@ export class LoginPage {
   async login(input: LoginInput): Promise<void> {
     await this.expectLoginFormVisible();
 
-    if (input.email !== undefined) await this.loginEmail.fill(input.email);
-    if (input.password !== undefined)
-      await this.loginPassword.fill(input.password);
-
+    await this.loginEmail.fill(input.email);
     await expect(this.loginEmail).toHaveValue(input.email);
+
+    await this.loginPassword.fill(input.password);
     await expect(this.loginPassword).toHaveValue(input.password);
 
     await this.loginButton.click();

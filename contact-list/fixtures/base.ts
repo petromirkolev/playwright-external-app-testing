@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login';
 import { RegistrationPage } from '../pages/register';
-import { ContactsPage } from '../pages/contacts';
+import { ContactsPage } from '../pages/contacts-page';
 
 type BaseFixtures = {
   loginPage: LoginPage;
