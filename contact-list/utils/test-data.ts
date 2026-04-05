@@ -46,22 +46,22 @@ export const invalidEmail = {
   invalidEmptyEmail: {
     description: 'Sign up with invalid empty email',
     data: invalidUserInput.emailEmpty,
-    message: msg.AUTH_INV_EMAIL,
+    message: msg.USER_REQ_EMAIL,
   },
   invalidEmailWithoutDomainExt: {
     description: 'Sign up with invalid email without domain extension',
     data: invalidUserInput.emailNoExt,
-    message: msg.AUTH_INV_EMAIL,
+    message: msg.USER_REQ_EMAIL,
   },
   invalidEmailWithoutName: {
     description: 'Sign up with invalid email without name',
     data: invalidUserInput.emailNoName,
-    message: msg.AUTH_INV_EMAIL,
+    message: msg.USER_REQ_EMAIL,
   },
   invalidEmailDomainExt: {
     description: 'Sign up with invalid email with invalid domain extension',
     data: invalidUserInput.emailInvalidExt,
-    message: msg.AUTH_INV_EMAIL,
+    message: msg.USER_REQ_EMAIL,
   },
 };
 
@@ -79,7 +79,7 @@ export const invalidPassword = {
   invalidPasswordTooLong: {
     description: 'Sign up with invalid password too long',
     data: invalidUserInput.passwordTooLong,
-    message: msg.CONTACT_REQ_LAST_NAME,
+    message: msg.AUTH_INV_PASS_LONG,
   },
 };
 
