@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/contacts';
 
-test.describe('Contact list happy path', () => {
+test.describe('Contact list - Happy path E2E', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
     await contactsPage.contactTableLoaded();
   });

@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/api';
 import { msg } from '../../utils/constants';
 import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
-test.describe('Contacts API - Register user', () => {
+test.describe('Contact list - Register API', () => {
   test('Registration with valid credentials is successful', async ({
     registrationData,
     apiClient,
@@ -96,7 +96,7 @@ test.describe('Contacts API - Register user', () => {
   });
 });
 
-test.describe('Contacts API - Login user', () => {
+test.describe('Contact list - Login API', () => {
   test('Login with registered credentials is successful', async ({
     registeredUser,
     apiClient,

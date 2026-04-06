@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/base';
 
-test.describe('App smoke tests', () => {
+test.describe('Contact list - App smoke tests E2E', () => {
   test('Home page loads', async ({ loginPage }) => {
     await loginPage.gotoHome();
     await expect(loginPage.page).toHaveTitle(/Contact List App/);

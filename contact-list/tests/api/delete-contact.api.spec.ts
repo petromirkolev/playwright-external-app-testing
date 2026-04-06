@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/api';
 
-test.describe('Contacts API - Delete contact', () => {
+test.describe('Contact list - Delete contact API', () => {
   test('Delete existing contact succeeds', async ({
     userWithOneContact,
     apiClient,

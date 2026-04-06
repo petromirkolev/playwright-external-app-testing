@@ -2,7 +2,7 @@ import { test } from '../fixtures/auth';
 import { msg } from '../utils/constants';
 import { invalidUserInput } from '../utils/test-data';
 
-test.describe('User login', () => {
+test.describe('Contact list - User login E2E', () => {
   test.beforeEach(async ({ loginPage }) => {
     await loginPage.gotoHome();
   });

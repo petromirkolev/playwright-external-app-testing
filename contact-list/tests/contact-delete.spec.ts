@@ -1,6 +1,6 @@
 import { test } from '../fixtures/contacts';
 
-test.describe('Contact list delete contact', () => {
+test.describe('Contact list - Delete contact E2E', () => {
   test('Delete existing contact removes it from the list', async ({
     loggedInUserWithOneContact,
     contactsPage,

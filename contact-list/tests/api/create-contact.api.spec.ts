@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/api';
 import { msg } from '../../utils/constants';
 import { validContactInput, invalidContactInput } from '../../utils/test-data';
 
-test.describe('Contacts API - Create contact', () => {
+test.describe('Contact list - Create contact API', () => {
   test('Contact create with valid data succeeds', async ({
     loggedInUser,
     apiClient,

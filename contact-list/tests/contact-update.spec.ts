@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/contacts';
 import { msg } from '../utils/constants';
 import { validContactUpdateInput } from '../utils/test-data';
 
-test.describe('Contact list update contact', () => {
+test.describe('Contact list - Update contact E2E', () => {
   const validCases = [
     {
       title: 'first name',

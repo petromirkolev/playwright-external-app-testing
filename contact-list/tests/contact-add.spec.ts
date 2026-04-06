@@ -1,7 +1,7 @@
 import { test } from '../fixtures/contacts';
 import { msg } from '../utils/constants';
 
-test.describe('Contact list add contact', () => {
+test.describe('Contact list - Add contact E2E', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
     await contactsPage.contactTableLoaded();
   });

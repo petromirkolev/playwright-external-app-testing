@@ -5,7 +5,7 @@ import {
   validContactUpdateInput,
 } from '../../utils/test-data';
 
-test.describe('Contacts API - Update contact', () => {
+test.describe('Contact list - Update contact API', () => {
   test('Update contact with valid data succeeds', async ({
     apiClient,
     userWithOneContact,
