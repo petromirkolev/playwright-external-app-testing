@@ -1,5 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
-import { RegistrationData } from '../types/auth';
+import { RegistrationInput } from '../types/domain';
 
 export class RegistrationPage {
   readonly page: Page;
@@ -32,7 +32,7 @@ export class RegistrationPage {
     await expect(this.page.getByText(/Add User/)).toBeVisible();
   }
 
-  async signUp(data: Partial<RegistrationData>): Promise<void> {
+  async signUp(data: Partial<RegistrationInput>): Promise<void> {
     await this.expectSignUpFormVisible();
 
     if (data.firstName !== undefined) {

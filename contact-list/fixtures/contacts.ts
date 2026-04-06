@@ -40,7 +40,7 @@ export const test = base.extend<ContactsFixture>({
   ) => {
     await contactsPage.addContact(validContactInput);
 
-    await expect(contactsPage.contactTableRow).toBeAttached();
+    await expect(contactsPage.contactTable).toBeAttached();
     await contactsPage.expectContactVisible(validContactInput);
 
     await use(validContactInput);

@@ -1,15 +1,13 @@
 import { test, expect } from '../../fixtures/api';
-import { api } from '../../utils/api-helpers';
 import { msg } from '../../utils/constants';
 import { validContactInput, invalidContactInput } from '../../utils/test-data';
 
 test.describe('Contacts API - Create contact', () => {
   test('Contact create with valid data succeeds', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(
-      request,
+    const response = await apiClient.createContact(
       loggedInUser.token,
       validContactInput,
     );
@@ -21,8 +19,7 @@ test.describe('Contacts API - Create contact', () => {
     expect(body.firstName).toBe(validContactInput.firstName);
     expect(body.lastName).toBe(validContactInput.lastName);
 
-    const contactResponse = await api.getContact(
-      request,
+    const contactResponse = await apiClient.getContact(
       loggedInUser.token,
       body._id,
     );
@@ -30,14 +27,14 @@ test.describe('Contacts API - Create contact', () => {
 
     const contactBody = await contactResponse.json();
 
-    await api.verifyContact(validContactInput, contactBody);
+    await apiClient.expectContactMatches(validContactInput, contactBody);
   });
 
   test('Contact create with missing required first name is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {
+    const response = await apiClient.createContact(loggedInUser.token, {
       ...validContactInput,
       firstName: undefined,
     });
@@ -49,10 +46,10 @@ test.describe('Contacts API - Create contact', () => {
   });
 
   test('Contact create with missing required last name is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {
+    const response = await apiClient.createContact(loggedInUser.token, {
       ...validContactInput,
       lastName: undefined,
     });
@@ -64,10 +61,10 @@ test.describe('Contacts API - Create contact', () => {
   });
 
   test.fixme('Contact create with invalid birth date is rejected; Public API validation for invalid birth date is currently inconsistent/unreliable on the live app.', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {
+    const response = await apiClient.createContact(loggedInUser.token, {
       ...validContactInput,
       birthDate: invalidContactInput.birthDate,
     });
@@ -79,10 +76,10 @@ test.describe('Contacts API - Create contact', () => {
   });
 
   test('Contact create with invalid phone is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {
+    const response = await apiClient.createContact(loggedInUser.token, {
       ...validContactInput,
       phone: invalidContactInput.phone,
     });
@@ -94,10 +91,10 @@ test.describe('Contacts API - Create contact', () => {
   });
 
   test('Contact create with invalid email is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {
+    const response = await apiClient.createContact(loggedInUser.token, {
       ...validContactInput,
       email: invalidContactInput.email,
     });
@@ -109,10 +106,10 @@ test.describe('Contacts API - Create contact', () => {
   });
 
   test('Contact create with empty payload is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.addContact(request, loggedInUser.token, {});
+    const response = await apiClient.createContact(loggedInUser.token, {});
     expect(response.status()).toBe(400);
 
     const body = await response.json();

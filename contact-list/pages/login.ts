@@ -1,5 +1,5 @@
 import { Locator, expect, Page } from '@playwright/test';
-import { LoginInput } from '../types/auth';
+import { UserCredentials } from '../types/domain';
 
 export class LoginPage {
   readonly page: Page;
@@ -27,7 +27,7 @@ export class LoginPage {
     await expect(this.page.getByText(/Contact List App/i)).toBeVisible();
   }
 
-  async login(input: LoginInput): Promise<void> {
+  async login(input: UserCredentials): Promise<void> {
     await this.expectLoginFormVisible();
 
     await this.loginEmail.fill(input.email);

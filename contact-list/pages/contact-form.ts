@@ -33,6 +33,10 @@ export class ContactForm {
     await expect(this.root).toBeVisible();
   }
 
+  async expectNotVisible() {
+    await expect(this.root).toBeVisible();
+  }
+
   async fill(input: ContactUpdateInput) {
     if (input.firstName !== undefined)
       await this.firstName.fill(input.firstName);

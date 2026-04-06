@@ -1,5 +1,4 @@
 import { test, expect } from '../../fixtures/api';
-import { api } from '../../utils/api-helpers';
 import { msg } from '../../utils/constants';
 import {
   invalidContactInput,
@@ -8,11 +7,10 @@ import {
 
 test.describe('Contacts API - Update contact', () => {
   test('Update contact with valid data succeeds', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
       validContactUpdateInput,
@@ -25,8 +23,7 @@ test.describe('Contacts API - Update contact', () => {
     expect(body.firstName).toBe(validContactUpdateInput.firstName);
     expect(body.lastName).toBe(validContactUpdateInput.lastName);
 
-    const getResponse = await api.getContact(
-      request,
+    const getResponse = await apiClient.getContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
     );
@@ -34,15 +31,14 @@ test.describe('Contacts API - Update contact', () => {
     expect(getResponse.status()).toBe(200);
     const updatedBody = await getResponse.json();
 
-    await api.verifyContact(validContactUpdateInput, updatedBody);
+    await apiClient.expectContactMatches(validContactUpdateInput, updatedBody);
   });
 
   test('Update contact with non-existing id is rejected', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       'nonexisting',
       validContactUpdateInput,
@@ -51,11 +47,10 @@ test.describe('Contacts API - Update contact', () => {
   });
 
   test.fixme('Update contact with invalid birth date is rejected. Public API validation for invalid birth date is currently inconsistent/unreliable on the live app.', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, birthDate: invalidContactInput.birthDate },
@@ -68,11 +63,10 @@ test.describe('Contacts API - Update contact', () => {
   });
 
   test('Update contact with invalid email is rejected', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, email: invalidContactInput.email },
@@ -85,11 +79,10 @@ test.describe('Contacts API - Update contact', () => {
   });
 
   test('Update contact with invalid phone is rejected', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
       { ...validContactUpdateInput, phone: invalidContactInput.phone },
@@ -102,11 +95,10 @@ test.describe('Contacts API - Update contact', () => {
   });
 
   test('Update contact with empty payload is rejected', async ({
-    request,
+    apiClient,
     userWithOneContact,
   }) => {
-    const response = await api.updateContact(
-      request,
+    const response = await apiClient.updateContact(
       userWithOneContact.token,
       userWithOneContact.contact_id,
       {},

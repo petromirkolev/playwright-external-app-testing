@@ -1,22 +1,24 @@
 import { test, expect } from '../../fixtures/api';
-import { api } from '../../utils/api-helpers';
 
 test.describe('Contacts API - Delete user', () => {
-  test('Delete registered user succeeds', async ({ request, loggedInUser }) => {
-    const response = await api.delete(request, loggedInUser.token);
+  test('Delete registered user succeeds', async ({
+    loggedInUser,
+    apiClient,
+  }) => {
+    const response = await apiClient.deleteUser(loggedInUser.token);
 
     expect(response.status()).toBe(200);
   });
 
   test('Delete already deleted user is rejected', async ({
-    request,
     loggedInUser,
+    apiClient,
   }) => {
-    const response = await api.delete(request, loggedInUser.token);
+    const response = await apiClient.deleteUser(loggedInUser.token);
 
     expect(response.status()).toBe(200);
 
-    const deleteResponse = await api.delete(request, loggedInUser.token);
+    const deleteResponse = await apiClient.deleteUser(loggedInUser.token);
 
     expect(deleteResponse.status()).toBe(401);
   });

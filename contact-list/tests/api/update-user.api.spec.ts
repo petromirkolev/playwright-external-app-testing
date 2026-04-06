@@ -1,5 +1,4 @@
 import { test, expect } from '../../fixtures/api';
-import { api } from '../../utils/api-helpers';
 import { msg } from '../../utils/constants';
 import {
   invalidUserInput,
@@ -10,10 +9,10 @@ import {
 
 test.describe('Contacts API - Update user', () => {
   test('Update first name with valid data succeeds', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       firstName: validContactUpdateInput.firstName,
     });
     const data = await response.json();
@@ -23,10 +22,10 @@ test.describe('Contacts API - Update user', () => {
   });
 
   test('Update last name with valid data succeeds', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       lastName: validContactUpdateInput.lastName,
     });
     const data = await response.json();
@@ -36,11 +35,11 @@ test.describe('Contacts API - Update user', () => {
   });
 
   test('Update email with valid data succeeds', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
     const email = uniqueEmail();
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       email,
     });
     const data = await response.json();
@@ -50,20 +49,20 @@ test.describe('Contacts API - Update user', () => {
   });
 
   test('Update password with valid data succeeds', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       password: validUserInput.password,
     });
     expect(response.status()).toBe(200);
   });
 
   test('Update email with invalid data is rejected', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       email: invalidUserInput.emailNoName,
     });
     expect(response.status()).toBe(400);
@@ -74,10 +73,10 @@ test.describe('Contacts API - Update user', () => {
   });
 
   test('Update password with invalid password too short is rejected', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       password: invalidUserInput.passwordTooShort,
     });
     expect(response.status()).toBe(400);
@@ -88,10 +87,10 @@ test.describe('Contacts API - Update user', () => {
   });
 
   test('Update password with invalid password too long is rejected', async ({
-    request,
+    apiClient,
     loggedInUser,
   }) => {
-    const response = await api.update(request, loggedInUser.token, {
+    const response = await apiClient.updateUser(loggedInUser.token, {
       password: invalidUserInput.passwordTooLong,
     });
     expect(response.status()).toBe(400);

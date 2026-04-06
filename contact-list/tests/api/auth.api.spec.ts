@@ -1,19 +1,19 @@
 import { test, expect } from '../../fixtures/api';
-import { api } from '../../utils/api-helpers';
 import { msg } from '../../utils/constants';
 import { invalidUserInput, uniqueEmail } from '../../utils/test-data';
 
 test.describe('Contacts API - Register user', () => {
   test('Registration with valid credentials is successful', async ({
-    request,
     registrationData,
+    apiClient,
   }) => {
     const email = uniqueEmail();
 
-    const response = await api.register(request, {
+    const response = await apiClient.register({
       ...registrationData,
       email,
     });
+
     expect(response.status()).toBe(201);
 
     const body = await response.json();
@@ -25,19 +25,19 @@ test.describe('Contacts API - Register user', () => {
   });
 
   test('Duplicate registration is rejected', async ({
-    request,
     registrationData,
+    apiClient,
   }) => {
     const email = uniqueEmail();
 
-    const response = await api.register(request, {
+    const response = await apiClient.register({
       ...registrationData,
       email,
     });
 
     expect(response.status()).toBe(201);
 
-    const duplicateResponse = await api.register(request, {
+    const duplicateResponse = await apiClient.register({
       ...registrationData,
       email,
     });
@@ -49,12 +49,12 @@ test.describe('Contacts API - Register user', () => {
   });
 
   test('Registration with invalid email is rejected', async ({
-    request,
     registrationData,
+    apiClient,
   }) => {
     const email = invalidUserInput.emailNoName;
 
-    const response = await api.register(request, {
+    const response = await apiClient.register({
       ...registrationData,
       email,
     });
@@ -66,10 +66,10 @@ test.describe('Contacts API - Register user', () => {
   });
 
   test('Registration with invalid password too short is rejected', async ({
-    request,
     registrationData,
+    apiClient,
   }) => {
-    const response = await api.register(request, {
+    const response = await apiClient.register({
       ...registrationData,
       password: invalidUserInput.passwordTooShort,
     });
@@ -81,10 +81,10 @@ test.describe('Contacts API - Register user', () => {
   });
 
   test('Registration with invalid password too long is rejected', async ({
-    request,
     registrationData,
+    apiClient,
   }) => {
-    const response = await api.register(request, {
+    const response = await apiClient.register({
       ...registrationData,
       password: invalidUserInput.passwordTooLong,
     });
@@ -98,10 +98,10 @@ test.describe('Contacts API - Register user', () => {
 
 test.describe('Contacts API - Login user', () => {
   test('Login with registered credentials is successful', async ({
-    request,
     registeredUser,
+    apiClient,
   }) => {
-    const response = await api.login(request, {
+    const response = await apiClient.login({
       email: registeredUser.email,
       password: registeredUser.password,
     });
@@ -110,14 +110,14 @@ test.describe('Contacts API - Login user', () => {
 
     const body = await response.json();
 
-    expect(body.user.token).toBe(registeredUser.token);
+    expect(body.token).toBe(registeredUser.token);
   });
 
   test('Login with invalid email is rejected', async ({
-    request,
     registeredUser,
+    apiClient,
   }) => {
-    const response = await api.login(request, {
+    const response = await apiClient.login({
       email: invalidUserInput.emailNoName,
       password: registeredUser.password,
     });
@@ -126,10 +126,10 @@ test.describe('Contacts API - Login user', () => {
   });
 
   test('Login with invalid password is rejected', async ({
-    request,
     registeredUser,
+    apiClient,
   }) => {
-    const response = await api.login(request, {
+    const response = await apiClient.login({
       email: registeredUser.email,
       password: invalidUserInput.passwordTooShort,
     });
@@ -138,10 +138,10 @@ test.describe('Contacts API - Login user', () => {
   });
 
   test('Login with missing required email is rejected', async ({
-    request,
     registeredUser,
+    apiClient,
   }) => {
-    const response = await api.login(request, {
+    const response = await apiClient.login({
       password: registeredUser.password,
     });
 
@@ -149,10 +149,10 @@ test.describe('Contacts API - Login user', () => {
   });
 
   test('Login with missing required password is rejected', async ({
-    request,
     registeredUser,
+    apiClient,
   }) => {
-    const response = await api.login(request, {
+    const response = await apiClient.login({
       email: registeredUser.email,
     });
 

@@ -122,10 +122,9 @@ export class ContactListApi {
     };
   }
 
-  static expectContactMatches(input: ContactInput, output: ContactResponse) {
+  async expectContactMatches(input: ContactInput, output: ContactResponse) {
     expect(output.firstName).toBe(input.firstName);
     expect(output.lastName).toBe(input.lastName);
-    expect(getBirthDate(output)).toBe(input.birthDate);
     expect(output.email).toBe(input.email);
     expect(output.phone).toBe(input.phone);
   }

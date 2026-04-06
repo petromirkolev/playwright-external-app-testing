@@ -8,19 +8,19 @@ test.describe('Login', () => {
   });
 
   test('Login with valid credentials succeeds', async ({
-    registeredUser,
+    registeredUserCredentials,
     loginPage,
   }) => {
-    await loginPage.login(registeredUser);
+    await loginPage.login(registeredUserCredentials);
     await loginPage.expectSuccess();
   });
 
   test('Login with invalid email is rejected', async ({
     loginPage,
-    registeredUser,
+    registeredUserCredentials,
   }) => {
     await loginPage.login({
-      ...registeredUser,
+      ...registeredUserCredentials,
       email: invalidUserInput.emailNoName,
     });
 
@@ -30,10 +30,10 @@ test.describe('Login', () => {
 
   test('Login with invalid password is rejected', async ({
     loginPage,
-    registeredUser,
+    registeredUserCredentials,
   }) => {
     await loginPage.login({
-      ...registeredUser,
+      ...registeredUserCredentials,
       password: invalidUserInput.password,
     });
 
@@ -42,18 +42,18 @@ test.describe('Login', () => {
   });
 
   test('Login with empty email is rejected', async ({
-    registeredUser,
+    registeredUserCredentials,
     loginPage,
   }) => {
-    await loginPage.login({ ...registeredUser, email: '' });
+    await loginPage.login({ ...registeredUserCredentials, email: '' });
     await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 
   test('Login with empty password is rejected', async ({
-    registeredUser,
+    registeredUserCredentials,
     loginPage,
   }) => {
-    await loginPage.login({ ...registeredUser, password: '' });
+    await loginPage.login({ ...registeredUserCredentials, password: '' });
     await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 
@@ -62,7 +62,7 @@ test.describe('Login', () => {
     loginPage,
     contactsPage,
   }) => {
-    await contactsPage.logOutButton.click();
+    await contactsPage.logout();
     await loginPage.expectLoginFormVisible();
   });
 
@@ -71,9 +71,7 @@ test.describe('Login', () => {
     loginPage,
   }) => {
     await loginPage.expectSuccess();
-
     await loginPage.page.reload();
-
     await loginPage.expectSuccess();
   });
 });

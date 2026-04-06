@@ -19,7 +19,6 @@ export class ContactsPage {
     this.logoutButton = page.locator('#logout');
 
     const addRoot = page.locator('form#add-contact');
-
     this.addForm = new ContactForm(
       addRoot,
       addRoot.locator('#submit'),

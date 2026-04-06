@@ -1,4 +1,4 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect } from './base';
 import { ContactListApi } from '../utils/api-helpers';
 import { RegistrationInput } from '../types/domain';
 import {
@@ -22,7 +22,7 @@ type ApiFixtures = {
   };
   userWithOneContact: {
     token: string;
-    contactId: string;
+    contact_id: string;
   };
 };
 
@@ -64,7 +64,7 @@ export const test = base.extend<ApiFixtures>({
     const body = await response.json();
     await use({
       token: loggedInUser.token,
-      contactId: body._id,
+      contact_id: body._id,
     });
   },
 });
