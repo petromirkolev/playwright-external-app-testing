@@ -5,21 +5,21 @@ test.describe('Contact list delete contact', () => {
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
-    await contactsPage.openEditForm();
-    await contactsPage.deleteSelectedContact();
-    await contactsPage.expectNoContacts();
+    await contactsPage.openEditContactForm();
+    await contactsPage.deleteContact();
+    await contactsPage.expectContactNotVisible();
   });
 
   test('Contact delete persists after page reload', async ({
     loggedInUserWithOneContact,
     contactsPage,
   }) => {
-    await contactsPage.openEditForm();
-    await contactsPage.deleteSelectedContact();
-    await contactsPage.expectNoContacts();
+    await contactsPage.openEditContactForm();
+    await contactsPage.deleteContact();
+    await contactsPage.expectContactNotVisible();
 
     await contactsPage.page.reload();
 
-    await contactsPage.expectNoContacts();
+    await contactsPage.expectContactNotVisible();
   });
 });

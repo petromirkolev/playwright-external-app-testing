@@ -3,13 +3,13 @@ import { msg } from '../utils/constants';
 
 test.describe('Contact list add contact', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {
-    await contactsPage.expectLoaded();
+    await contactsPage.contactTableLoaded();
   });
 
   test('Cancel add contact returns to contacts page', async ({
     contactsPage,
   }) => {
-    await contactsPage.openAddForm();
+    await contactsPage.openAddContactForm();
     await contactsPage.addForm.cancel();
     await contactsPage.addForm.expectNotVisible();
   });
@@ -23,7 +23,6 @@ test.describe('Contact list add contact', () => {
   });
 
   test('Add contact without required last name', async ({
-    loggedInUser,
     contactsPage,
     validContactInput,
   }) => {
@@ -32,47 +31,38 @@ test.describe('Contact list add contact', () => {
   });
 
   test('Add contact with invalid birth date', async ({
-    loggedInUser,
     validContactInput,
     invalidContactInput,
     contactsPage,
   }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        ...validContactInput,
-        birthDate: invalidContactInput.birthDate,
-      },
-      msg.PREFIX_CONT_BDATE,
-    );
+    await contactsPage.addContact({
+      ...validContactInput,
+      birthDate: invalidContactInput.birthDate,
+    });
+    await contactsPage.addForm.expectError(msg.PREFIX_CONT_BDATE);
   });
 
   test('Add contact with invalid email', async ({
-    loggedInUser,
     validContactInput,
     invalidContactInput,
     contactsPage,
   }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        ...validContactInput,
-        email: invalidContactInput.email,
-      },
-      msg.PREFIX_CONT_EMAIL,
-    );
+    await contactsPage.addContact({
+      ...validContactInput,
+      email: invalidContactInput.email,
+    });
+    await contactsPage.addForm.expectError(msg.PREFIX_CONT_EMAIL);
   });
 
   test('Add contact with invalid phone number', async ({
-    loggedInUser,
     validContactInput,
     invalidContactInput,
     contactsPage,
   }) => {
-    await contactsPage.createContactAndExpectError(
-      {
-        ...validContactInput,
-        phone: invalidContactInput.phone,
-      },
-      msg.PREFIX_CONT_PHONE,
-    );
+    await contactsPage.addContact({
+      ...validContactInput,
+      phone: invalidContactInput.phone,
+    });
+    await contactsPage.addForm.expectError(msg.PREFIX_CONT_PHONE);
   });
 });

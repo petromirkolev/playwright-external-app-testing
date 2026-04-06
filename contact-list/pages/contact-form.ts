@@ -34,17 +34,25 @@ export class ContactForm {
   }
 
   async expectNotVisible() {
-    await expect(this.root).toBeVisible();
+    await expect(this.root).toBeHidden();
   }
 
-  async fill(input: ContactUpdateInput) {
-    if (input.firstName !== undefined)
+  async fill(input: Partial<ContactUpdateInput>) {
+    if (input.firstName !== undefined) {
       await this.firstName.fill(input.firstName);
-    if (input.lastName !== undefined) await this.lastName.fill(input.lastName);
-    if (input.birthDate !== undefined)
+    }
+    if (input.lastName !== undefined) {
+      await this.lastName.fill(input.lastName);
+    }
+    if (input.birthDate !== undefined) {
       await this.birthDate.fill(input.birthDate);
-    if (input.email !== undefined) await this.email.fill(input.email);
-    if (input.phone !== undefined) await this.phone.fill(input.phone);
+    }
+    if (input.email !== undefined) {
+      await this.email.fill(input.email);
+    }
+    if (input.phone !== undefined) {
+      await this.phone.fill(input.phone);
+    }
   }
 
   async submit() {
@@ -54,6 +62,7 @@ export class ContactForm {
   }
 
   async cancel() {
+    await expect(this.cancelButton).toBeVisible();
     await this.cancelButton.click();
   }
 

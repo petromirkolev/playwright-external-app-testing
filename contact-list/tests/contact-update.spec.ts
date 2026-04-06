@@ -1,6 +1,6 @@
-import { test, expect } from '../../fixtures/api';
-import { msg } from '../../utils/constants';
-import { validContactUpdateInput } from '../../utils/test-data';
+import { test, expect } from '../fixtures/contacts';
+import { msg } from '../utils/constants';
+import { validContactUpdateInput } from '../utils/test-data';
 
 test.describe('Contacts API - Update contact', () => {
   const validCases = [
@@ -38,10 +38,10 @@ test.describe('Contacts API - Update contact', () => {
 
   for (const testCase of validCases) {
     test(`Contact ${testCase.title} update is accepted`, async ({
-      userWithOneContact,
+      loggedInUserWithOneContact,
       contactsPage,
     }) => {
-      await contactsPage.openFirstContact();
+      await contactsPage.openContactDetails();
       await contactsPage.editContact(testCase.input);
       await expect(contactsPage.page.locator(testCase.locator)).toHaveText(
         testCase.expected,
@@ -69,10 +69,10 @@ test.describe('Contacts API - Update contact', () => {
 
   for (const testCase of invalidCases) {
     test(`Contact ${testCase.title} update with invalid input is rejected`, async ({
-      userWithOneContact,
+      loggedInUserWithOneContact,
       contactsPage,
     }) => {
-      await contactsPage.openFirstContact();
+      await contactsPage.openContactDetails();
       await contactsPage.openEditForm();
       await contactsPage.editForm.fill(testCase.input);
       await contactsPage.editForm.submit();

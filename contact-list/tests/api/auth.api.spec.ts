@@ -118,8 +118,8 @@ test.describe('Contacts API - Login user', () => {
     apiClient,
   }) => {
     const response = await apiClient.login({
+      ...registeredUser,
       email: invalidUserInput.emailNoName,
-      password: registeredUser.password,
     });
 
     expect(response.status()).toBe(401);
