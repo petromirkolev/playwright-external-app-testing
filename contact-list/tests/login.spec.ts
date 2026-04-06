@@ -8,19 +8,19 @@ test.describe('Contact list - User login E2E', () => {
   });
 
   test('Login with valid credentials succeeds', async ({
-    registeredUserCredentials,
+    registeredUser,
     loginPage,
   }) => {
-    await loginPage.login(registeredUserCredentials);
+    await loginPage.login(registeredUser);
     await loginPage.expectSuccess();
   });
 
   test('Login with invalid email is rejected', async ({
     loginPage,
-    registeredUserCredentials,
+    registeredUser,
   }) => {
     await loginPage.login({
-      ...registeredUserCredentials,
+      ...registeredUser,
       email: invalidUserInput.emailNoName,
     });
 
@@ -30,10 +30,10 @@ test.describe('Contact list - User login E2E', () => {
 
   test('Login with invalid password is rejected', async ({
     loginPage,
-    registeredUserCredentials,
+    registeredUser,
   }) => {
     await loginPage.login({
-      ...registeredUserCredentials,
+      ...registeredUser,
       password: invalidUserInput.password,
     });
 
@@ -42,18 +42,18 @@ test.describe('Contact list - User login E2E', () => {
   });
 
   test('Login with empty email is rejected', async ({
-    registeredUserCredentials,
+    registeredUser,
     loginPage,
   }) => {
-    await loginPage.login({ ...registeredUserCredentials, email: '' });
+    await loginPage.login({ ...registeredUser, email: '' });
     await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 
   test('Login with empty password is rejected', async ({
-    registeredUserCredentials,
+    registeredUser,
     loginPage,
   }) => {
-    await loginPage.login({ ...registeredUserCredentials, password: '' });
+    await loginPage.login({ ...registeredUser, password: '' });
     await loginPage.expectError(msg.AUTH_INV_USER_PASS);
   });
 

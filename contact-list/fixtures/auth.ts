@@ -1,41 +1,20 @@
-import { test as base, expect } from './base';
+import { test as base, expect } from './api';
 import { RegistrationInput, UserCredentials } from '../types/domain';
 import { uniqueEmail, validUserInput } from '../utils/test-data';
 
 type AuthFixtures = {
   registrationData: RegistrationInput;
-  registeredUserCredentials: UserCredentials;
+  registeredUserCredentials: UserCredentials & { token?: string };
   loggedInUser: UserCredentials;
 };
 
 export const test = base.extend<AuthFixtures>({
-  registrationData: async ({}, use) => {
-    await use({
-      ...validUserInput,
-      email: uniqueEmail(),
-    });
-  },
-
-  registeredUserCredentials: async (
-    { registrationData, registrationPage, contactsPage },
-    use,
-  ) => {
-    await registrationPage.gotoSignUp();
-    await registrationPage.signUp(registrationData);
-    await contactsPage.logout();
-
-    await use({
-      email: registrationData.email,
-      password: registrationData.password,
-    });
-  },
-
-  loggedInUser: async ({ registeredUserCredentials, loginPage }, use) => {
+  loggedInUser: async ({ registeredUser, loginPage }, use) => {
     await loginPage.gotoHome();
-    await loginPage.login(registeredUserCredentials);
+    await loginPage.login(registeredUser);
     await loginPage.expectSuccess();
 
-    await use(registeredUserCredentials);
+    await use(registeredUser);
   },
 });
 

@@ -35,10 +35,12 @@ export const test = base.extend<ContactsFixture>({
   },
 
   loggedInUserWithOneContact: async (
-    { loggedInUser, validContactInput, contactsPage },
+    { loggedInUser, validContactInput, contactsPage, apiClient },
     use,
   ) => {
-    await contactsPage.addContact(validContactInput);
+    await apiClient.createContact(loggedInUser.token, validContactInput);
+
+    await contactsPage.page.reload();
 
     await expect(contactsPage.contactTable).toBeAttached();
     await contactsPage.expectContactVisible(validContactInput);
