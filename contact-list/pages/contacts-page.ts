@@ -13,7 +13,8 @@ export class ContactsPage {
   readonly returnButton: Locator;
   readonly addForm: ContactForm;
   readonly editForm: ContactForm;
-  readonly detailsFirstName: Locator;
+  readonly editFirstNameInput: Locator;
+  readonly editLastNameInput: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -24,7 +25,8 @@ export class ContactsPage {
     this.editContactButton = page.locator('button#edit-contact');
     this.deleteContactButton = page.locator('button#delete');
     this.returnButton = page.locator('button#return');
-    this.detailsFirstName = this.page.locator('input#firstName');
+    this.editFirstNameInput = this.page.locator('input#firstName');
+    this.editLastNameInput = this.page.locator('input#lastName');
 
     const addRoot = page.locator('form#add-contact');
     this.addForm = new ContactForm(
@@ -110,8 +112,11 @@ export class ContactsPage {
     await this.editContactButton.click();
     await this.editForm.expectVisible();
 
-    await expect(this.detailsFirstName).toBeVisible();
-    await expect(this.detailsFirstName).not.toHaveValue('');
+    await expect(this.editFirstNameInput).toBeVisible();
+    await expect(this.editFirstNameInput).not.toHaveValue('');
+
+    await expect(this.editLastNameInput).toBeVisible();
+    await expect(this.editLastNameInput).not.toHaveValue('');
   }
 
   async editContact(

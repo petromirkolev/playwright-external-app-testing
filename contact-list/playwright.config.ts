@@ -1,5 +1,4 @@
 import { defineConfig } from '@playwright/test';
-import { AllureReporter } from 'allure-playwright';
 
 export default defineConfig({
   testDir: './tests',
