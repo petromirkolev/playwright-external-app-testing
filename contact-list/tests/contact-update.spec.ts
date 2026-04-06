@@ -2,7 +2,7 @@ import { test, expect } from '../fixtures/contacts';
 import { msg } from '../utils/constants';
 import { validContactUpdateInput } from '../utils/test-data';
 
-test.describe('Contacts API - Update contact', () => {
+test.describe('Contact list update contact', () => {
   const validCases = [
     {
       title: 'first name',
@@ -41,7 +41,7 @@ test.describe('Contacts API - Update contact', () => {
       loggedInUserWithOneContact,
       contactsPage,
     }) => {
-      await contactsPage.openContactDetails();
+      await contactsPage.openEditContactForm();
       await contactsPage.editContact(testCase.input);
       await expect(contactsPage.page.locator(testCase.locator)).toHaveText(
         testCase.expected,
@@ -72,7 +72,7 @@ test.describe('Contacts API - Update contact', () => {
       loggedInUserWithOneContact,
       contactsPage,
     }) => {
-      await contactsPage.openContactDetails();
+      await contactsPage.openEditContactForm();
       await contactsPage.openEditForm();
       await contactsPage.editForm.fill(testCase.input);
       await contactsPage.editForm.submit();

@@ -101,10 +101,6 @@ export class ContactsPage {
     await this.contactTableRow.first().click();
   }
 
-  async openContactDetails(): Promise<void> {
-    await this.contactTableRow.first().click();
-  }
-
   async openEditForm(): Promise<void> {
     await expect(this.editContactButton).toBeVisible();
     await expect(this.editContactButton).toBeEnabled();

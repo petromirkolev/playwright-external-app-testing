@@ -2,7 +2,7 @@ import { test } from '../fixtures/auth';
 import { msg } from '../utils/constants';
 import { invalidEmail, invalidPassword } from '../utils/test-data';
 
-test.describe('Register', () => {
+test.describe('User register', () => {
   test.beforeEach(async ({ registrationPage }) => {
     await registrationPage.gotoSignUp();
   });

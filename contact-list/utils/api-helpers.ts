@@ -41,10 +41,6 @@ function toUpdateContactPayload(input: ContactUpdateInput) {
   };
 }
 
-function getBirthDate(output: ContactResponse): string | undefined {
-  return output.birthDate ?? output.birthdate;
-}
-
 export class ContactListApi {
   constructor(private readonly request: APIRequestContext) {}
 

@@ -12,7 +12,7 @@ export default defineConfig({
   use: {
     baseURL:
       process.env.BASE_URL ||
-      'https://thinking-tester-contact-list.herokuapp.com',
+      'https://thinking-tester-contact-list.herokuapp.com/',
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
