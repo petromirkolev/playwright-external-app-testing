@@ -25,7 +25,7 @@ jobs:
         working-directory: ./contact-list
 
       - name: Install Playwright browser
-        run: npx playwright install
+        run: npx playwright install chromium
         working-directory: ./contact-list
 
       - name: Run Playwright tests
