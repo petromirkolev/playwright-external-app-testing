@@ -1,29 +1,37 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { UserInput } from '../types/user';
-import { validUserInput } from './test-data';
+import { LoginInput, RegistrationInput, UpdateInput } from '../types/user';
 
 export class ApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async register(input: Partial<UserInput>): Promise<APIResponse> {
-    return this.request.post('/user', {
+  async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
+    return this.request.post('user', {
+      data: input,
+    });
+  }
+
+  async login(input: Partial<LoginInput>): Promise<APIResponse> {
+    return this.request.post('user', {
       data: {
-        username: input.username,
-        firstName: input.firstName,
-        lastName: input.lastName,
-        email: input.email,
-        password: input.password,
-        phone: input.phone,
+        input,
       },
     });
   }
 
-  async login(input: Partial<UserInput>): Promise<APIResponse> {
-    return this.request.post('/user', {
-      data: {
-        username: input.username,
-        password: input.password,
-      },
+  async getUser(username: string): Promise<APIResponse> {
+    return this.request.get(`user/${username}`);
+  }
+
+  async updateUser(
+    username: string,
+    input: Partial<UpdateInput>,
+  ): Promise<APIResponse> {
+    return this.request.put(`user/${username}`, {
+      data: input,
     });
+  }
+
+  async deleteUser(username: string): Promise<APIResponse> {
+    return this.request.delete(`user/${username}`);
   }
 }
