@@ -29,10 +29,14 @@ export const invalidPassword = {
   long: 't3$tingP4Ss!'.repeat(50),
 };
 
-export function uniqueUsername(prefix = 'contact'): string {
+export const validPetInput = {
+  name: 'Poopoo',
+};
+
+export function uniqueUsername(prefix = 'petstore'): string {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100)}`;
 }
 
-export function uniqueEmail(prefix = 'contact'): string {
-  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100)}@test.com`;
+export function uniqueEmail(prefix = 'petstore'): string {
+  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 100)}@petstore.com`;
 }

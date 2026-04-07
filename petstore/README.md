@@ -1,3 +1,9 @@
+# ‼️ Status ‼️
+
+This work was paused because the target API showed inconsistent/shared-environment behavior that made it a poor candidate for a reliable portfolio-quality test suite.
+
+---
+
 # Petstore API - Playwright API Test Suite
 
 A Playwright + TypeScript API automation project for the public Swagger Petstore demo API.
