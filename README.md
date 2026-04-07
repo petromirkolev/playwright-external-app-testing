@@ -10,7 +10,7 @@ My other portfolio projects focus on apps I built and tested myself.
 
 This repo covers the other side of QA work: testing software as an external system, where I do not control the product code, frontend architecture, selectors, backend implementation, or deployment stability.
 
-That changes the testing approach. The job becomes:
+That changes the testing approach to:
 
 - understanding the real behavior of the system
 - validating flows from the outside
@@ -18,7 +18,7 @@ That changes the testing approach. The job becomes:
 - distinguishing test issues from live environment issues
 - keeping scope realistic when testing public demo apps
 
-## Current app under test
+## Projects in this repo
 
 ### Contact List App
 
@@ -30,7 +30,20 @@ A public demo application with:
 - UI and API coverage
 - positive and negative test scenarios
 
-The Contact List project lives in [`/contact-list`](./contact-list), with its own README, test structure, and execution instructions.
+The Contact List project lives in [`/contact-list`](./contact-list), with its own README, structure, and execution instructions.
+
+### Petstore API
+
+A public Swagger/OpenAPI demo API used for API-first automation practice. Current coverage includes:
+
+- pet CRUD flows
+- store order lifecycle
+- user CRUD and login flows
+- positive and negative test scenarios
+- API setup/teardown patterns
+- contract-aware assertions based on the published API documentation
+
+The Petstore project lives in [`/petstore`](./petstore), with its own README, structure, and execution instructions.
 
 ## Stack
 
@@ -39,16 +52,12 @@ The Contact List project lives in [`/contact-list`](./contact-list), with its ow
 - Playwright Request API
 - reusable fixtures and helpers
 - Page Objects where they improve clarity
+- API-first test design for public systems
 
 ## Repository structure
 
 ```text
-/contact-list
-  /tests
-  /pages
-  /fixtures
-  /utils
-  /types
-  README.md
-  test-plan.md
+playwright-external-app-testing/
+├── contact-list/
+└── petstore/
 ```
