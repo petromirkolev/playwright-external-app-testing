@@ -3,20 +3,11 @@ export type LoginInput = {
   password: string;
 };
 
-export type RegistrationInput = {
-  username: string;
+export type RegistrationInput = LoginInput & {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
   phone: string;
 };
 
-export type UpdateInput = {
-  username: string | number;
-  firstName: string | number;
-  lastName: string | number;
-  email: string | number;
-  password: string;
-  phone: string | number;
-};
+export type UpdateInput = Partial<RegistrationInput>;

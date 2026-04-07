@@ -4,34 +4,35 @@ import { LoginInput, RegistrationInput, UpdateInput } from '../types/user';
 export class ApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
-    return this.request.post('user', {
+  async register(input: RegistrationInput): Promise<APIResponse> {
+    return await this.request.post('user', {
       data: input,
     });
   }
 
-  async login(input: Partial<LoginInput>): Promise<APIResponse> {
-    return this.request.post('user', {
+  async login(input: LoginInput): Promise<APIResponse> {
+    return await this.request.get('user/login', {
       data: {
         input,
       },
     });
   }
 
-  async getUser(username: string): Promise<APIResponse> {
-    return this.request.get(`user/${username}`);
+  async logout(): Promise<APIResponse> {
+    return await this.request.get('user/logout');
   }
 
-  async updateUser(
-    username: string,
-    input: Partial<UpdateInput>,
-  ): Promise<APIResponse> {
-    return this.request.put(`user/${username}`, {
+  async getUser(username: string): Promise<APIResponse> {
+    return await this.request.get(`user/${username}`);
+  }
+
+  async updateUser(username: string, input: UpdateInput): Promise<APIResponse> {
+    return await this.request.put(`user/${username}`, {
       data: input,
     });
   }
 
   async deleteUser(username: string): Promise<APIResponse> {
-    return this.request.delete(`user/${username}`);
+    return await this.request.delete(`user/${username}`);
   }
 }

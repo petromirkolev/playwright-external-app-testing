@@ -1,14 +1,14 @@
 ### Setup
 
-- create pet
 - create user
+- create pet
 - place order
 
 ### Teardown
 
+- delete order by ID
 - delete pet by ID
 - delete user by username
-- delete order by ID
 
 # Pet
 
