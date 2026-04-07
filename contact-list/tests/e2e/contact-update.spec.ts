@@ -1,6 +1,6 @@
-import { test, expect } from '../fixtures/contacts';
-import { msg } from '../utils/constants';
-import { validContactUpdateInput } from '../utils/test-data';
+import { test, expect } from '../../fixtures/contacts';
+import { msg } from '../../utils/constants';
+import { validContactUpdateInput } from '../../utils/test-data';
 
 test.describe('Contact list - Update contact E2E', () => {
   const validCases = [

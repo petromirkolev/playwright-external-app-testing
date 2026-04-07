@@ -1,5 +1,5 @@
-import { test } from '../fixtures/contacts';
-import { msg } from '../utils/constants';
+import { test } from '../../fixtures/contacts';
+import { msg } from '../../utils/constants';
 
 test.describe('Contact list - Add contact E2E', () => {
   test.beforeEach(async ({ loggedInUser, contactsPage }) => {

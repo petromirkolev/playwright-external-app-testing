@@ -1,4 +1,4 @@
-import { test, expect } from '../fixtures/base';
+import { test, expect } from '../../fixtures/base';
 
 test.describe('Contact list - App smoke tests E2E', () => {
   test('Home page loads', async ({ loginPage }) => {
