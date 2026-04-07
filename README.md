@@ -2,7 +2,7 @@
 
 This repo is part of my QA Automation portfolio.
 
-It focuses on testing external/public web apps that I did not build myself, using Playwright and TypeScript. The goal is to demonstrate practical QA automation skills on third-party applications: test design, UI automation, reusable fixtures, stable selectors, API-assisted setup where useful, and realistic scope control.
+It focuses on testing external/public systems that I did not build myself, using Playwright and TypeScript. The goal is to demonstrate practical QA automation skills on third-party applications and APIs: test design, UI automation, API testing, reusable fixtures/helpers, stable selectors, API-assisted setup where useful, and realistic scope control.
 
 ## Why this repo exists
 
@@ -16,11 +16,13 @@ That changes the testing approach to:
 - validating flows from the outside
 - debugging contract mismatches
 - distinguishing test issues from live environment issues
-- keeping scope realistic when testing public demo apps
+- keeping scope realistic when testing public demo apps and APIs
 
 ## Projects in this repo
 
 ### Contact List App
+
+[Link](https://thinking-tester-contact-list.herokuapp.com/)
 
 A public demo application with:
 
@@ -32,18 +34,22 @@ A public demo application with:
 
 The Contact List project lives in [`/contact-list`](./contact-list), with its own README, structure, and execution instructions.
 
-### Petstore API
+### Toolshop API
 
-A public Swagger/OpenAPI demo API used for API-first automation practice. Current coverage includes:
+[Link](https://api.practicesoftwaretesting.com/api/documentation)
 
-- pet CRUD flows
-- store order lifecycle
-- user CRUD and login flows
-- positive and negative test scenarios
-- API setup/teardown patterns
+A public toolshop-style demo API used for API-first automation practice.
+
+Planned/current focus includes:
+
+- authentication and role-based access checks
+- product and catalog coverage
+- cart and checkout-related flows
+- positive and negative API scenarios
+- setup/teardown strategy for shared public environments
 - contract-aware assertions based on the published API documentation
 
-The Petstore project lives in [`/petstore`](./petstore), with its own README, structure, and execution instructions.
+The Practice Software Testing API project lives in [`/toolshop`](./toolshop), with its own README, structure, and execution instructions.
 
 ## Stack
 
@@ -59,5 +65,5 @@ The Petstore project lives in [`/petstore`](./petstore), with its own README, st
 ```text
 playwright-external-app-testing/
 ├── contact-list/
-└── petstore/
+└── toolshop/
 ```
