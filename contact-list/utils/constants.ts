@@ -1,5 +1,3 @@
-export const BASE_URL = 'https://thinking-tester-contact-list.herokuapp.com';
-
 export const msg = {
   AUTH_INV_USER_PASS: 'Incorrect username or password',
   AUTH_INV_EMAIL: 'User validation failed: email: Email is INV',

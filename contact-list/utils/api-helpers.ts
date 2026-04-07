@@ -10,7 +10,6 @@ import {
   RegistrationInput,
   UserCredentials,
 } from '../types/domain';
-import { BASE_URL } from './constants';
 
 function extractToken(body: RegisteredUserResponse | LoginResponse): string {
   const token = body.token ?? body.user?.token;
@@ -45,25 +44,25 @@ export class ContactListApi {
   constructor(private readonly request: APIRequestContext) {}
 
   async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
-    return this.request.post(`${BASE_URL}/users`, { data: input });
+    return this.request.post('/users', { data: input });
   }
 
   async login(input: Partial<UserCredentials>): Promise<APIResponse> {
-    return this.request.post(`${BASE_URL}/users/login`, { data: input });
+    return this.request.post('/users/login', { data: input });
   }
 
   async updateUser(
     token: string,
     input: Partial<RegistrationInput>,
   ): Promise<APIResponse> {
-    return this.request.patch(`${BASE_URL}/users/me`, {
+    return this.request.patch('/users/me', {
       headers: { Authorization: `Bearer ${token}` },
       data: input,
     });
   }
 
   async deleteUser(token: string): Promise<APIResponse> {
-    return this.request.delete(`${BASE_URL}/users/me`, {
+    return this.request.delete('/users/me', {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -72,14 +71,14 @@ export class ContactListApi {
     token: string,
     input: Partial<ContactInput>,
   ): Promise<APIResponse> {
-    return this.request.post(`${BASE_URL}/contacts`, {
+    return this.request.post('/contacts', {
       headers: { Authorization: `Bearer ${token}` },
       data: toCreateContactPayload(input),
     });
   }
 
   async getContact(token: string, id: string): Promise<APIResponse> {
-    return this.request.get(`${BASE_URL}/contacts/${id}`, {
+    return this.request.get(`/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
@@ -89,14 +88,14 @@ export class ContactListApi {
     id: string,
     input: ContactUpdateInput,
   ): Promise<APIResponse> {
-    return this.request.put(`${BASE_URL}/contacts/${id}`, {
+    return this.request.put(`/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
       data: toUpdateContactPayload(input),
     });
   }
 
   async deleteContact(token: string, id: string): Promise<APIResponse> {
-    return this.request.delete(`${BASE_URL}/contacts/${id}`, {
+    return this.request.delete(`/contacts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
