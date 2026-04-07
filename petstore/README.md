@@ -2,7 +2,7 @@
 
 A Playwright + TypeScript API automation project for the public Swagger Petstore demo API.
 
-## ⁉️ Why this project exists
+## Why this project exists
 
 This project is meant to strengthen the API-testing side of my QA Automation portfolio.
 
@@ -15,7 +15,7 @@ Unlike my full-stack apps, Petstore is a public demo API with published Swagger/
 - contract-aware testing against public API docs
 - realistic scope control on a shared external system
 
-## ✨ API under test
+## API under test
 
 Swagger Petstore demo API.
 
@@ -42,7 +42,7 @@ Primary focus areas:
   - delete user
   - login/logout basics
 
-## 🧪 Test approach
+## Test approach
 
 Main goals:
 
@@ -52,7 +52,7 @@ Main goals:
 - cover both happy-path and negative scenarios
 - keep the project compact and readable rather than artificially large
 
-## 🛠 Stack
+## Stack
 
 - Playwright
 - TypeScript
@@ -61,7 +61,7 @@ Main goals:
 - fixtures where useful
 - CI-ready test structure
 
-## 📁 Project structure
+## Planned structure
 
 ```text
 petstore/
