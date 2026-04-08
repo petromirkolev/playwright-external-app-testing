@@ -1,6 +1,11 @@
 import { RegistrationInput } from '../types/user';
 import { msg } from './constants';
 
+export const adminInput = {
+  email: 'admin@practicesoftwaretesting.com',
+  password: 'welcome01',
+};
+
 export const validInput: RegistrationInput = {
   first_name: 'Petromir',
   last_name: 'Kolev',
@@ -20,6 +25,13 @@ export const validInput: RegistrationInput = {
 export const validUpdateInput: Partial<RegistrationInput> = {
   first_name: 'Georgi',
   last_name: 'Petrov',
+  address: {
+    street: 'Smirnenski',
+    city: 'Plovdiv',
+    state: 'Plovdiv',
+    country: 'Bulgaria',
+    postal_code: '4000',
+  },
   email: 'georgi@petrov.com',
   password: 'T3$tingP4$s!123',
   phone: '0123456789',
@@ -52,27 +64,27 @@ export const missingReqFields = {
 export const invalidPassword = {
   shortPassword: {
     value: 'T3$t',
-    description: 'Register with invalid password too short',
+    description: 'Invalid password too short',
     error: msg.ERR_PASS_SHORT,
   },
   passNoUpper: {
     value: 't3$tingpass',
-    description: 'Register with invalid password no uppercase',
+    description: 'Invalid password no uppercase',
     error: msg.ERR_PASS_UPPER_LOWER,
   },
   passNoLower: {
     value: 't3$tingpass',
-    description: 'Register with invalid password no lowercase',
+    description: 'Invalid password no lowercase',
     error: msg.ERR_PASS_UPPER_LOWER,
   },
   passNoSymbol: {
     value: 'T3stingpass',
-    description: 'Register with invalid password no symbol',
+    description: 'Invalid password no symbol',
     error: msg.ERR_PASS_SYMBOL,
   },
   passNoNumber: {
     value: 'Te$tingpass',
-    description: 'Register with invalid password no number',
+    description: 'Invalid password no number',
     error: msg.ERR_PASS_NUMBER,
   },
 };

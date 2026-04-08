@@ -13,4 +13,5 @@ export const msg = {
 
   UNAUTH: 'Unauthorized',
   UNAUTH_VIEW_USER: 'You are not authorized to view this user.',
+  UNAUTH_UPDATE: 'You can only update your own data.',
 };

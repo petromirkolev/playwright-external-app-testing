@@ -68,11 +68,11 @@ Primary API domains covered:
 
 ## Test cases
 
-1. Create user with valid unique payload succeeds.
-2. Get created user by identifier succeeds.
-3. Get current authenticated user/profile succeeds.
-4. Update current user/profile with valid payload succeeds.
-5. Partial update of current user/profile succeeds, if supported.
+1. Create user with valid unique data succeeds.
+2. Get created user by id succeeds.
+3. Get current authenticated user succeeds.
+4. Update current user with valid data succeeds.
+5. Partial update of current user succeeds.
 6. Delete created user as allowed role succeeds.
 7. Get deleted user is rejected or returns not found.
 8. Create user with duplicate email is rejected, if enforced.

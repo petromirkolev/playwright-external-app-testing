@@ -1,17 +1,48 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
 import { LoginInput, RegistrationInput } from '../types/user';
 
-export class ApiClient {
+export class UserApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
+  async registerUser(input: Partial<RegistrationInput>): Promise<APIResponse> {
     return this.request.post('users/register', {
       data: input,
     });
   }
 
-  async login(input: LoginInput): Promise<APIResponse> {
+  async loginUser(input: LoginInput): Promise<APIResponse> {
     return this.request.post('users/login', {
+      data: input,
+    });
+  }
+
+  async deleteUser(
+    id: string | undefined,
+    token: string | undefined,
+  ): Promise<APIResponse> {
+    return this.request.delete(`users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  async updateUser(
+    input: Partial<RegistrationInput>,
+    id: string | undefined,
+    token: string | undefined,
+  ): Promise<APIResponse> {
+    return this.request.put(`users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+      data: input,
+    });
+  }
+
+  async partialUpdateUser(
+    input: Partial<RegistrationInput>,
+    id: string | undefined,
+    token: string | undefined,
+  ): Promise<APIResponse> {
+    return this.request.patch(`users/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
       data: input,
     });
   }
