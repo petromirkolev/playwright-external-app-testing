@@ -43,24 +43,23 @@ Primary API domains covered:
 
 ## Test cases
 
-1. Login with valid customer credentials returns "200" and an access token.
-2. Login with valid admin credentials returns "200" and an access token.
-3. Login with wrong password is rejected.
-4. Login with unknown email is rejected.
-5. Login with missing email is rejected.
-6. Login with missing password is rejected.
-7. Login with empty payload is rejected.
-8. Login response contains a non-empty token in the expected format.
+1. Login with valid customer credentials returns 200 and an access token.
+2. Login with valid admin credentials returns 200 and an access token.
+3. Login with wrong password returns 401.
+4. Login with unknown email returns 401.
+5. Login with missing email returns 422.
+6. Login with missing password returns 422.
+7. Login with empty payload returns 422.
+8. Login response contains a non-empty access token.
 9. Reusing a valid bearer token on a protected endpoint succeeds.
-10. Missing bearer token on a protected endpoint is rejected.
-11. Malformed bearer token is rejected.
-12. Random / invalid bearer token is rejected.
-13. Admin token can access an admin-only endpoint.
-14. Customer token cannot access an admin-only endpoint.
-15. Two consecutive logins return independently usable tokens.
-16. Token from one user cannot retrieve another user’s protected resources.
-17. Token from one user cannot modify another user’s protected resources.
-18. Auth-required endpoints behave consistently across "GET", "POST", "PUT", "PATCH", and "DELETE".
+10. Missing bearer token on a protected endpoint returns 401.
+11. Invalid bearer token on a protected endpoint returns 401.
+12. Malformed bearer token on refresh returns 500 (observed runtime behavior).
+13. Admin token can access an admin-only endpoint such as user deletion.
+14. Customer token cannot access an admin-only endpoint such as user deletion and returns 403.
+15. Two consecutive logins return different access tokens.
+16. One user token cannot retrieve another user’s protected user resource and runtime returns 404.
+17. One user token cannot modify another user’s protected user resource and runtime returns 403.
 
 ---
 
@@ -69,36 +68,29 @@ Primary API domains covered:
 ## Test cases
 
 1. Create user with valid unique data succeeds.
-2. Get created user by id succeeds.
-3. Get current authenticated user succeeds.
-4. Update current user with valid data succeeds.
-5. Partial update of current user succeeds.
-6. Delete created user as allowed role succeeds.
-7. Get deleted user is rejected or returns not found.
-8. Create user with duplicate email is rejected, if enforced.
-9. Create user with missing required fields is rejected.
-10. Create user with invalid email format is rejected.
-11. Create user with too-short password is rejected.
-12. Create user with too-long field values is rejected.
-13. Update user with invalid email is rejected.
-14. Update user with invalid password is rejected.
-15. Update another user’s profile as normal customer is rejected.
-16. Update another user’s profile as admin behaves as documented or observed.
-17. Delete another user as normal customer is rejected.
-18. Delete another user as admin behaves as documented or observed.
-19. Forgot/reset-password flow succeeds, if exposed.
-20. Forgot/reset-password flow does not leak whether email exists, unless intentionally observed otherwise.
-21. User lookup endpoint does not leak excessive data to unauthenticated callers.
-22. Create multiple unique users in sequence succeeds without collision.
-23. First name minimum boundary is handled correctly.
-24. First name maximum boundary is handled correctly.
-25. Last name minimum boundary is handled correctly.
-26. Last name maximum boundary is handled correctly.
-27. Email minimum/maximum boundaries are handled correctly.
-28. Password minimum/maximum boundaries are handled correctly.
-29. Unicode in user fields is accepted or rejected consistently.
-30. HTML/script payload in user fields is escaped, rejected, or stored safely.
-31. SQL-wildcard-like input in user search or lookup behaves safely.
+2. Create user with duplicate email returns 422.
+3. Create user with missing required fields returns 422.
+4. Create user with invalid password values returns 422.
+5. Create multiple unique users in sequence succeeds without collision.
+6. Get created user by id succeeds.
+7. Get current authenticated user succeeds.
+8. Get current authenticated user with invalid access token returns 401.
+9. Get current authenticated user without access token returns 401.
+10. Get user by id with invalid access token returns 401.
+11. Get user by id without access token returns 401.
+12. Get non-existing user by id returns 404 with authorization-style error message (observed runtime behavior).
+13. Update current user with valid data succeeds.
+14. Partial update of current user succeeds.
+15. Update current user with invalid access token returns 401.
+16. Update current user without access token returns 401.
+17. Update another user as a customer returns 403.
+18. Partial update of another user as a customer returns 403.
+19. Update another user as an admin succeeds.
+20. Update non-existing user as an admin returns 403 (observed runtime behavior).
+21. Delete created user as an admin succeeds.
+22. Get deleted user returns 404.
+23. Delete created user without authorization returns 401.
+24. Delete another user as a customer returns 403.
 
 ---
 
