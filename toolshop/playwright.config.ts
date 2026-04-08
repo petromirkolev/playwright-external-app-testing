@@ -7,7 +7,7 @@ export default defineConfig({
   workers: process.env.CI ? 3 : undefined,
   reporter: [['html']],
   use: {
-    baseURL: process.env.BASE_URL || 'https://api.practicesoftwaretesting.com',
+    baseURL: process.env.BASE_URL || 'https://api.practicesoftwaretesting.com/',
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
