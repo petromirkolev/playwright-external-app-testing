@@ -7,7 +7,13 @@ export default defineConfig({
   workers: process.env.CI ? 3 : undefined,
   reporter: [
     ['html'],
-    ['allure-playwright', { outputFolder: 'allure-results' }],
+    [
+      'allure-playwright',
+      {
+        outputFolder: 'allure-results',
+        suiteTitle: false,
+      },
+    ],
   ],
   use: {
     baseURL: process.env.BASE_URL || 'https://api.practicesoftwaretesting.com/',
