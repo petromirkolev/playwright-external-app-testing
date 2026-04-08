@@ -30,8 +30,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(updatedResponse.status()).toBe(200);
 
-    const updatedBody = await updatedResponse.json();
-    expectSuccess(updatedBody, { ...validUpdateInput, email });
+    expectSuccess(updatedResponse, { ...validUpdateInput, email });
   });
 
   test('Update current user with invalid access token returns 401', async ({
@@ -45,8 +44,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(response.status()).toBe(401);
 
-    const body = await response.json();
-    expectError(body, 'message', msg.UNAUTH);
+    expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Update current user without access token returns 401', async ({
@@ -60,8 +58,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(response.status()).toBe(401);
 
-    const body = await response.json();
-    expectError(body, 'message', msg.UNAUTH);
+    expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Update current user with partial valid data succeeds', async ({
@@ -109,8 +106,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(updatedResponse.status()).toBe(200);
 
-    const updatedBody = await updatedResponse.json();
-    expectSuccess(updatedBody, { ...validUpdateInput, email });
+    expectSuccess(updatedResponse, { ...validUpdateInput, email });
   });
 
   test('Update non-existing user as an admin returns 403', async ({
@@ -137,8 +133,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(response.status()).toBe(403);
 
-    const body = await response.json();
-    expectError(body, 'error', msg.UNAUTH_UPDATE);
+    expectError(response, 'error', msg.UNAUTH_UPDATE);
   });
 
   test('Partially update another user as a customer returns 403', async ({
@@ -153,7 +148,6 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(response.status()).toBe(403);
 
-    const body = await response.json();
-    expectError(body, 'error', msg.UNAUTH_UPDATE);
+    expectError(response, 'error', msg.UNAUTH_UPDATE);
   });
 });

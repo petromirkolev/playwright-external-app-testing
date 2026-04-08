@@ -15,8 +15,7 @@ test.describe('Toolshop API - Create user', () => {
     const response = await api.registerUser(registrationData);
     expect(response.status()).toBe(201);
 
-    const body = await response.json();
-    expectSuccess(body, registrationData);
+    expectSuccess(response, registrationData);
   });
 
   test('Create user with duplicate email returns 422', async ({
@@ -30,8 +29,7 @@ test.describe('Toolshop API - Create user', () => {
     });
     expect(response.status()).toBe(422);
 
-    const body = await response.json();
-    expectError(body, 'email', msg.REG_EMAIL_EXIST);
+    expectError(response, 'email', msg.REG_EMAIL_EXIST);
   });
 
   test('Create multiple unique users in sequence succeeds', async ({
@@ -65,8 +63,7 @@ test.describe('Toolshop API - Create user', () => {
         });
         expect(response.status()).toBe(422);
 
-        const body = await response.json();
-        expectError(body, key, error);
+        expectError(response, key, error);
       });
     }
   });
@@ -84,8 +81,7 @@ test.describe('Toolshop API - Create user', () => {
         });
         expect(response.status()).toBe(422);
 
-        const body = await response.json();
-        expectError(body, 'password', error);
+        expectError(response, 'password', error);
       });
     }
   });

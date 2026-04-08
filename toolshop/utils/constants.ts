@@ -10,6 +10,7 @@ export const msg = {
     'The password field must contain at least one uppercase and one lowercase letter.',
   ERR_PASS_SYMBOL: 'The password field must contain at least one symbol.',
   ERR_PASS_NUMBER: 'The password field must contain at least one number.',
+  ERR_INV_LOGIN_REQ: 'Invalid login request',
 
   UNAUTH: 'Unauthorized',
   UNAUTH_VIEW_USER: 'You are not authorized to view this user.',

@@ -10,7 +10,7 @@ export class UserApiClient {
     });
   }
 
-  async loginUser(input: LoginInput): Promise<APIResponse> {
+  async loginUser(input: Partial<LoginInput>): Promise<APIResponse> {
     return this.request.post('users/login', {
       data: input,
     });
@@ -59,6 +59,14 @@ export class UserApiClient {
   async getMe(token: string | undefined): Promise<APIResponse> {
     return this.request.get('users/me', {
       headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  async refreshToken(token: string | undefined | null): Promise<APIResponse> {
+    return this.request.get('users/refresh', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 }

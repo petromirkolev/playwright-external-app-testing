@@ -28,8 +28,7 @@ test.describe('Toolshop API - Delete user', () => {
     const response = await api.deleteUser(registeredUser.id, undefined);
     expect(response.status()).toBe(401);
 
-    const body = await response.json();
-    expectError(body, 'message', msg.UNAUTH);
+    expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Delete created user as a customer returns 403', async ({

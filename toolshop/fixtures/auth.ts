@@ -5,7 +5,10 @@ import { UserApiClient } from '../utils/api-client';
 
 type AuthFixtures = {
   api: UserApiClient;
+
   registrationData: RegistrationInput;
+  adminUser: LoginInput;
+
   registeredUser: { email: string; password: string; id: string };
   registeredAndLoggedInUser: {
     email: string;
@@ -13,6 +16,7 @@ type AuthFixtures = {
     id: string;
     access_token: string;
   };
+
   loggedInAsAdmin: LoginInput & { access_token: string };
 };
 
@@ -30,6 +34,10 @@ export const test = base.extend<AuthFixtures>({
 
   registrationData: async ({}, use) => {
     await use(makeRegistrationData());
+  },
+
+  adminUser: async ({}, use) => {
+    await use(adminInput);
   },
 
   registeredUser: async ({ api }, use) => {

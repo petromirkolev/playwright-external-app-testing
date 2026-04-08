@@ -1,4 +1,4 @@
-import { RegistrationInput } from '../types/user';
+import { LoginInput, RegistrationInput } from '../types/user';
 import { msg } from './constants';
 
 export const adminInput = {
@@ -20,6 +20,11 @@ export const validInput: RegistrationInput = {
   password: 'T3$tingP4$s!',
   phone: '0888888888',
   dob: '1990-03-05',
+};
+
+export const invalidInput: LoginInput = {
+  email: 'testingemail@test.com',
+  password: 'testingpassword',
 };
 
 export const validUpdateInput: Partial<RegistrationInput> = {
