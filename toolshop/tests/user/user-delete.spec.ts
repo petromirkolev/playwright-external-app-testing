@@ -5,18 +5,18 @@ import { expectError } from '../../utils/helpers';
 test.describe('Toolshop API - Delete user', () => {
   test('Delete created user as an admin succeeds', async ({
     api,
-    loggedInAsAdmin,
+    loggedInAdmin,
     registeredUser,
   }) => {
     const response = await api.deleteUser(
       registeredUser.id,
-      loggedInAsAdmin.access_token,
+      loggedInAdmin.access_token,
     );
     expect(response.status()).toBe(204);
 
     const deleteResponse = await api.getUser(
       registeredUser.id,
-      loggedInAsAdmin.access_token,
+      loggedInAdmin.access_token,
     );
     expect(deleteResponse.status()).toBe(404);
   });

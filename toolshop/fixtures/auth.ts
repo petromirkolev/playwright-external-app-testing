@@ -1,14 +1,10 @@
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect } from './api';
 import { LoginInput, RegistrationInput } from '../types/user';
 import { adminInput, uniqueEmail, validInput } from '../utils/test-data';
-import { UserApiClient } from '../utils/api-client';
 
 type AuthFixtures = {
-  api: UserApiClient;
-
   registrationData: RegistrationInput;
-  adminUser: LoginInput;
-
+  adminData: LoginInput;
   registeredUser: { email: string; password: string; id: string };
   registeredAndLoggedInUser: {
     email: string;
@@ -16,8 +12,7 @@ type AuthFixtures = {
     id: string;
     access_token: string;
   };
-
-  loggedInAsAdmin: LoginInput & { access_token: string };
+  loggedInAdmin: LoginInput & { access_token: string };
 };
 
 function makeRegistrationData(): RegistrationInput {
@@ -28,15 +23,11 @@ function makeRegistrationData(): RegistrationInput {
 }
 
 export const test = base.extend<AuthFixtures>({
-  api: async ({ request }, use) => {
-    await use(new UserApiClient(request));
-  },
-
   registrationData: async ({}, use) => {
     await use(makeRegistrationData());
   },
 
-  adminUser: async ({}, use) => {
+  adminData: async ({}, use) => {
     await use(adminInput);
   },
 
@@ -71,7 +62,7 @@ export const test = base.extend<AuthFixtures>({
     });
   },
 
-  loggedInAsAdmin: async ({ api }, use) => {
+  loggedInAdmin: async ({ api }, use) => {
     const response = await api.loginUser(adminInput);
     expect(response.status()).toBe(200);
 

@@ -88,12 +88,12 @@ test.describe('Toolshop API - Update user', () => {
   test('Update another user as an admin succeeds', async ({
     api,
     registeredUser,
-    loggedInAsAdmin,
+    loggedInAdmin,
   }) => {
     const response = await api.updateUser(
       { ...validUpdateInput, email },
       registeredUser.id,
-      loggedInAsAdmin.access_token,
+      loggedInAdmin.access_token,
     );
     expect(response.status()).toBe(200);
 
@@ -102,7 +102,7 @@ test.describe('Toolshop API - Update user', () => {
 
     const updatedResponse = await api.getUser(
       registeredUser.id,
-      loggedInAsAdmin.access_token,
+      loggedInAdmin.access_token,
     );
     expect(updatedResponse.status()).toBe(200);
 
@@ -111,12 +111,12 @@ test.describe('Toolshop API - Update user', () => {
 
   test('Update non-existing user as an admin returns 403', async ({
     api,
-    loggedInAsAdmin,
+    loggedInAdmin,
   }) => {
     const response = await api.updateUser(
       { ...validUpdateInput, email },
       '9999999',
-      loggedInAsAdmin.access_token,
+      loggedInAdmin.access_token,
     );
     expect(response.status()).toBe(403);
   });

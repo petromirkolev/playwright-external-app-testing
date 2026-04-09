@@ -13,9 +13,9 @@ test.describe('Toolshop API - Login user', () => {
 
   test('Login with valid admin credentials returns 200 and access token', async ({
     api,
-    adminUser,
+    adminData,
   }) => {
-    await expectSuccessAndToken(await api.loginUser(adminUser));
+    await expectSuccessAndToken(await api.loginUser(adminData));
   });
 
   test('Login with wrong password returns 401', async ({
