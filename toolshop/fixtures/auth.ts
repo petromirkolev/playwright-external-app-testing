@@ -31,26 +31,28 @@ export const test = base.extend<AuthFixtures>({
     await use(adminInput);
   },
 
-  registeredUser: async ({ api }, use) => {
+  registeredUser: async ({ userApi, loggedInAdmin }, use) => {
     const input = makeRegistrationData();
 
-    const response = await api.registerUser(input);
+    const response = await userApi.register(input);
     expect(response.status()).toBe(201);
 
     const data = await response.json();
 
     await use({ ...input, id: data.id });
+
+    await userApi.delete(data.id, loggedInAdmin.access_token);
   },
 
-  registeredAndLoggedInUser: async ({ api }, use) => {
+  registeredAndLoggedInUser: async ({ userApi, loggedInAdmin }, use) => {
     const input = makeRegistrationData();
 
-    const registrationResponse = await api.registerUser(input);
+    const registrationResponse = await userApi.register(input);
     expect(registrationResponse.status()).toBe(201);
 
     const registrationBody = await registrationResponse.json();
 
-    const loginResponse = await api.loginUser(input);
+    const loginResponse = await userApi.login(input);
     expect(loginResponse.status()).toBe(200);
 
     const loginBody = await loginResponse.json();
@@ -60,10 +62,12 @@ export const test = base.extend<AuthFixtures>({
       id: registrationBody.id,
       access_token: loginBody.access_token,
     });
+
+    await userApi.delete(registrationBody.id, loggedInAdmin.access_token);
   },
 
-  loggedInAdmin: async ({ api }, use) => {
-    const response = await api.loginUser(adminInput);
+  loggedInAdmin: async ({ userApi }, use) => {
+    const response = await userApi.login(adminInput);
     expect(response.status()).toBe(200);
 
     const body = await response.json();
