@@ -1,33 +1,25 @@
-import { LoginInput, RegistrationInput } from '../types/user';
 import { msg } from './constants';
 
-export const adminInput = {
+export const validAdminInput = {
   email: 'admin@practicesoftwaretesting.com',
   password: 'welcome01',
 };
 
-export const validInput = {
+export const validUserInput = {
   first_name: 'Petromir',
   last_name: 'Kolev',
-  address: {
-    street: 'Trakia',
-    city: 'Plovdiv',
-    state: 'Plovdiv',
-    country: 'Bulgaria',
-    postal_code: '4000',
-  },
   email: 'petromir@kolev.com',
   password: 'T3$tingP4$s!',
   phone: '0888888888',
   dob: '1990-03-05',
 };
 
-export const invalidInput = {
+export const invalidUserInput = {
   email: 'testingemail@test.com',
   password: 'testingpassword',
 };
 
-export const validUpdateInput = {
+export const validUserUpdateInput = {
   first_name: 'Georgi',
   last_name: 'Petrov',
   address: {
@@ -43,7 +35,7 @@ export const validUpdateInput = {
   dob: '1990-01-01',
 };
 
-export const missingReqFields = {
+export const missingReqUserFields = {
   first_name: {
     value: undefined,
     description: 'Register with missing required first name',
@@ -66,7 +58,7 @@ export const missingReqFields = {
   },
 };
 
-export const invalidPassword = {
+export const invalidUserPassword = {
   shortPassword: {
     value: 'T3$t',
     description: 'Invalid password too short',
@@ -94,7 +86,7 @@ export const invalidPassword = {
   },
 };
 
-export const productInput = {
+export const validProductInput = {
   name: 'Wrench',
   description: 'Cool wrench',
   price: 10,
@@ -105,6 +97,41 @@ export const productInput = {
   is_rental: true,
   co2_rating: 'A',
 };
+
+// to do
+export const invalidCases = [
+  {
+    name: 'Missing required name returns 422 and error message',
+    data: { name: undefined },
+    field: 'name',
+    message: msg.PROD_REQ_NAME,
+  },
+  {
+    name: 'Missing required price returns 422 and error message',
+    data: { price: undefined },
+    field: 'price',
+    message: msg.PROD_REQ_PRICE,
+  },
+  {
+    name: 'Missing required price returns 422 and error message',
+    data: { price: undefined },
+    field: 'price',
+    message: msg.PROD_REQ_PRICE,
+  },
+  {
+    name: 'Missing required price returns 422 and error message',
+    data: { price: undefined },
+    field: 'price',
+    message: msg.PROD_REQ_PRICE,
+  },
+
+  {
+    name: 'Missing required price returns 422 and error message',
+    data: { price: undefined },
+    field: 'price',
+    message: msg.PROD_REQ_PRICE,
+  },
+];
 
 export function uniqueEmail(prefix = 'api'): string {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}@toolshop.com`;

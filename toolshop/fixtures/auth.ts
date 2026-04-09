@@ -1,6 +1,10 @@
 import { test as base, expect } from './api';
 import { LoginInput, RegistrationInput } from '../types/user';
-import { adminInput, uniqueEmail, validInput } from '../utils/test-data';
+import {
+  validAdminInput,
+  uniqueEmail,
+  validUserInput,
+} from '../utils/test-data';
 
 type AuthFixtures = {
   registrationData: RegistrationInput;
@@ -17,7 +21,7 @@ type AuthFixtures = {
 
 function makeRegistrationData(): RegistrationInput {
   return {
-    ...validInput,
+    ...validUserInput,
     email: uniqueEmail(),
   };
 }
@@ -28,7 +32,7 @@ export const test = base.extend<AuthFixtures>({
   },
 
   adminData: async ({}, use) => {
-    await use(adminInput);
+    await use(validAdminInput);
   },
 
   registeredUser: async ({ userApi, loggedInAdmin }, use) => {
@@ -67,11 +71,11 @@ export const test = base.extend<AuthFixtures>({
   },
 
   loggedInAdmin: async ({ userApi }, use) => {
-    const response = await userApi.login(adminInput);
+    const response = await userApi.login(validAdminInput);
     expect(response.status()).toBe(200);
 
     const body = await response.json();
-    await use({ ...adminInput, ...body });
+    await use({ ...validAdminInput, ...body });
   },
 });
 

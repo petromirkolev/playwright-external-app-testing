@@ -5,6 +5,13 @@ import {
   expectAddProductSuccess,
 } from '../../utils/helpers';
 
+// for (const { name, data, field, message } of invalidCases) {
+//   test(name, async ({ productApi, productInput }) => {
+//     const response = await productApi.create({ ...productInput, ...data });
+//     expectAddProductError(response, field, message);
+//   });
+// }
+
 test.describe('Toolshop API - Create product', () => {
   test('Create product with valid data returns 200 and the created product', async ({
     productApi,

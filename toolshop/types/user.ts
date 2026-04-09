@@ -6,7 +6,7 @@ export type LoginInput = {
 export type RegistrationInput = LoginInput & {
   first_name: string;
   last_name: string;
-  address: {
+  address?: {
     street: string;
     city: string;
     state: string;

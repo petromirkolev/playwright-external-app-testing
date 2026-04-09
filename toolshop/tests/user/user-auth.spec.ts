@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError } from '../../utils/helpers';
-import { validUpdateInput } from '../../utils/test-data';
+import { validUserUpdateInput } from '../../utils/test-data';
 
 test.describe('Toolshop API - User authentication', () => {
   test('Reusing a valid access token on a protected endpoint succeeds', async ({
@@ -95,7 +95,7 @@ test.describe('Toolshop API - User authentication', () => {
     registeredAndLoggedInUser,
   }) => {
     const response = await userApi.partialUpdate(
-      { first_name: validUpdateInput.first_name },
+      { first_name: validUserUpdateInput.first_name },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
