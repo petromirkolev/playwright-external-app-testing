@@ -6,7 +6,7 @@ export const adminInput = {
   password: 'welcome01',
 };
 
-export const validInput: RegistrationInput = {
+export const validInput = {
   first_name: 'Petromir',
   last_name: 'Kolev',
   address: {
@@ -22,12 +22,12 @@ export const validInput: RegistrationInput = {
   dob: '1990-03-05',
 };
 
-export const invalidInput: LoginInput = {
+export const invalidInput = {
   email: 'testingemail@test.com',
   password: 'testingpassword',
 };
 
-export const validUpdateInput: Partial<RegistrationInput> = {
+export const validUpdateInput = {
   first_name: 'Georgi',
   last_name: 'Petrov',
   address: {
@@ -92,6 +92,18 @@ export const invalidPassword = {
     description: 'Invalid password no number',
     error: msg.ERR_PASS_NUMBER,
   },
+};
+
+export const productInput = {
+  name: 'Wrench',
+  description: 'Cool wrench',
+  price: 10,
+  brand_id: '01KNRYCNRTE7V72MKPFX96T0MN', // real brand id
+  category_id: '01KNRYCP373HPQFFZXRTF0A28D', // real category id
+  product_image_id: '01KNRYCP4AHMWNPY0QQ07DZMVC', // real product image id
+  is_location_offer: true,
+  is_rental: true,
+  co2_rating: 'A',
 };
 
 export function uniqueEmail(prefix = 'api'): string {

@@ -11,10 +11,10 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update current user with valid data succeeds', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
@@ -24,7 +24,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await api.getUser(
+    const updatedResponse = await userApi.get(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -34,10 +34,10 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update current user with invalid access token returns 401', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       registeredAndLoggedInUser.id,
       '99999',
@@ -48,10 +48,10 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update current user without access token returns 401', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       registeredAndLoggedInUser.id,
       undefined,
@@ -62,10 +62,10 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update current user with partial valid data succeeds', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.partialUpdateUser(
+    const response = await userApi.partialUpdate(
       { email },
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
@@ -75,7 +75,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await api.getUser(
+    const updatedResponse = await userApi.get(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -86,11 +86,11 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update another user as an admin succeeds', async ({
-    api,
+    userApi,
     registeredUser,
     loggedInAdmin,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       registeredUser.id,
       loggedInAdmin.access_token,
@@ -100,7 +100,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await api.getUser(
+    const updatedResponse = await userApi.get(
       registeredUser.id,
       loggedInAdmin.access_token,
     );
@@ -110,10 +110,10 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update non-existing user as an admin returns 403', async ({
-    api,
+    userApi,
     loggedInAdmin,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       '9999999',
       loggedInAdmin.access_token,
@@ -122,11 +122,11 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Update another user as a customer returns 403', async ({
-    api,
+    userApi,
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.updateUser(
+    const response = await userApi.update(
       { ...validUpdateInput, email },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
@@ -137,11 +137,11 @@ test.describe('Toolshop API - Update user', () => {
   });
 
   test('Partially update another user as a customer returns 403', async ({
-    api,
+    userApi,
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.partialUpdateUser(
+    const response = await userApi.partialUpdate(
       { email },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,

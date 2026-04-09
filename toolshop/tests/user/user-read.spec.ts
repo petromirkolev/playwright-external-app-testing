@@ -4,10 +4,10 @@ import { expectError, expectSuccess } from '../../utils/helpers';
 
 test.describe('Toolshop API - Get user', () => {
   test('Get created user by id succeeds', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getUser(
+    const response = await userApi.get(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -17,38 +17,40 @@ test.describe('Toolshop API - Get user', () => {
   });
 
   test('Get current authenticated user succeeds', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getMe(registeredAndLoggedInUser.access_token);
+    const response = await userApi.getMe(
+      registeredAndLoggedInUser.access_token,
+    );
     expect(response.status()).toBe(200);
 
     expectSuccess(response, registeredAndLoggedInUser);
   });
 
   test('Get current authenticated user with invalid access token returns 401', async ({
-    api,
+    userApi,
   }) => {
-    const response = await api.getMe('#');
+    const response = await userApi.getMe('#');
     expect(response.status()).toBe(401);
 
     expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Get current authenticated user without access token returns 401', async ({
-    api,
+    userApi,
   }) => {
-    const response = await api.getMe(undefined);
+    const response = await userApi.getMe(undefined);
     expect(response.status()).toBe(401);
 
     expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Get non-existing user by id returns 404', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getUser(
+    const response = await userApi.get(
       '999999999999999',
       registeredAndLoggedInUser.access_token,
     );
@@ -58,20 +60,20 @@ test.describe('Toolshop API - Get user', () => {
   });
 
   test('Get user by id without access token returns 401', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getUser(registeredAndLoggedInUser.id, undefined);
+    const response = await userApi.get(registeredAndLoggedInUser.id, undefined);
     expect(response.status()).toBe(401);
 
     expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Get user by id with invalid access token returns 401', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getUser(registeredAndLoggedInUser.id, '#');
+    const response = await userApi.get(registeredAndLoggedInUser.id, '#');
     expect(response.status()).toBe(401);
 
     expectError(response, 'message', msg.UNAUTH);

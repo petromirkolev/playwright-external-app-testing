@@ -9,21 +9,21 @@ import {
 
 test.describe('Toolshop API - Create user', () => {
   test('Create user with valid unique data succeeds', async ({
-    api,
+    userApi,
     registrationData,
   }) => {
-    const response = await api.registerUser(registrationData);
+    const response = await userApi.register(registrationData);
     expect(response.status()).toBe(201);
 
     expectSuccess(response, registrationData);
   });
 
   test('Create user with duplicate email returns 422', async ({
-    api,
+    userApi,
     registeredUser,
     registrationData,
   }) => {
-    const response = await api.registerUser({
+    const response = await userApi.register({
       ...registrationData,
       email: registeredUser.email,
     });
@@ -33,13 +33,13 @@ test.describe('Toolshop API - Create user', () => {
   });
 
   test('Create multiple unique users in sequence succeeds', async ({
-    api,
+    userApi,
     registrationData,
   }) => {
     const numberOfUsers = 3;
 
     for (let i = 0; i < numberOfUsers; i++) {
-      const response = await api.registerUser({
+      const response = await userApi.register({
         ...registrationData,
         email: uniqueEmail(),
       });
@@ -56,8 +56,8 @@ test.describe('Toolshop API - Create user', () => {
     >) {
       const { value, description, error } = missingReqFields[key];
 
-      test(description, async ({ api, registrationData }) => {
-        const response = await api.registerUser({
+      test(description, async ({ userApi, registrationData }) => {
+        const response = await userApi.register({
           ...registrationData,
           [key]: value,
         });
@@ -74,8 +74,8 @@ test.describe('Toolshop API - Create user', () => {
     >) {
       const { value, description, error } = invalidPassword[key];
 
-      test(description, async ({ api, registrationData }) => {
-        const response = await api.registerUser({
+      test(description, async ({ userApi, registrationData }) => {
+        const response = await userApi.register({
           ...registrationData,
           password: value,
         });

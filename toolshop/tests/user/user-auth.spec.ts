@@ -5,23 +5,25 @@ import { validUpdateInput } from '../../utils/test-data';
 
 test.describe('Toolshop API - User authentication', () => {
   test('Reusing a valid access token on a protected endpoint succeeds', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getMe(registeredAndLoggedInUser.access_token);
+    const response = await userApi.getMe(
+      registeredAndLoggedInUser.access_token,
+    );
     expect(response.status()).toBe(200);
 
-    const secondResponse = await api.getMe(
+    const secondResponse = await userApi.getMe(
       registeredAndLoggedInUser.access_token,
     );
     expect(secondResponse.status()).toBe(200);
   });
 
   test('Refresh access token provides new token', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.refreshToken(
+    const response = await userApi.refreshToken(
       registeredAndLoggedInUser.access_token,
     );
     expect(response.status()).toBe(200);
@@ -33,16 +35,16 @@ test.describe('Toolshop API - User authentication', () => {
   });
 
   test('Missing access token on a protected endpoint is rejected', async ({
-    api,
+    userApi,
   }) => {
-    const response = await api.getMe(undefined);
+    const response = await userApi.getMe(undefined);
     expect(response.status()).toBe(401);
 
     expectError(response, 'message', msg.UNAUTH);
   });
 
   test('Malformed access token returns 500', async ({
-    api,
+    userApi,
     registeredAndLoggedInUser,
   }) => {
     const malformedToken = registeredAndLoggedInUser.access_token
@@ -50,37 +52,37 @@ test.describe('Toolshop API - User authentication', () => {
       .slice(0, 2)
       .join('.');
 
-    const response = await api.refreshToken(malformedToken);
+    const response = await userApi.refreshToken(malformedToken);
     expect(response.status()).toBe(500);
   });
 
   test('Two consecutive logins return independently usable tokens', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    const firstResponse = await api.loginUser(registeredUser);
+    const firstResponse = await userApi.login(registeredUser);
     const firstBody = await firstResponse.json();
     const firstToken = firstBody.access_token;
 
-    const secondResponse = await api.loginUser(registeredUser);
+    const secondResponse = await userApi.login(registeredUser);
     const secondBody = await secondResponse.json();
     const secondToken = secondBody.access_token;
 
     expect(firstToken).not.toMatch(secondToken);
 
-    const firstMe = await api.getMe(firstToken);
+    const firstMe = await userApi.getMe(firstToken);
     expect(firstMe.status()).toBe(200);
 
-    const secondMe = await api.getMe(secondToken);
+    const secondMe = await userApi.getMe(secondToken);
     expect(secondMe.status()).toBe(200);
   });
 
   test('One user token cannot retrieve another user by id and returns 404', async ({
-    api,
+    userApi,
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.getUser(
+    const response = await userApi.get(
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -88,11 +90,11 @@ test.describe('Toolshop API - User authentication', () => {
   });
 
   test('One user token cannot modify another user by id and returns 403', async ({
-    api,
+    userApi,
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await api.partialUpdateUser(
+    const response = await userApi.partialUpdate(
       { first_name: validUpdateInput.first_name },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,

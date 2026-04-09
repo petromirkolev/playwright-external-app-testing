@@ -5,24 +5,24 @@ import { invalidInput } from '../../utils/test-data';
 
 test.describe('Toolshop API - Login user', () => {
   test('Login with valid customer credentials returns 200 and access token', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    await expectSuccessAndToken(await api.loginUser(registeredUser));
+    await expectSuccessAndToken(await userApi.login(registeredUser));
   });
 
   test('Login with valid admin credentials returns 200 and access token', async ({
-    api,
+    userApi,
     adminData,
   }) => {
-    await expectSuccessAndToken(await api.loginUser(adminData));
+    await expectSuccessAndToken(await userApi.login(adminData));
   });
 
   test('Login with wrong password returns 401', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    const response = await api.loginUser({
+    const response = await userApi.login({
       email: registeredUser.email,
       password: invalidInput.password,
     });
@@ -32,10 +32,10 @@ test.describe('Toolshop API - Login user', () => {
   });
 
   test('Login with unknown email returns 401', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    const response = await api.loginUser({
+    const response = await userApi.login({
       email: invalidInput.email,
       password: registeredUser.password,
     });
@@ -46,10 +46,10 @@ test.describe('Toolshop API - Login user', () => {
   });
 
   test('Login with missing email returns 401', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    const response = await api.loginUser({
+    const response = await userApi.login({
       email: undefined,
       password: registeredUser.password,
     });
@@ -60,10 +60,10 @@ test.describe('Toolshop API - Login user', () => {
   });
 
   test('Login with missing password returns 401', async ({
-    api,
+    userApi,
     registeredUser,
   }) => {
-    const response = await api.loginUser({
+    const response = await userApi.login({
       email: registeredUser.email,
       password: undefined,
     });
@@ -73,8 +73,8 @@ test.describe('Toolshop API - Login user', () => {
     expectError(response, 'error', msg.ERR_INV_LOGIN_REQ);
   });
 
-  test('Login with empty credentials returns 401', async ({ api }) => {
-    const response = await api.loginUser({});
+  test('Login with empty credentials returns 401', async ({ userApi }) => {
+    const response = await userApi.login({});
 
     expect(response.status()).toBe(401);
 

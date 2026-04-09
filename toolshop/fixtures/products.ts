@@ -1,10 +1,10 @@
-import { Product } from '../types/product';
+import { ProductInput } from '../types/product';
 import { productInput } from '../utils/test-data';
 import { test as base, expect } from './auth';
 
 type ProductFixtures = {
-  productData: Product;
-  productWithBrandCategoryImageIds: Product;
+  productData: ProductInput;
+  productInput: ProductInput;
 };
 
 export const test = base.extend<ProductFixtures>({
@@ -12,10 +12,7 @@ export const test = base.extend<ProductFixtures>({
     await use(productInput);
   },
 
-  productWithBrandCategoryImageIds: async (
-    { productApi, productData },
-    use,
-  ) => {
+  productInput: async ({ productApi, productData }, use) => {
     const brandsResponse = await productApi.getBrands();
     const brandsBody = await brandsResponse.json();
 
