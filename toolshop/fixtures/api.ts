@@ -1,13 +1,19 @@
 import { test as base, expect } from '@playwright/test';
-import { UserApiClient } from '../utils/api-client';
+import { UserApiClient } from '../utils/user-api-client';
+import { ProductApiClient } from '../utils/product-api-client';
 
 type AuthFixtures = {
-  api: UserApiClient;
+  userApi: UserApiClient;
+  productApi: ProductApiClient;
 };
 
 export const test = base.extend<AuthFixtures>({
-  api: async ({ request }, use) => {
+  userApi: async ({ request }, use) => {
     await use(new UserApiClient(request));
+  },
+
+  productApi: async ({ request }, use) => {
+    await use(new ProductApiClient(request));
   },
 });
 
