@@ -14,34 +14,48 @@ export const validProductInput = {
 
 export const missingProductInput = [
   {
-    name: 'Missing required name returns 422 and error message',
+    name: 'Required name returns 422 and error message',
     data: { name: undefined },
     field: 'name',
     message: msg.PROD_REQ_NAME,
   },
   {
-    name: 'Missing required price returns 422 and error message',
+    name: 'Required price returns 422 and error message',
     data: { price: undefined },
     field: 'price',
     message: msg.PROD_REQ_PRICE,
   },
   {
-    name: 'Missing required price returns 422 and error message',
-    data: { price: undefined },
-    field: 'price',
-    message: msg.PROD_REQ_PRICE,
+    name: 'Required category_id returns 422 and error message',
+    data: { category_id: undefined },
+    field: 'category_id',
+    message: msg.PROD_REQ_CAT,
   },
   {
-    name: 'Missing required price returns 422 and error message',
-    data: { price: undefined },
-    field: 'price',
-    message: msg.PROD_REQ_PRICE,
+    name: 'Required brand_id returns 422 and error messagee',
+    data: { brand_id: undefined },
+    field: 'brand_id',
+    message: msg.PROD_REQ_BRAND,
   },
 
   {
-    name: 'Missing required price returns 422 and error message',
-    data: { price: undefined },
-    field: 'price',
-    message: msg.PROD_REQ_PRICE,
+    name: 'Required is_location_offer returns 422 and error message',
+    data: { is_location_offer: undefined },
+    field: 'is_location_offer',
+    message: msg.PROD_REQ_LOC,
+  },
+
+  {
+    name: 'Required is_rental returns 422 and error message',
+    data: { is_rental: undefined },
+    field: 'is_rental',
+    message: msg.PROD_REQ_RENT,
+  },
+
+  {
+    name: 'Required product_image_id returns 422 and error message',
+    data: { product_image_id: undefined },
+    field: 'product_image_id',
+    message: msg.PROD_REQ_IMG,
   },
 ];

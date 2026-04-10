@@ -4,13 +4,7 @@ import {
   expectAddProductError,
   expectAddProductSuccess,
 } from '../../utils/helpers';
-
-// for (const { name, data, field, message } of invalidCases) {
-//   test(name, async ({ productApi, productInput }) => {
-//     const response = await productApi.create({ ...productInput, ...data });
-//     expectAddProductError(response, field, message);
-//   });
-// }
+import { missingProductInput } from '../../utils/product-data';
 
 test.describe('Toolshop API - Create product', () => {
   test('Create product with valid data returns 200 and the created product', async ({
@@ -22,88 +16,13 @@ test.describe('Toolshop API - Create product', () => {
     expectAddProductSuccess(response, productInput);
   });
 
-  test('Create product with missing required name returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      name: undefined,
-    });
-
-    expectAddProductError(response, 'name', msg.PROD_REQ_NAME);
-  });
-
-  test('Create product with missing required price returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      price: undefined,
-    });
-
-    expectAddProductError(response, 'price', msg.PROD_REQ_PRICE);
-  });
-
-  test('Create product with missing required category_id returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      category_id: undefined,
-    });
-
-    expectAddProductError(response, 'category_id', msg.PROD_REQ_CAT);
-  });
-
-  test('Create product with missing required brand_id returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      brand_id: undefined,
-    });
-
-    expectAddProductError(response, 'brand_id', msg.PROD_REQ_BRAND);
-  });
-
-  test('Create product with missing required is_location_offer returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      is_location_offer: undefined,
-    });
-
-    expectAddProductError(response, 'is_location_offer', msg.PROD_REQ_LOC);
-  });
-
-  test('Create product with missing required is_rental returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      is_rental: undefined,
-    });
-
-    expectAddProductError(response, 'is_rental', msg.PROD_REQ_RENT);
-  });
-
-  test('Create product with missing required product_image_id returns 422 and error message', async ({
-    productApi,
-    productInput,
-  }) => {
-    const response = await productApi.create({
-      ...productInput,
-      product_image_id: undefined,
-    });
-
-    expectAddProductError(response, 'product_image_id', msg.PROD_REQ_IMG);
+  test.describe('Missing fields:', () => {
+    for (const { name, data, field, message } of missingProductInput) {
+      test(name, async ({ productApi, productInput }) => {
+        const response = await productApi.create({ ...productInput, ...data });
+        expectAddProductError(response, field, message);
+      });
+    }
   });
 
   test('Create product with missing all fields returns 422 and error message', async ({
