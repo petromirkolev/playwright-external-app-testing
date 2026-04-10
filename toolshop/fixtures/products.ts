@@ -1,5 +1,5 @@
 import { ProductInput } from '../types/product';
-import { validProductInput } from '../utils/test-data';
+import { validProductInput } from '../utils/product-data';
 import { test as base, expect } from './auth';
 
 type ProductFixtures = {

@@ -2,10 +2,10 @@ import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccess } from '../../utils/helpers';
 import {
-  invalidUserPassword,
-  missingReqUserFields,
+  invalidPasswordInput,
+  missingReqFieldsInput,
   uniqueEmail,
-} from '../../utils/test-data';
+} from '../../utils/user-data';
 
 test.describe('Toolshop API - Create user', () => {
   test('Create user with valid unique data succeeds', async ({
@@ -51,10 +51,10 @@ test.describe('Toolshop API - Create user', () => {
   });
 
   test.describe('Missing required fields', () => {
-    for (const key of Object.keys(missingReqUserFields) as Array<
-      keyof typeof missingReqUserFields
+    for (const key of Object.keys(missingReqFieldsInput) as Array<
+      keyof typeof missingReqFieldsInput
     >) {
-      const { value, description, error } = missingReqUserFields[key];
+      const { value, description, error } = missingReqFieldsInput[key];
 
       test(description, async ({ userApi, registrationData }) => {
         const response = await userApi.register({
@@ -69,10 +69,10 @@ test.describe('Toolshop API - Create user', () => {
   });
 
   test.describe('Invalid password values', () => {
-    for (const key of Object.keys(invalidUserPassword) as Array<
-      keyof typeof invalidUserPassword
+    for (const key of Object.keys(invalidPasswordInput) as Array<
+      keyof typeof invalidPasswordInput
     >) {
-      const { value, description, error } = invalidUserPassword[key];
+      const { value, description, error } = invalidPasswordInput[key];
 
       test(description, async ({ userApi, registrationData }) => {
         const response = await userApi.register({

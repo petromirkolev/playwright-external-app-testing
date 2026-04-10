@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccessAndToken } from '../../utils/helpers';
-import { invalidUserInput, validUserInput } from '../../utils/test-data';
+import { nonExistingUserInput, userInput } from '../../utils/user-data';
 
 test.describe('Toolshop API - Login user', () => {
   test('Login with valid customer credentials returns 200 and access token', async ({
@@ -24,7 +24,7 @@ test.describe('Toolshop API - Login user', () => {
   }) => {
     const response = await userApi.login({
       email: registeredUser.email,
-      password: invalidUserInput.password,
+      password: nonExistingUserInput.password,
     });
     expect(response.status()).toBe(401);
 
@@ -36,7 +36,7 @@ test.describe('Toolshop API - Login user', () => {
     registeredUser,
   }) => {
     const response = await userApi.login({
-      email: validUserInput.email,
+      email: userInput.email,
       password: registeredUser.password,
     });
 

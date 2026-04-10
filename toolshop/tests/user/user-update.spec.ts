@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccess } from '../../utils/helpers';
-import { uniqueEmail, validUserUpdateInput } from '../../utils/test-data';
+import { uniqueEmail, userUpdateInput } from '../../utils/user-data';
 
 test.describe('Toolshop API - Update user', () => {
   let email: string;
@@ -15,7 +15,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredAndLoggedInUser,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
+      { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -30,7 +30,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(updatedResponse.status()).toBe(200);
 
-    expectSuccess(updatedResponse, { ...validUserUpdateInput, email });
+    expectSuccess(updatedResponse, { ...userUpdateInput, email });
   });
 
   test('Update current user with invalid access token returns 401', async ({
@@ -38,7 +38,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredAndLoggedInUser,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
+      { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       '99999',
     );
@@ -52,7 +52,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredAndLoggedInUser,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
+      { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       undefined,
     );
@@ -91,7 +91,7 @@ test.describe('Toolshop API - Update user', () => {
     loggedInAdmin,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
+      { ...userUpdateInput, email },
       registeredUser.id,
       loggedInAdmin.access_token,
     );
@@ -106,7 +106,7 @@ test.describe('Toolshop API - Update user', () => {
     );
     expect(updatedResponse.status()).toBe(200);
 
-    expectSuccess(updatedResponse, { ...validUserUpdateInput, email });
+    expectSuccess(updatedResponse, { ...userUpdateInput, email });
   });
 
   test('Update non-existing user as an admin returns 403', async ({
@@ -114,8 +114,8 @@ test.describe('Toolshop API - Update user', () => {
     loggedInAdmin,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
-      '9999999',
+      { ...userUpdateInput, email },
+      '99999',
       loggedInAdmin.access_token,
     );
     expect(response.status()).toBe(403);
@@ -127,7 +127,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredAndLoggedInUser,
   }) => {
     const response = await userApi.update(
-      { ...validUserUpdateInput, email },
+      { ...userUpdateInput, email },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
