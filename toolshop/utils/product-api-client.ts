@@ -15,7 +15,7 @@ export class ProductApiClient {
     });
   }
 
-  async getOne(id: string): Promise<APIResponse> {
+  async getOne(id: string | undefined): Promise<APIResponse> {
     return this.request.get(`products/${id}`);
   }
 
