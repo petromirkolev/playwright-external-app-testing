@@ -59,3 +59,7 @@ export const missingProductInput = [
     message: msg.PROD_REQ_IMG,
   },
 ];
+
+export function uniqueProductName(prefix = 'product'): string {
+  return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+}

@@ -16,7 +16,7 @@ test.describe('Toolshop API - Create product', () => {
     expectAddProductSuccess(response, productInput);
   });
 
-  test.describe('Missing fields:', () => {
+  test.describe('Missing fields', () => {
     for (const { name, data, field, message } of missingProductInput) {
       test(name, async ({ productApi, productInput }) => {
         const response = await productApi.create({ ...productInput, ...data });
