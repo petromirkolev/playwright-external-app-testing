@@ -15,6 +15,14 @@ export class ProductApiClient {
     });
   }
 
+  async getOne(id: string): Promise<APIResponse> {
+    return this.request.get(`products/${id}`);
+  }
+
+  async getAll(): Promise<APIResponse> {
+    return this.request.get('products');
+  }
+
   async getBrands(): Promise<APIResponse> {
     return this.request.get('brands');
   }

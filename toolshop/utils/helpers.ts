@@ -1,6 +1,6 @@
 import { APIResponse, expect } from '@playwright/test';
 import { RegistrationInput } from '../types/user';
-import { ProductInput, ProductResponse } from '../types/product';
+import { ProductInput } from '../types/product';
 
 export async function expectSuccess(
   response: APIResponse,
@@ -57,4 +57,29 @@ export async function expectAddProductError(
   const body = await response.json();
 
   expect(body[field]).toContain(errorMessage);
+}
+
+export async function expectGetProductSuccess(
+  response: APIResponse,
+  id: string,
+) {
+  expect(response.status()).toBe(200);
+
+  const body = await response.json();
+
+  expect(id).toBe(body.id);
+}
+
+export async function expectGetProductError(
+  response: APIResponse,
+  field: string,
+  message: string,
+) {
+  expect(response.status()).toBe(404);
+
+  const body = await response.json();
+  expect(body).toHaveProperty(field);
+
+  const messages = Array.isArray(body[field]) ? body[field] : [body[field]];
+  expect(messages).toContain(message);
 }

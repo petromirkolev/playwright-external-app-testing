@@ -16,6 +16,7 @@ export const msg = {
 
   PROD_STR_NAME: 'The name field must be a string.',
   PROD_STR_IMG: 'The product image id field must be a string.',
+  PROD_NOT_FOUND: 'Requested item not found',
 
   ERR_PASS_SHORT: 'The password field must be at least 8 characters.',
   ERR_PASS_UPPER_LOWER:
