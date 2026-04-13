@@ -9,6 +9,15 @@ export class ProductApiClient {
     });
   }
 
+  async update(
+    input: Record<string, unknown>,
+    id: string,
+  ): Promise<APIResponse> {
+    return this.request.put(`products/${id}`, {
+      data: input,
+    });
+  }
+
   async delete(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`products/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
