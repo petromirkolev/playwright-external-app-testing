@@ -24,7 +24,6 @@ test.describe('Toolshop API - Read product', () => {
 
   test('Get product with non-existing id returns 201 and data', async ({
     productApi,
-    customProduct,
   }) => {
     const nonExistingId = '999999';
     const response = await productApi.getOne(nonExistingId);
