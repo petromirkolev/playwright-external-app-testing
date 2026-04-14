@@ -18,7 +18,7 @@ test.describe('Toolshop API - Create user', () => {
     expectSuccess(response, registrationData);
   });
 
-  test('Create user with duplicate email returns 422', async ({
+  test('Create user with duplicate email returns 409', async ({
     userApi,
     registeredUser,
     registrationData,
@@ -27,7 +27,7 @@ test.describe('Toolshop API - Create user', () => {
       ...registrationData,
       email: registeredUser.email,
     });
-    expect(response.status()).toBe(422);
+    expect(response.status()).toBe(409);
 
     expectError(response, 'email', msg.REG_EMAIL_EXIST);
   });
