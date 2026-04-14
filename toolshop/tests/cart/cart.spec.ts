@@ -1,5 +1,10 @@
 import { test, expect } from '../../fixtures/cart';
-import { expectEmptyCartSuccess, registerUser } from '../../utils/cart-helpers';
+import {
+  expectAddItemSuccess,
+  expectCartQuantity,
+  expectEmptyCartSuccess,
+  registerUser,
+} from '../../utils/cart-helpers';
 
 test.describe('Toolshop API - Cart', () => {
   test.describe('Get cart', () => {
@@ -39,13 +44,92 @@ test.describe('Toolshop API - Cart', () => {
   });
 
   test.describe('Add product', () => {
-    // Add valid product to cart returns success and creates one cart line.
-    // Add same product again updates cart according to actual runtime behavior:
-    // either increments quantity
-    // or adds another line item
-    // Add two different valid products results in both appearing in cart.
-    // Added product appears in subsequent cart fetch.
-    // Cart totals/subtotals update correctly after adding a product.
+    test('Add valid product to cart returns 200 and updates cart', async ({
+      cartApi,
+      customProduct,
+      userWithEmptyCart,
+    }) => {
+      const response = await cartApi.add(
+        userWithEmptyCart.id,
+        customProduct.id,
+        1,
+        userWithEmptyCart.access_token,
+      );
+      expect(response.status()).toBe(200);
+
+      await expectCartQuantity(
+        cartApi,
+        userWithEmptyCart.id,
+        customProduct.id,
+        1,
+      );
+    });
+
+    test('Add same product returns 200 and updates cart quantity', async ({
+      cartApi,
+      customProduct,
+      userWithEmptyCart,
+    }) => {
+      await cartApi.add(
+        userWithEmptyCart.id,
+        customProduct.id,
+        1,
+        userWithEmptyCart.access_token,
+      );
+
+      await cartApi.add(
+        userWithEmptyCart.id,
+        customProduct.id,
+        2,
+        userWithEmptyCart.access_token,
+      );
+
+      await expectCartQuantity(
+        cartApi,
+        userWithEmptyCart.id,
+        customProduct.id,
+        3,
+      );
+    });
+
+    test('Add two different valid products results in both appearing in cart', async ({
+      cartApi,
+      productApi,
+      productInput,
+      customProduct,
+      userWithEmptyCart,
+    }) => {
+      const createResponse = await productApi.create(productInput);
+      expect(createResponse.status()).toBe(201);
+
+      const createdProduct = await createResponse.json();
+
+      const addFirstResponse = await cartApi.add(
+        userWithEmptyCart.id,
+        createdProduct.id,
+        1,
+        userWithEmptyCart.access_token,
+      );
+      expect(addFirstResponse.status()).toBe(200);
+
+      const addSecondResponse = await cartApi.add(
+        userWithEmptyCart.id,
+        customProduct.id,
+        1,
+        userWithEmptyCart.access_token,
+      );
+      expect(addSecondResponse.status()).toBe(200);
+
+      const cartResponse = await cartApi.get(userWithEmptyCart.id);
+      expect(cartResponse.status()).toBe(200);
+
+      const cartBody = await cartResponse.json();
+      const productIds = cartBody.cart_items.map((item) => item.product_id);
+
+      expect(cartBody.cart_items).toHaveLength(2);
+      expect(productIds).toContain(createdProduct.id);
+      expect(productIds).toContain(customProduct.id);
+    });
   });
 
   test.describe('Reject invalid product input', () => {
