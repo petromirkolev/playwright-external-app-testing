@@ -9,6 +9,14 @@ export class ProductApiClient {
     });
   }
 
+  async getOne(id: string | undefined): Promise<APIResponse> {
+    return this.request.get(`products/${id}`);
+  }
+
+  async getAll(): Promise<APIResponse> {
+    return this.request.get('products');
+  }
+
   async update(
     input: Record<string, unknown>,
     id: string,
@@ -33,12 +41,8 @@ export class ProductApiClient {
     });
   }
 
-  async getOne(id: string | undefined): Promise<APIResponse> {
-    return this.request.get(`products/${id}`);
-  }
-
-  async getAll(): Promise<APIResponse> {
-    return this.request.get('products');
+  async search(q: string, page: number): Promise<APIResponse> {
+    return this.request.get(`products/search?q=${q}&page=${page}`);
   }
 
   async getBrands(): Promise<APIResponse> {
