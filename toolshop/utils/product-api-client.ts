@@ -45,6 +45,13 @@ export class ProductApiClient {
     return this.request.get(`products/search?q=${q}&page=${page}`);
   }
 
+  async sort(
+    query: 'name' | 'price' | string,
+    order: 'asc' | 'desc' | string,
+  ): Promise<APIResponse> {
+    return this.request.get(`products/?sort=${query}%2C${order}`);
+  }
+
   async getBrands(): Promise<APIResponse> {
     return this.request.get('brands');
   }

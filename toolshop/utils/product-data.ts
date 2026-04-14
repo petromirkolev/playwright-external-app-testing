@@ -155,6 +155,29 @@ export const missingProductInput = [
   },
 ];
 
+export const sortCases = [
+  {
+    name: 'Sort by name returns 200 and ASC name order',
+    field: 'name',
+    direction: 'asc',
+  },
+  {
+    name: 'Sort by name returns 200 and DESC name order',
+    field: 'name',
+    direction: 'desc',
+  },
+  {
+    name: 'Sort by price returns 200 and ASC price order',
+    field: 'price',
+    direction: 'asc',
+  },
+  {
+    name: 'Sort by price returns 200 and DESC price order',
+    field: 'price',
+    direction: 'desc',
+  },
+];
+
 export function uniqueProductName(prefix = 'product'): string {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 }

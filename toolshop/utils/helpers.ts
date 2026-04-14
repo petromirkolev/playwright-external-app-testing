@@ -101,6 +101,32 @@ export async function expectDeleteProductError(
   expect(body.message).toBe(message);
 }
 
+export async function expectSortProductSuccess(
+  response: APIResponse,
+  field: string,
+  order: string,
+) {
+  expect(response.status()).toBe(200);
+
+  const body = await response.json();
+  const actual = body.data.map((item: any) => item.field);
+  let expected;
+
+  if (field === 'name' && order === 'asc') {
+    expected = [...actual].sort((a, b) => a.localeCompare(b));
+  } else {
+    expected = [...actual].sort((a, b) => b.localeCompare(a));
+  }
+
+  if (field === 'price' && order === 'asc') {
+    expected = [...actual].sort((a, b) => a - b);
+  } else {
+    expected = [...actual].sort((a, b) => b - a);
+  }
+
+  expect(actual).toEqual(expected);
+}
+
 export async function expectUpdateProductError(
   response: APIResponse,
   client: ProductApiClient,

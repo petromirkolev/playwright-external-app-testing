@@ -1,6 +1,28 @@
-// 17. Sort by name ascending works.
-// 18. Sort by name descending works.
-// 19. Sort by price ascending works.
-// 20. Sort by price descending works.
-// 21. Invalid sort field is rejected or safely ignored.
-// 22. Invalid sort direction is rejected or safely ignored.
+import { test, expect } from '../../fixtures/products';
+import { expectSortProductSuccess } from '../../utils/helpers';
+import { sortCases } from '../../utils/product-data';
+
+test.describe('Toolshop API - Sort products', () => {
+  test.describe('Valid sort', () => {
+    for (const { name, field, direction } of sortCases) {
+      test(name, async ({ productApi }) => {
+        const response = await productApi.sort(field, direction);
+        await expectSortProductSuccess(response, field, direction);
+      });
+    }
+  });
+
+  test('Invalid sort field returns 500', async ({ productApi }) => {
+    const response = await productApi.sort('test', 'desc');
+
+    expect(response.status()).toBe(500);
+  });
+
+  test('Invalid sort direction returns 200 and ASC order', async ({
+    productApi,
+  }) => {
+    const response = await productApi.sort('name', 'test');
+
+    await expectSortProductSuccess(response, 'name', 'asc');
+  });
+});
