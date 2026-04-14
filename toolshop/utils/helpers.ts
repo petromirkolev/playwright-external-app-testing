@@ -1,8 +1,8 @@
 import { APIResponse, expect } from '@playwright/test';
 import { RegistrationInput } from '../types/user';
-import { ProductInput, ProductResponse } from '../types/product';
-import { UserApiClient } from './user-api-client';
+import { ProductInput } from '../types/product';
 import { ProductApiClient } from './product-api-client';
+import { msg } from './constants';
 
 export async function expectSuccess(
   response: APIResponse,
@@ -75,6 +75,30 @@ export async function expectUpdateProductSuccess(
   const productBody = await productResponse.json();
   const [field, expectedValue] = Object.entries(data)[0];
   expect(productBody[field]).toBe(expectedValue);
+}
+
+export async function expectDeleteProductSuccess(
+  response: APIResponse,
+  client: ProductApiClient,
+  id: string,
+): Promise<void> {
+  expect(response.status()).toBe(204);
+
+  const getResponse = await client.getOne(id);
+
+  expect(getResponse.status()).toBe(404);
+}
+
+export async function expectDeleteProductError(
+  response: APIResponse,
+  status: number,
+  message: string | undefined,
+): Promise<void> {
+  expect(response.status()).toBe(status);
+
+  const body = await response.json();
+
+  expect(body.message).toBe(message);
 }
 
 export async function expectUpdateProductError(
