@@ -1,5 +1,13 @@
 import { test, expect } from '../../fixtures/products';
-import { validUpdateInput } from '../../utils/product-data';
+import {
+  expectUpdateProductError,
+  expectUpdateProductSuccess,
+} from '../../utils/helpers';
+import {
+  invalidPartialUpdate,
+  validPartialUpdate,
+  validUpdateInput,
+} from '../../utils/product-data';
 
 test.describe('Toolshop API - Update product', () => {
   test('Update product with valid data returns 201 and updated product', async ({
@@ -20,7 +28,40 @@ test.describe('Toolshop API - Update product', () => {
     expect(updatedProductBody.price).toBe(validUpdateInput.price);
   });
 
-  test('Partial update product with valid data returns 201 and updated product', async () => {});
+  test.describe('Partial valid update', () => {
+    for (const { name, data } of validPartialUpdate) {
+      test(name, async ({ productApi, customProduct }) => {
+        const response = await productApi.partialUpdate(
+          { ...data },
+          customProduct.id,
+        );
 
-  test('Partial update product with invalid data returns 401 and original product', async () => {});
+        await expectUpdateProductSuccess(
+          response,
+          productApi,
+          customProduct.id,
+          data,
+        );
+      });
+    }
+  });
+
+  test.describe('Partial invalid update', () => {
+    for (const { name, data } of invalidPartialUpdate) {
+      test(name, async ({ productApi, customProduct }) => {
+        const response = await productApi.partialUpdate(
+          { ...data },
+          customProduct.id,
+        );
+
+        await expectUpdateProductError(
+          response,
+          productApi,
+          customProduct.id,
+          data,
+          customProduct,
+        );
+      });
+    }
+  });
 });

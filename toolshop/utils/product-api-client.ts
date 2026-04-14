@@ -18,6 +18,15 @@ export class ProductApiClient {
     });
   }
 
+  async partialUpdate(
+    input: Record<string, unknown>,
+    id: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`products/${id}`, {
+      data: input,
+    });
+  }
+
   async delete(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`products/${id}`, {
       headers: { Authorization: `Bearer ${token}` },

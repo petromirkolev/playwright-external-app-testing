@@ -1,6 +1,8 @@
 import { APIResponse, expect } from '@playwright/test';
 import { RegistrationInput } from '../types/user';
-import { ProductInput } from '../types/product';
+import { ProductInput, ProductResponse } from '../types/product';
+import { UserApiClient } from './user-api-client';
+import { ProductApiClient } from './product-api-client';
 
 export async function expectSuccess(
   response: APIResponse,
@@ -57,6 +59,39 @@ export async function expectAddProductError(
   const body = await response.json();
 
   expect(body[field]).toContain(errorMessage);
+}
+
+export async function expectUpdateProductSuccess(
+  response: APIResponse,
+  client: ProductApiClient,
+  id: string,
+  data: Record<string, unknown>,
+): Promise<void> {
+  expect(response.status()).toBe(200);
+
+  const productResponse = await client.getOne(id);
+  expect(productResponse.status()).toBe(200);
+
+  const productBody = await productResponse.json();
+  const [field, expectedValue] = Object.entries(data)[0];
+  expect(productBody[field]).toBe(expectedValue);
+}
+
+export async function expectUpdateProductError(
+  response: APIResponse,
+  client: ProductApiClient,
+  id: string,
+  data: Record<string, unknown>,
+  product: Record<string, unknown>,
+): Promise<void> {
+  expect(response.status()).toBe(422);
+
+  const productResponse = await client.getOne(id);
+  expect(productResponse.status()).toBe(200);
+
+  const productBody = await productResponse.json();
+  const [field] = Object.entries(data)[0];
+  expect(productBody[field]).toBe(product[field]);
 }
 
 export async function expectGetProductSuccess(

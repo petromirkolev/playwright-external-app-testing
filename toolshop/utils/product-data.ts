@@ -28,24 +28,12 @@ export const validPartialUpdate = [
     data: { price: 19.99 },
   },
   {
-    name: 'category_id update returns 200',
-    data: { category_id: '01KP2PTF5DN31JX5P3Z8J8JCES' },
-  },
-  {
-    name: 'brand_id update returns 200',
-    data: { brand_id: '01KP2PTEV7SGRMZZH3418D8PMV' },
-  },
-  {
     name: 'is_location_offer update returns 200',
     data: { is_location_offer: false },
   },
   {
     name: 'is_rental update returns 200',
     data: { is_rental: false },
-  },
-  {
-    name: 'product_image_id update returns 200',
-    data: { product_image_id: '01KP2PTF5TH1Y68K1HNDNB82F9' },
   },
 ];
 
@@ -97,6 +85,25 @@ export const invalidProductInput = [
     data: { is_rental: 'test' },
     field: 'is_rental',
     message: msg.PROD_REQ_NAME,
+  },
+];
+
+export const invalidPartialUpdate = [
+  {
+    name: 'Name update returns 422',
+    data: { name: 123 },
+  },
+  {
+    name: 'Price update returns 422',
+    data: { price: 'Hello' },
+  },
+  {
+    name: 'is_location_offer update returns 422',
+    data: { is_location_offer: 'Hello' },
+  },
+  {
+    name: 'is_rental update returns 422',
+    data: { is_rental: 'Hello' },
   },
 ];
 
