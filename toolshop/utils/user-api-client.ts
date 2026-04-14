@@ -4,13 +4,13 @@ import { LoginInput, RegistrationInput } from '../types/user';
 export class UserApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async register(input: Partial<RegistrationInput>): Promise<APIResponse> {
+  async register(input: RegistrationInput): Promise<APIResponse> {
     return this.request.post('users/register', {
       data: input,
     });
   }
 
-  async login(input: Partial<LoginInput>): Promise<APIResponse> {
+  async login(input: LoginInput): Promise<APIResponse> {
     return this.request.post('users/login', {
       data: input,
     });
@@ -26,7 +26,7 @@ export class UserApiClient {
   }
 
   async update(
-    input: Partial<RegistrationInput>,
+    input: RegistrationInput,
     id: string | undefined,
     token: string | undefined,
   ): Promise<APIResponse> {
@@ -37,7 +37,7 @@ export class UserApiClient {
   }
 
   async partialUpdate(
-    input: Partial<RegistrationInput>,
+    input: RegistrationInput,
     id: string | undefined,
     token: string | undefined,
   ): Promise<APIResponse> {
