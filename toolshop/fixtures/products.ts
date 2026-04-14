@@ -39,11 +39,6 @@ export const test = base.extend<ProductFixtures>({
     const body = await response.json();
     await use(body);
 
-    const deleteResponse = await productApi.delete(
-      body.id,
-      loggedInAdmin.access_token,
-    );
-
     try {
       const deleteResponse = await productApi.delete(
         body.id,
