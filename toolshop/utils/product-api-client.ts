@@ -1,4 +1,5 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
+import { ProductFilters } from '../types/product';
 
 export class ProductApiClient {
   constructor(private readonly request: APIRequestContext) {}
@@ -50,6 +51,23 @@ export class ProductApiClient {
     order: 'asc' | 'desc' | string,
   ): Promise<APIResponse> {
     return this.request.get(`products/?sort=${query}%2C${order}`);
+  }
+
+  async filter(filters: ProductFilters): Promise<APIResponse> {
+    const params = new URLSearchParams();
+
+    if (filters.by_brand) params.set('by_brand', filters.by_brand);
+    if (filters.by_category) params.set('by_category', filters.by_category);
+    if (filters.is_rental !== undefined) {
+      params.set('is_rental', String(filters.is_rental));
+    }
+    if (filters.between) params.set('between', filters.between);
+    if (filters.sort) params.set('sort', filters.sort);
+    if (filters.page !== undefined) params.set('page', String(filters.page));
+
+    const query = params.toString();
+
+    return this.request.get(query ? `products?${query}` : 'products');
   }
 
   async getBrands(): Promise<APIResponse> {

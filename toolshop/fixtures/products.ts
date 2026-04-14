@@ -6,6 +6,7 @@ type ProductFixtures = {
   productData: ProductInput;
   productInput: ProductInput;
   customProduct: ProductResponse;
+  productList: ProductResponse[];
 };
 
 export const test = base.extend<ProductFixtures>({
@@ -59,6 +60,16 @@ export const test = base.extend<ProductFixtures>({
     } catch (error) {
       console.warn(`Cleanup request failed for product ${body.id}:`, error);
     }
+  },
+
+  productList: async ({ productApi }, use) => {
+    const listResponse = await productApi.getAll();
+    expect(listResponse.status()).toBe(200);
+
+    const listBody = await listResponse.json();
+    expect(listBody.data.length).toBeGreaterThan(0);
+
+    await use(listBody.data);
   },
 });
 

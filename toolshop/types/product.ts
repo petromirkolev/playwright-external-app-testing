@@ -10,6 +10,7 @@ export type ProductInput = {
   is_rental: boolean;
   co2_rating: string;
 };
+
 export type ProductResponse = {
   id: string;
   name: string;
@@ -41,4 +42,13 @@ export type ProductResponse = {
     title: string;
     id: string;
   };
+};
+
+export type ProductFilters = {
+  by_brand?: string;
+  by_category?: string;
+  is_rental?: boolean;
+  between?: string;
+  sort?: string;
+  page?: number;
 };
