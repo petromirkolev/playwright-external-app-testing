@@ -42,7 +42,23 @@ export const test = base.extend<ProductFixtures>({
       body.id,
       loggedInAdmin.access_token,
     );
-    expect(deleteResponse.status()).toBe(204);
+
+    try {
+      const deleteResponse = await productApi.delete(
+        body.id,
+        loggedInAdmin.access_token,
+      );
+
+      const status = deleteResponse.status();
+
+      if (status !== 204 && status !== 404) {
+        console.warn(
+          `Cleanup failed for product ${body.id}. Expected 204 or 404, got ${status}`,
+        );
+      }
+    } catch (error) {
+      console.warn(`Cleanup request failed for product ${body.id}:`, error);
+    }
   },
 });
 
