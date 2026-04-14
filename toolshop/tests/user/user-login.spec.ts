@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError, expectSuccessAndToken } from '../../utils/helpers';
+import { expectError, expectSuccessAndToken } from '../../utils/user-helpers';
 import { nonExistingUserInput, userInput } from '../../utils/user-data';
 
 test.describe('Toolshop API - Login user', () => {

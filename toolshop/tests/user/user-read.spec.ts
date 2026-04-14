@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError, expectSuccess } from '../../utils/helpers';
+import { expectError, expectSuccess } from '../../utils/user-helpers';
 
 test.describe('Toolshop API - Get user', () => {
   test('Get created user by id succeeds', async ({
