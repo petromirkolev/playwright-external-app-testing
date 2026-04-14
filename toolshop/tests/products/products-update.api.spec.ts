@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/products';
 import {
   expectUpdateProductError,
   expectUpdateProductSuccess,
-} from '../../utils/helpers';
+} from '../../utils/product-helpers';
 import {
   invalidPartialUpdate,
   validPartialUpdate,

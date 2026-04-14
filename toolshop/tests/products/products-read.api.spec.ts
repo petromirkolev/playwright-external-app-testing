@@ -3,7 +3,7 @@ import { msg } from '../../utils/constants';
 import {
   expectGetProductError,
   expectGetProductSuccess,
-} from '../../utils/helpers';
+} from '../../utils/product-helpers';
 
 test.describe('Toolshop API - Read product', () => {
   test('Get all products returns 200 and data', async ({ productApi }) => {

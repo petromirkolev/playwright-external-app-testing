@@ -3,7 +3,7 @@ import { msg } from '../../utils/constants';
 import {
   expectDeleteProductError,
   expectDeleteProductSuccess,
-} from '../../utils/helpers';
+} from '../../utils/product-helpers';
 
 test.describe('Toolshop API - Update product', () => {
   test('Delete product as admin returns 200', async ({

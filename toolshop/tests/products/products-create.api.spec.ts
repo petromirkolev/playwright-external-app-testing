@@ -3,7 +3,7 @@ import { msg } from '../../utils/constants';
 import {
   expectAddProductError,
   expectAddProductSuccess,
-} from '../../utils/helpers';
+} from '../../utils/product-helpers';
 import { missingProductInput } from '../../utils/product-data';
 
 test.describe('Toolshop API - Create product', () => {
