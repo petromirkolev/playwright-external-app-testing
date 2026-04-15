@@ -1,5 +1,7 @@
 # Practice Software Testing API - Playwright API Test Suite
 
+[![External App Tests](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/external-apps.yml/badge.svg)](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/external-apps.yml)
+
 A Playwright + TypeScript API automation project for the public Practice Software Testing / Toolshop API.
 
 This project is part of my QA Automation portfolio and focuses on testing a public system that I did not build myself. The goal is to demonstrate practical API testing skills: authentication handling, CRUD coverage, business-flow validation, negative testing, permission checks, and realistic scope control on a shared external environment.
