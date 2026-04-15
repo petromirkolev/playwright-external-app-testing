@@ -370,13 +370,4 @@ test.describe('Toolshop API - Cart', () => {
       expect(response.status()).toBe(204);
     });
   });
-
-  test.describe.only('Totals and user isolation', () => {
-    // Cart subtotal equals the sum of item price × quantity for all items.
-    // Cart total remains consistent after add, update, and remove sequence.
-    // Customer A cart changes do not affect Customer B cart.
-    // Customer B cannot see items added by Customer A.
-    // Customer A and Customer B maintain independent cart totals.
-    // Re-fetching each user cart after both perform actions preserves correct isolation.
-  });
 });
