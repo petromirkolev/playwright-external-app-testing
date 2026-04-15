@@ -1,10 +1,10 @@
 import { test, expect } from '../../fixtures/products';
 import { msg } from '../../utils/constants';
+import { missingProductInput } from '../../utils/product/product-data';
 import {
   expectAddProductError,
   expectAddProductSuccess,
 } from '../../utils/product/product-helpers';
-import { missingProductInput } from '../../utils/product/product-data';
 
 test.describe('Toolshop API - Create product', () => {
   test('Create product with valid data returns 200 and the created product', async ({
@@ -16,14 +16,14 @@ test.describe('Toolshop API - Create product', () => {
     expectAddProductSuccess(response, productInput);
   });
 
-  test.describe('Missing fields', () => {
+  test.describe('Missing field:', () => {
     for (const { name, data, field, message } of missingProductInput) {
       test(name, async ({ productApi, productInput }) => {
         const response = await productApi.createProductRaw({
           ...productInput,
           ...data,
         });
-        expectAddProductError(response, field, message);
+        expectAddProductError(response, 422, field, message);
       });
     }
   });
@@ -33,7 +33,7 @@ test.describe('Toolshop API - Create product', () => {
   }) => {
     const response = await productApi.createProductRaw({});
 
-    expectAddProductError(response, 'name', msg.PROD_REQ_NAME);
+    expectAddProductError(response, 422, 'name', msg.PROD_REQ_NAME);
   });
 
   test('Create product with numeric name returns 422 and error message', async ({
@@ -45,7 +45,7 @@ test.describe('Toolshop API - Create product', () => {
       name: 1,
     });
 
-    expectAddProductError(response, 'name', msg.PROD_STR_NAME);
+    expectAddProductError(response, 422, 'name', msg.PROD_STR_NAME);
   });
 
   test('Create product with numeric category_id returns 500', async ({
@@ -81,7 +81,7 @@ test.describe('Toolshop API - Create product', () => {
       product_image_id: 1,
     });
 
-    expectAddProductError(response, 'product_image_id', msg.PROD_STR_IMG);
+    expectAddProductError(response, 422, 'product_image_id', msg.PROD_STR_IMG);
   });
 
   test('Create product with invalid product_image_id returns 500', async ({

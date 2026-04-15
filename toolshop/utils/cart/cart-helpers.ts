@@ -55,16 +55,3 @@ export async function expectCartQuantity(
   );
   expect(item.quantity).toBe(quantity);
 }
-
-export async function expectCartError(
-  response: APIResponse,
-  cartId: string,
-): Promise<void> {
-  expect(response.status()).toBe(200);
-
-  const body = await response.json();
-
-  expect(body.id).toBe(cartId);
-  expect(Array.isArray(body.cart_items)).toBeTruthy();
-  expect(body.cart_items).toHaveLength(0);
-}

@@ -19,10 +19,11 @@ export async function expectAddProductSuccess(
 
 export async function expectAddProductError(
   response: APIResponse,
+  status: number,
   field: string,
   errorMessage: string,
 ): Promise<void> {
-  expect(response.status()).toBe(422);
+  expect(response.status()).toBe(status);
 
   const body = await response.json();
 
