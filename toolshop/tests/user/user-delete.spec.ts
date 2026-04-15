@@ -21,14 +21,37 @@ test.describe('Toolshop API - Delete user', () => {
     expect(deleteResponse.status()).toBe(404);
   });
 
-  test('Delete created user without authorization returns 401', async ({
+  test('Delete created user with invalid headers returns 401', async ({
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.delete(registeredUser.id, undefined);
-    expect(response.status()).toBe(401);
+    const response = await userApi.deleteWithAuthHeader(
+      registeredUser.id,
+      'Bearer: abc',
+    );
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Delete created user with malformed headers returns 401', async ({
+    userApi,
+    registeredUser,
+  }) => {
+    const response = await userApi.deleteWithAuthHeader(
+      registeredUser.id,
+      'abc',
+    );
+
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Delete created user without headers returns 401', async ({
+    userApi,
+    registeredUser,
+  }) => {
+    const response = await userApi.deleteWithoutAuth(registeredUser.id);
+
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
   test('Delete created user as a customer returns 403', async ({

@@ -3,8 +3,11 @@ import { RegistrationInput } from '../types/user';
 
 export async function expectSuccess(
   response: APIResponse,
+  status: number,
   registrationData: Partial<RegistrationInput>,
 ) {
+  expect(response.status()).toBe(status);
+
   const body = await response.json();
 
   expect(body.first_name).toBe(registrationData.first_name);
@@ -15,9 +18,12 @@ export async function expectSuccess(
 
 export async function expectError(
   response: APIResponse,
+  status: number,
   field: string,
   message: string,
 ) {
+  expect(response.status()).toBe(status);
+
   const body = await response.json();
   expect(body).toHaveProperty(field);
 

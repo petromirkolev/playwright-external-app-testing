@@ -1,5 +1,10 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { LoginInput, RegistrationInput } from '../types/user';
+import {
+  LoginInput,
+  PartialUpdateInput,
+  RegistrationInput,
+  UpdateInput,
+} from '../types/user';
 
 export class UserApiClient {
   constructor(private readonly request: APIRequestContext) {}
@@ -16,19 +21,29 @@ export class UserApiClient {
     });
   }
 
-  async delete(
-    id: string | undefined,
-    token: string | undefined,
-  ): Promise<APIResponse> {
+  async delete(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
+  async deleteWithoutAuth(id: string): Promise<APIResponse> {
+    return this.request.delete(`users/${id}`);
+  }
+
+  async deleteWithAuthHeader(
+    id: string,
+    authValue: string,
+  ): Promise<APIResponse> {
+    return this.request.delete(`users/${id}`, {
+      headers: { Authorization: authValue },
+    });
+  }
+
   async update(
-    input: RegistrationInput,
-    id: string | undefined,
-    token: string | undefined,
+    input: UpdateInput,
+    id: string,
+    token: string,
   ): Promise<APIResponse> {
     return this.request.put(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -36,10 +51,30 @@ export class UserApiClient {
     });
   }
 
+  async updateWithoutAuth(
+    input: UpdateInput,
+    id: string,
+  ): Promise<APIResponse> {
+    return this.request.put(`users/${id}`, {
+      data: input,
+    });
+  }
+
+  async updateWithAuthHeader(
+    input: UpdateInput,
+    id: string,
+    authValue: string,
+  ): Promise<APIResponse> {
+    return this.request.put(`users/${id}`, {
+      headers: { Authorization: authValue },
+      data: input,
+    });
+  }
+
   async partialUpdate(
-    input: RegistrationInput,
-    id: string | undefined,
-    token: string | undefined,
+    input: PartialUpdateInput,
+    id: string,
+    token: string,
   ): Promise<APIResponse> {
     return this.request.patch(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -47,22 +82,59 @@ export class UserApiClient {
     });
   }
 
-  async get(
-    id: string | undefined,
-    token: string | undefined,
+  async partialUpdateWithoutAuth(
+    input: PartialUpdateInput,
+    id: string,
   ): Promise<APIResponse> {
+    return this.request.patch(`users/${id}`, {
+      data: input,
+    });
+  }
+
+  async partialUpdateWithAuthHeader(
+    input: PartialUpdateInput,
+    id: string,
+    authValue: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`users/${id}`, {
+      headers: { Authorization: authValue },
+      data: input,
+    });
+  }
+
+  async get(id: string, token: string): Promise<APIResponse> {
     return this.request.get(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async getMe(token: string | undefined): Promise<APIResponse> {
+  async getWithoutAuth(id: string): Promise<APIResponse> {
+    return this.request.get(`users/${id}`);
+  }
+
+  async getWithAuthHeader(id: string, authValue: string): Promise<APIResponse> {
+    return this.request.get(`users/${id}`, {
+      headers: { Authorization: authValue },
+    });
+  }
+
+  async getMe(token: string): Promise<APIResponse> {
     return this.request.get('users/me', {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async refreshToken(token: string | undefined | null): Promise<APIResponse> {
+  async getMeWithoutAuth(): Promise<APIResponse> {
+    return this.request.get('users/me');
+  }
+
+  async getMeWithAuthHeader(authValue: string): Promise<APIResponse> {
+    return this.request.get('users/me', {
+      headers: { Authorization: authValue },
+    });
+  }
+
+  async refreshToken(token: string): Promise<APIResponse> {
     return this.request.get('users/refresh', {
       headers: {
         Authorization: `Bearer ${token}`,

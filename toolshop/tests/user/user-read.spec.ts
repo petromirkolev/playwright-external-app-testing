@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth';
+import { test } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccess } from '../../utils/user-helpers';
 
@@ -11,9 +11,8 @@ test.describe('Toolshop API - Get user', () => {
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
-    expect(response.status()).toBe(200);
 
-    expectSuccess(response, registeredAndLoggedInUser);
+    expectSuccess(response, 200, registeredAndLoggedInUser);
   });
 
   test('Get current authenticated user succeeds', async ({
@@ -23,27 +22,32 @@ test.describe('Toolshop API - Get user', () => {
     const response = await userApi.getMe(
       registeredAndLoggedInUser.access_token,
     );
-    expect(response.status()).toBe(200);
 
-    expectSuccess(response, registeredAndLoggedInUser);
+    expectSuccess(response, 200, registeredAndLoggedInUser);
   });
 
   test('Get current authenticated user with invalid access token returns 401', async ({
     userApi,
   }) => {
-    const response = await userApi.getMe('#');
-    expect(response.status()).toBe(401);
+    const response = await userApi.getMeWithAuthHeader('Bearer: abc');
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
-  test('Get current authenticated user without access token returns 401', async ({
+  test('Get current authenticated user with malformed headers returns 401', async ({
     userApi,
   }) => {
-    const response = await userApi.getMe(undefined);
-    expect(response.status()).toBe(401);
+    const response = await userApi.getMeWithAuthHeader('abc');
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Get current authenticated user without headers returns 401', async ({
+    userApi,
+  }) => {
+    const response = await userApi.getMeWithoutAuth();
+
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
   test('Get non-existing user by id returns 404', async ({
@@ -54,28 +58,40 @@ test.describe('Toolshop API - Get user', () => {
       '999999999999999',
       registeredAndLoggedInUser.access_token,
     );
-    expect(response.status()).toBe(404);
 
-    expectError(response, 'error', msg.UNAUTH_VIEW_USER);
-  });
-
-  test('Get user by id without access token returns 401', async ({
-    userApi,
-    registeredAndLoggedInUser,
-  }) => {
-    const response = await userApi.get(registeredAndLoggedInUser.id, undefined);
-    expect(response.status()).toBe(401);
-
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 404, 'error', msg.UNAUTH_VIEW_USER);
   });
 
   test('Get user by id with invalid access token returns 401', async ({
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.get(registeredAndLoggedInUser.id, '#');
-    expect(response.status()).toBe(401);
+    const response = await userApi.getWithAuthHeader(
+      registeredAndLoggedInUser.id,
+      'Bearer: abc',
+    );
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Get user by id with malformed headers returns 401', async ({
+    userApi,
+    registeredAndLoggedInUser,
+  }) => {
+    const response = await userApi.getWithAuthHeader(
+      registeredAndLoggedInUser.id,
+      'abc',
+    );
+
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Get user by id without headers returns 401', async ({
+    userApi,
+    registeredAndLoggedInUser,
+  }) => {
+    const response = await userApi.getWithoutAuth(registeredAndLoggedInUser.id);
+
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 });

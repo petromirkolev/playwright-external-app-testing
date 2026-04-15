@@ -37,10 +37,9 @@ test.describe('Toolshop API - User authentication', () => {
   test('Missing access token on a protected endpoint is rejected', async ({
     userApi,
   }) => {
-    const response = await userApi.getMe(undefined);
-    expect(response.status()).toBe(401);
+    const response = await userApi.getMeWithoutAuth();
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
   test('Malformed access token returns 500', async ({

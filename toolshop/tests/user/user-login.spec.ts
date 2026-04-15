@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth';
+import { test } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccessAndToken } from '../../utils/user-helpers';
 import { nonExistingUserInput, userInput } from '../../utils/user-data';
@@ -26,9 +26,8 @@ test.describe('Toolshop API - Login user', () => {
       email: registeredUser.email,
       password: nonExistingUserInput.password,
     });
-    expect(response.status()).toBe(401);
 
-    expectError(response, 'error', msg.UNAUTH);
+    expectError(response, 401, 'error', msg.UNAUTH);
   });
 
   test('Login with unknown email returns 401', async ({
@@ -40,9 +39,7 @@ test.describe('Toolshop API - Login user', () => {
       password: registeredUser.password,
     });
 
-    expect(response.status()).toBe(401);
-
-    expectError(response, 'error', msg.UNAUTH);
+    expectError(response, 401, 'error', msg.UNAUTH);
   });
 
   test('Login with missing email returns 401', async ({
@@ -50,13 +47,11 @@ test.describe('Toolshop API - Login user', () => {
     registeredUser,
   }) => {
     const response = await userApi.login({
-      email: undefined,
+      email: '',
       password: registeredUser.password,
     });
 
-    expect(response.status()).toBe(401);
-
-    expectError(response, 'error', msg.ERR_INV_LOGIN_REQ);
+    expectError(response, 401, 'error', msg.ERR_INV_LOGIN_REQ);
   });
 
   test('Login with missing password returns 401', async ({
@@ -65,19 +60,15 @@ test.describe('Toolshop API - Login user', () => {
   }) => {
     const response = await userApi.login({
       email: registeredUser.email,
-      password: undefined,
+      password: '',
     });
 
-    expect(response.status()).toBe(401);
-
-    expectError(response, 'error', msg.ERR_INV_LOGIN_REQ);
+    expectError(response, 401, 'error', msg.ERR_INV_LOGIN_REQ);
   });
 
   test('Login with empty credentials returns 401', async ({ userApi }) => {
-    const response = await userApi.login({});
+    const response = await userApi.login({ email: '', password: '' });
 
-    expect(response.status()).toBe(401);
-
-    expectError(response, 'error', msg.ERR_INV_LOGIN_REQ);
+    expectError(response, 401, 'error', msg.ERR_INV_LOGIN_REQ);
   });
 });

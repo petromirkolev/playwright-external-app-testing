@@ -28,37 +28,46 @@ test.describe('Toolshop API - Update user', () => {
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
-    expect(updatedResponse.status()).toBe(200);
 
-    expectSuccess(updatedResponse, { ...userUpdateInput, email });
+    expectSuccess(updatedResponse, 200, { ...userUpdateInput, email });
   });
 
   test('Update current user with invalid access token returns 401', async ({
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateWithAuthHeader(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
-      '99999',
+      'Bearer: abc',
     );
-    expect(response.status()).toBe(401);
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
-  test('Update current user without access token returns 401', async ({
+  test('Update current user with malformed headers returns 401', async ({
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateWithAuthHeader(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
-      undefined,
+      'abc',
     );
-    expect(response.status()).toBe(401);
 
-    expectError(response, 'message', msg.UNAUTH);
+    expectError(response, 401, 'message', msg.UNAUTH);
+  });
+
+  test('Update current user without headers returns 401', async ({
+    userApi,
+    registeredAndLoggedInUser,
+  }) => {
+    const response = await userApi.updateWithoutAuth(
+      { ...userUpdateInput, email },
+      registeredAndLoggedInUser.id,
+    );
+
+    expectError(response, 401, 'message', msg.UNAUTH);
   });
 
   test('Update current user with partial valid data succeeds', async ({
@@ -104,9 +113,8 @@ test.describe('Toolshop API - Update user', () => {
       registeredUser.id,
       loggedInAdmin.access_token,
     );
-    expect(updatedResponse.status()).toBe(200);
 
-    expectSuccess(updatedResponse, { ...userUpdateInput, email });
+    expectSuccess(updatedResponse, 200, { ...userUpdateInput, email });
   });
 
   test('Update non-existing user as an admin returns 403', async ({
@@ -118,6 +126,7 @@ test.describe('Toolshop API - Update user', () => {
       '99999',
       loggedInAdmin.access_token,
     );
+
     expect(response.status()).toBe(403);
   });
 
@@ -131,9 +140,8 @@ test.describe('Toolshop API - Update user', () => {
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
-    expect(response.status()).toBe(403);
 
-    expectError(response, 'error', msg.UNAUTH_UPDATE);
+    expectError(response, 403, 'error', msg.UNAUTH_UPDATE);
   });
 
   test('Partially update another user as a customer returns 403', async ({
@@ -146,8 +154,7 @@ test.describe('Toolshop API - Update user', () => {
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
-    expect(response.status()).toBe(403);
 
-    expectError(response, 'error', msg.UNAUTH_UPDATE);
+    expectError(response, 403, 'error', msg.UNAUTH_UPDATE);
   });
 });

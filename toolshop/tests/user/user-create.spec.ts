@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/auth';
+import { test } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
 import { expectError, expectSuccess } from '../../utils/user-helpers';
 import {
@@ -8,14 +8,13 @@ import {
 } from '../../utils/user-data';
 
 test.describe('Toolshop API - Create user', () => {
-  test('Create user with valid unique data succeeds', async ({
+  test('Create user with valid unique data returns 201', async ({
     userApi,
     registrationData,
   }) => {
     const response = await userApi.register(registrationData);
-    expect(response.status()).toBe(201);
 
-    expectSuccess(response, registrationData);
+    expectSuccess(response, 201, registrationData);
   });
 
   test('Create user with duplicate email returns 409', async ({
@@ -27,9 +26,8 @@ test.describe('Toolshop API - Create user', () => {
       ...registrationData,
       email: registeredUser.email,
     });
-    expect(response.status()).toBe(409);
 
-    expectError(response, 'email', msg.REG_EMAIL_EXIST);
+    expectError(response, 409, 'email', msg.REG_EMAIL_EXIST);
   });
 
   test('Create multiple unique users in sequence succeeds', async ({
@@ -39,14 +37,13 @@ test.describe('Toolshop API - Create user', () => {
     const numberOfUsers = 3;
 
     for (let i = 0; i < numberOfUsers; i++) {
+      const email = uniqueEmail();
       const response = await userApi.register({
         ...registrationData,
-        email: uniqueEmail(),
+        email,
       });
-      expect(response.status()).toBe(201);
 
-      const body = await response.json();
-      expect(body.id).toBeDefined();
+      await expectSuccess(response, 201, { ...registrationData, email });
     }
   });
 
@@ -61,9 +58,8 @@ test.describe('Toolshop API - Create user', () => {
           ...registrationData,
           [key]: value,
         });
-        expect(response.status()).toBe(422);
 
-        expectError(response, key, error);
+        expectError(response, 422, key, error);
       });
     }
   });
@@ -79,9 +75,8 @@ test.describe('Toolshop API - Create user', () => {
           ...registrationData,
           password: value,
         });
-        expect(response.status()).toBe(422);
 
-        expectError(response, 'password', error);
+        expectError(response, 422, 'password', error);
       });
     }
   });
