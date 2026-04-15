@@ -1,6 +1,6 @@
 # Contact List App - Playwright UI + API Test Suite
 
-[![Playwright Tests](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/contact-list.yml/badge.svg)](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/contact-list.yml)
+[![External App Tests](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/external-apps.yml/badge.svg)](https://github.com/petromirkolev/playwright-external-app-testing/actions/workflows/external-apps.yml)
 
 A Playwright-based **UI + API** automation suite for the [Thinking Tester Contact List](https://thinking-tester-contact-list.herokuapp.com/) demo application.
 
