@@ -4,9 +4,6 @@ export const validProductInput = {
   name: 'Wrench',
   description: 'Cool wrench',
   price: 10,
-  brand_id: '01KNRYCNRTE7V72MKPFX96T0MN', // valid fallback values
-  category_id: '01KNRYCP373HPQFFZXRTF0A28D', // valid fallback values
-  product_image_id: '01KNRYCP4AHMWNPY0QQ07DZMVC', // valid fallback values
   is_location_offer: true,
   is_rental: true,
   co2_rating: 'A',
@@ -14,7 +11,10 @@ export const validProductInput = {
 
 export const validUpdateInput = {
   name: 'Wrenchy',
+  description: 'Cool wrench',
   price: 15,
+  is_location_offer: true,
+  is_rental: true,
   co2_rating: 'B',
 };
 

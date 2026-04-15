@@ -1,4 +1,4 @@
-import { test, expect } from '../../fixtures/products';
+import { test } from '../../fixtures/products';
 import {
   expectUpdateProductError,
   expectUpdateProductSuccess,
@@ -12,34 +12,31 @@ import {
 test.describe('Toolshop API - Update product', () => {
   test('Update product with valid data returns 201 and updated product', async ({
     productApi,
-    customProduct,
+    product,
+    productUpdateInput,
   }) => {
-    const response = await productApi.update(
+    const response = await productApi.update(productUpdateInput, product.id);
+
+    await expectUpdateProductSuccess(
+      response,
+      productApi,
+      product.id,
       validUpdateInput,
-      customProduct.id,
     );
-    expect(response.status()).toBe(200);
-
-    const updatedProductResponse = await productApi.getOne(customProduct.id);
-    const updatedProductBody = await updatedProductResponse.json();
-
-    expect(updatedProductBody.id).toMatch(customProduct.id);
-    expect(updatedProductBody.name).toBe(validUpdateInput.name);
-    expect(updatedProductBody.price).toBe(validUpdateInput.price);
   });
 
   test.describe('Partial valid update', () => {
     for (const { name, data } of validPartialUpdate) {
-      test(name, async ({ productApi, customProduct }) => {
+      test(name, async ({ productApi, product }) => {
         const response = await productApi.partialUpdate(
           { ...data },
-          customProduct.id,
+          product.id,
         );
 
         await expectUpdateProductSuccess(
           response,
           productApi,
-          customProduct.id,
+          product.id,
           data,
         );
       });
@@ -48,18 +45,18 @@ test.describe('Toolshop API - Update product', () => {
 
   test.describe('Partial invalid update', () => {
     for (const { name, data } of invalidPartialUpdate) {
-      test(name, async ({ productApi, customProduct }) => {
-        const response = await productApi.partialUpdate(
+      test(name, async ({ productApi, product }) => {
+        const response = await productApi.partialUpdateRaw(
           { ...data },
-          customProduct.id,
+          product.id,
         );
 
         await expectUpdateProductError(
           response,
           productApi,
-          customProduct.id,
+          product.id,
           data,
-          customProduct,
+          product,
         );
       });
     }

@@ -6,43 +6,42 @@ import {
 } from '../../utils/product-helpers';
 
 test.describe('Toolshop API - Update product', () => {
-  test('Delete product as admin returns 200', async ({
+  test('Delete product with admin access token returns 200', async ({
     productApi,
-    customProduct,
+    product,
     loggedInAdmin,
   }) => {
     const response = await productApi.delete(
-      customProduct.id,
+      product.id,
       loggedInAdmin.access_token,
     );
 
-    await expectDeleteProductSuccess(response, productApi, customProduct.id);
+    await expectDeleteProductSuccess(response, productApi, product.id);
   });
 
-  test('Delete product as admin with invalid access token returns 401', async ({
+  test('Delete product with invalid access token returns 401', async ({
     productApi,
-    customProduct,
-    loggedInAdmin,
+    product,
   }) => {
-    const response = await productApi.delete(customProduct.id, 'invalidtoken');
+    const response = await productApi.delete(product.id, 'invalidtoken');
 
     await expectDeleteProductError(response, 401, msg.UNAUTH);
   });
 
-  test('Delete product as customer returns 403', async ({
+  test('Delete product with customer access token returns 403', async ({
     productApi,
-    customProduct,
+    product,
     registeredAndLoggedInUser,
   }) => {
     const response = await productApi.delete(
-      customProduct.id,
+      product.id,
       registeredAndLoggedInUser.access_token,
     );
 
     await expectDeleteProductError(response, 403, msg.FORBIDDEN);
   });
 
-  test('Delete nonexistent product returns 404', async ({
+  test('Delete non-existent product returns 404', async ({
     productApi,
     loggedInAdmin,
   }) => {

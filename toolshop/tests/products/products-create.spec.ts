@@ -19,7 +19,10 @@ test.describe('Toolshop API - Create product', () => {
   test.describe('Missing fields', () => {
     for (const { name, data, field, message } of missingProductInput) {
       test(name, async ({ productApi, productInput }) => {
-        const response = await productApi.create({ ...productInput, ...data });
+        const response = await productApi.createRaw({
+          ...productInput,
+          ...data,
+        });
         expectAddProductError(response, field, message);
       });
     }
@@ -28,7 +31,7 @@ test.describe('Toolshop API - Create product', () => {
   test('Create product with missing all fields returns 422 and error message', async ({
     productApi,
   }) => {
-    const response = await productApi.create({});
+    const response = await productApi.createRaw({});
 
     expectAddProductError(response, 'name', msg.PROD_REQ_NAME);
   });
@@ -37,7 +40,7 @@ test.describe('Toolshop API - Create product', () => {
     productInput,
     productApi,
   }) => {
-    const response = await productApi.create({ ...productInput, name: 1 });
+    const response = await productApi.createRaw({ ...productInput, name: 1 });
 
     expectAddProductError(response, 'name', msg.PROD_STR_NAME);
   });
@@ -46,7 +49,7 @@ test.describe('Toolshop API - Create product', () => {
     productInput,
     productApi,
   }) => {
-    const response = await productApi.create({
+    const response = await productApi.createRaw({
       ...productInput,
       category_id: 1,
     });
@@ -58,7 +61,10 @@ test.describe('Toolshop API - Create product', () => {
     productInput,
     productApi,
   }) => {
-    const response = await productApi.create({ ...productInput, brand_id: 1 });
+    const response = await productApi.createRaw({
+      ...productInput,
+      brand_id: 1,
+    });
 
     expect(response.status()).toBe(500);
   });
@@ -67,7 +73,7 @@ test.describe('Toolshop API - Create product', () => {
     productInput,
     productApi,
   }) => {
-    const response = await productApi.create({
+    const response = await productApi.createRaw({
       ...productInput,
       product_image_id: 1,
     });
@@ -79,7 +85,7 @@ test.describe('Toolshop API - Create product', () => {
     productInput,
     productApi,
   }) => {
-    const response = await productApi.create({
+    const response = await productApi.createRaw({
       ...productInput,
       product_image_id: 'invalid-id',
     });

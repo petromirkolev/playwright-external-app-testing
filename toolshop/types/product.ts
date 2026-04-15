@@ -1,4 +1,4 @@
-export type ProductInput = {
+export type ProductBaseInput = {
   name: string;
   stock?: string;
   description: string;
@@ -10,6 +10,10 @@ export type ProductInput = {
   is_rental: boolean;
   co2_rating: string;
 };
+
+export type ProductInput = ProductBaseInput;
+export type ProductUpdateInput = ProductBaseInput;
+export type PartialProductUpdateInput = Partial<ProductUpdateInput>;
 
 export type ProductResponse = {
   id: string;

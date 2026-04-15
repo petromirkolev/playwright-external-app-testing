@@ -1,16 +1,33 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { ProductFilters } from '../types/product';
+import {
+  PartialProductUpdateInput,
+  ProductFilters,
+  ProductInput,
+  ProductUpdateInput,
+} from '../types/product';
 
 export class ProductApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async create(input: Record<string, unknown>): Promise<APIResponse> {
+  async create(input: ProductInput): Promise<APIResponse> {
     return this.request.post('products', {
       data: input,
     });
   }
 
-  async getOne(id: string | undefined): Promise<APIResponse> {
+  async createRaw(input: Record<string, unknown>): Promise<APIResponse> {
+    return this.request.post('products', {
+      data: input,
+    });
+  }
+
+  async getOne(id: string): Promise<APIResponse> {
+    return this.request.get(`products/${id}`);
+  }
+
+  async getOneRaw(
+    id: string | number | null | undefined,
+  ): Promise<APIResponse> {
     return this.request.get(`products/${id}`);
   }
 
@@ -18,7 +35,13 @@ export class ProductApiClient {
     return this.request.get('products');
   }
 
-  async update(
+  async update(input: ProductUpdateInput, id: string): Promise<APIResponse> {
+    return this.request.put(`products/${id}`, {
+      data: input,
+    });
+  }
+
+  async updateRaw(
     input: Record<string, unknown>,
     id: string,
   ): Promise<APIResponse> {
@@ -28,6 +51,15 @@ export class ProductApiClient {
   }
 
   async partialUpdate(
+    input: PartialProductUpdateInput,
+    id: string,
+  ): Promise<APIResponse> {
+    return this.request.patch(`products/${id}`, {
+      data: input,
+    });
+  }
+
+  async partialUpdateRaw(
     input: Record<string, unknown>,
     id: string,
   ): Promise<APIResponse> {

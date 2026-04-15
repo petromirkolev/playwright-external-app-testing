@@ -15,11 +15,11 @@ test.describe('Toolshop API - Read product', () => {
 
   test('Get product with valid id returns 201 and data', async ({
     productApi,
-    customProduct,
+    product,
   }) => {
-    const response = await productApi.getOne(customProduct.id);
+    const response = await productApi.getOne(product.id);
 
-    expectGetProductSuccess(response, customProduct.id);
+    expectGetProductSuccess(response, product.id);
   });
 
   test('Get product with non-existing id returns 201 and data', async ({
@@ -34,8 +34,7 @@ test.describe('Toolshop API - Read product', () => {
   test('Get product with invalid id returns 201 and data', async ({
     productApi,
   }) => {
-    const nonExistingId = undefined;
-    const response = await productApi.getOne(nonExistingId);
+    const response = await productApi.getOneRaw(1);
 
     expectGetProductError(response, 'message', msg.PROD_NOT_FOUND);
   });

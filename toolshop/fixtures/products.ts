@@ -1,20 +1,20 @@
-import { ProductInput, ProductResponse } from '../types/product';
-import { uniqueProductName, validProductInput } from '../utils/product-data';
 import { test as base, expect } from './auth';
+import { ProductInput, ProductResponse } from '../types/product';
+import {
+  uniqueProductName,
+  validProductInput,
+  validUpdateInput,
+} from '../utils/product-data';
 
 type ProductFixtures = {
-  productData: ProductInput;
   productInput: ProductInput;
-  customProduct: ProductResponse;
+  productUpdateInput: ProductInput;
+  product: ProductResponse;
   productList: ProductResponse[];
 };
 
 export const test = base.extend<ProductFixtures>({
-  productData: async ({}, use) => {
-    await use({ ...validProductInput, name: uniqueProductName() });
-  },
-
-  productInput: async ({ productApi, productData }, use) => {
+  productInput: async ({ productApi }, use) => {
     const brandsResponse = await productApi.getBrands();
     const brandsBody = await brandsResponse.json();
 
@@ -25,14 +25,20 @@ export const test = base.extend<ProductFixtures>({
     const imagesBody = await imagesResponse.json();
 
     await use({
-      ...productData,
+      ...validProductInput,
+      name: uniqueProductName(),
       brand_id: brandsBody[0].id,
       category_id: categoryBody[0].id,
       product_image_id: imagesBody[0].id,
     });
   },
 
-  customProduct: async ({ productInput, productApi, loggedInAdmin }, use) => {
+  productUpdateInput: async ({ productInput }, use) => {
+    const input = { ...productInput, ...validUpdateInput };
+    await use(input);
+  },
+
+  product: async ({ productInput, productApi, loggedInAdmin }, use) => {
     const response = await productApi.create(productInput);
     expect(response.status()).toBe(201);
 
