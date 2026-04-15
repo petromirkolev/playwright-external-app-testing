@@ -1,5 +1,5 @@
 import { APIResponse, expect } from '@playwright/test';
-import { ProductInput } from '../../types/product';
+import { ProductInput, ProductResponse } from '../../types/product';
 import { ProductApiClient } from './product-api-client';
 
 export async function expectAddProductSuccess(
@@ -139,7 +139,7 @@ export async function expectGetProductError(
 }
 
 export async function expectAllProductsMatch(
-  products: any[],
+  products: ProductResponse[],
   predicate: (product: any) => boolean,
 ): Promise<void> {
   expect(products.length).toBeGreaterThan(0);
