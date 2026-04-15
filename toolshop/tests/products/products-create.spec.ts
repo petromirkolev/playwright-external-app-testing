@@ -7,7 +7,7 @@ import {
 } from '../../utils/product/product-helpers';
 
 test.describe('Toolshop API - Create product', () => {
-  test('Create product with valid data returns 200 and the created product', async ({
+  test('Create product with valid data returns 201 and the created product', async ({
     productApi,
     productInput,
   }) => {
