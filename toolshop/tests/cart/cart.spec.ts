@@ -22,7 +22,7 @@ test.describe('Toolshop API - Cart', () => {
     });
 
     test('Newly created cart is empty', async ({ cartApi }) => {
-      const cartResponse = await cartApi.create();
+      const cartResponse = await cartApi.createCart();
       expect(cartResponse.status()).toBe(201);
 
       const cartBody = await cartResponse.json();
@@ -42,7 +42,7 @@ test.describe('Toolshop API - Cart', () => {
       await expectEmptyCart(secondResponse, 200, userWithEmptyCart.id);
     });
 
-    test('Get card with invalid cart id returns 404', async ({ cartApi }) => {
+    test('Get cart with invalid cart id returns 404', async ({ cartApi }) => {
       const response = await cartApi.getCart('testing');
 
       await expectError(response, 404, 'message', msg.PROD_NOT_FOUND);
@@ -55,7 +55,7 @@ test.describe('Toolshop API - Cart', () => {
       product,
       userWithEmptyCart,
     }) => {
-      const response = await cartApi.addToCart(userWithEmptyCart.id, {
+      const response = await cartApi.addToCartValid(userWithEmptyCart.id, {
         product_id: product.id,
         quantity: 1,
       });
@@ -69,12 +69,12 @@ test.describe('Toolshop API - Cart', () => {
       product,
       userWithEmptyCart,
     }) => {
-      await cartApi.addToCart(userWithEmptyCart.id, {
+      await cartApi.addToCartValid(userWithEmptyCart.id, {
         product_id: product.id,
         quantity: 1,
       });
 
-      await cartApi.addToCart(userWithEmptyCart.id, {
+      await cartApi.addToCartValid(userWithEmptyCart.id, {
         product_id: product.id,
         quantity: 2,
       });
@@ -89,21 +89,27 @@ test.describe('Toolshop API - Cart', () => {
       product,
       userWithEmptyCart,
     }) => {
-      const createResponse = await productApi.create(productInput);
+      const createResponse = await productApi.createProduct(productInput);
       expect(createResponse.status()).toBe(201);
 
       const createdProduct = await createResponse.json();
 
-      const addFirstResponse = await cartApi.addToCart(userWithEmptyCart.id, {
-        product_id: createdProduct.id,
-        quantity: 1,
-      });
+      const addFirstResponse = await cartApi.addToCartValid(
+        userWithEmptyCart.id,
+        {
+          product_id: createdProduct.id,
+          quantity: 1,
+        },
+      );
       expect(addFirstResponse.status()).toBe(200);
 
-      const addSecondResponse = await cartApi.addToCart(userWithEmptyCart.id, {
-        product_id: product.id,
-        quantity: 1,
-      });
+      const addSecondResponse = await cartApi.addToCartValid(
+        userWithEmptyCart.id,
+        {
+          product_id: product.id,
+          quantity: 1,
+        },
+      );
       expect(addSecondResponse.status()).toBe(200);
 
       const cartResponse = await cartApi.getCart(userWithEmptyCart.id);
@@ -125,7 +131,7 @@ test.describe('Toolshop API - Cart', () => {
       cartApi,
       userWithEmptyCart,
     }) => {
-      const response = await cartApi.addToCart(userWithEmptyCart.id, {
+      const response = await cartApi.addToCartInvalid(userWithEmptyCart.id, {
         product_id: 'testingid',
         quantity: 1,
       });
@@ -137,7 +143,7 @@ test.describe('Toolshop API - Cart', () => {
       cartApi,
       userWithEmptyCart,
     }) => {
-      const response = await cartApi.addToCart(userWithEmptyCart.id, {
+      const response = await cartApi.addToCartInvalid(userWithEmptyCart.id, {
         quantity: 1,
       });
       await expectError(response, 404, 'message', msg.RES_NOT_FOUND);
@@ -163,7 +169,7 @@ test.describe('Toolshop API - Cart', () => {
     }) => {
       const quantity = 5;
 
-      await cartApi.updateCartQuantity(userWithProductInCart.cart_id, {
+      await cartApi.updateCartQuantityValid(userWithProductInCart.cart_id, {
         product_id: userWithProductInCart.product_id,
         quantity,
       });
@@ -182,7 +188,7 @@ test.describe('Toolshop API - Cart', () => {
     }) => {
       const quantity = 5;
 
-      await cartApi.updateCartQuantity(userWithProductInCart.cart_id, {
+      await cartApi.updateCartQuantityValid(userWithProductInCart.cart_id, {
         product_id: userWithProductInCart.product_id,
         quantity,
       });
@@ -194,7 +200,7 @@ test.describe('Toolshop API - Cart', () => {
         quantity,
       );
 
-      await cartApi.updateCartQuantity(userWithProductInCart.cart_id, {
+      await cartApi.updateCartQuantityValid(userWithProductInCart.cart_id, {
         product_id: userWithProductInCart.product_id,
         quantity: 3,
       });
@@ -228,7 +234,7 @@ test.describe('Toolshop API - Cart', () => {
     }) => {
       const quantity = 5;
 
-      await cartApi.updateCartQuantity(userWithProductInCart.cart_id, {
+      await cartApi.updateCartQuantityValid(userWithProductInCart.cart_id, {
         product_id: userWithProductInCart.product_id,
         quantity,
       });
@@ -252,7 +258,7 @@ test.describe('Toolshop API - Cart', () => {
       cartApi,
       userWithProductInCart,
     }) => {
-      const response = await cartApi.updateCartQuantity(
+      const response = await cartApi.updateCartQuantityValid(
         userWithProductInCart.cart_id,
         { product_id: 'test', quantity: 1 },
       );
@@ -296,12 +302,13 @@ test.describe('Toolshop API - Cart', () => {
       productInput,
       userWithProductInCart,
     }) => {
-      const createProductResponse = await productApi.create(productInput);
+      const createProductResponse =
+        await productApi.createProduct(productInput);
       expect(createProductResponse.status()).toBe(201);
 
       const createdProduct = await createProductResponse.json();
 
-      const addToCartResponse = await cartApi.addToCart(
+      const addToCartResponse = await cartApi.addToCartValid(
         userWithProductInCart.cart_id,
         { product_id: createdProduct.id, quantity: 1 },
       );

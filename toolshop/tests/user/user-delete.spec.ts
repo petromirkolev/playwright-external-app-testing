@@ -8,13 +8,13 @@ test.describe('Toolshop API - Delete user', () => {
     loggedInAdmin,
     registeredUser,
   }) => {
-    const response = await userApi.delete(
+    const response = await userApi.deleteUser(
       registeredUser.id,
       loggedInAdmin.access_token,
     );
     expect(response.status()).toBe(204);
 
-    const deleteResponse = await userApi.get(
+    const deleteResponse = await userApi.getUser(
       registeredUser.id,
       loggedInAdmin.access_token,
     );
@@ -25,7 +25,7 @@ test.describe('Toolshop API - Delete user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.deleteWithAuthHeader(
+    const response = await userApi.deleteUserWithAuthHeader(
       registeredUser.id,
       'Bearer: abc',
     );
@@ -37,7 +37,7 @@ test.describe('Toolshop API - Delete user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.deleteWithAuthHeader(
+    const response = await userApi.deleteUserWithAuthHeader(
       registeredUser.id,
       'abc',
     );
@@ -49,7 +49,7 @@ test.describe('Toolshop API - Delete user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.deleteWithoutAuth(registeredUser.id);
+    const response = await userApi.deleteUserWithoutAuth(registeredUser.id);
 
     expectError(response, 401, 'message', msg.UNAUTH);
   });
@@ -59,7 +59,7 @@ test.describe('Toolshop API - Delete user', () => {
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.delete(
+    const response = await userApi.deleteUser(
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );

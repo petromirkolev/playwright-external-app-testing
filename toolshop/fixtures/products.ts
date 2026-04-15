@@ -39,14 +39,14 @@ export const test = base.extend<ProductFixtures>({
   },
 
   product: async ({ productInput, productApi, loggedInAdmin }, use) => {
-    const response = await productApi.create(productInput);
+    const response = await productApi.createProduct(productInput);
     expect(response.status()).toBe(201);
 
     const body = await response.json();
     await use(body);
 
     try {
-      const deleteResponse = await productApi.delete(
+      const deleteResponse = await productApi.deleteProduct(
         body.id,
         loggedInAdmin.access_token,
       );
@@ -64,7 +64,7 @@ export const test = base.extend<ProductFixtures>({
   },
 
   productList: async ({ productApi }, use) => {
-    const listResponse = await productApi.getAll();
+    const listResponse = await productApi.getAllProducts();
     expect(listResponse.status()).toBe(200);
 
     const listBody = await listResponse.json();

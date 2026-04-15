@@ -12,7 +12,7 @@ test.describe('Toolshop API - Create user', () => {
     userApi,
     registrationData,
   }) => {
-    const response = await userApi.register(registrationData);
+    const response = await userApi.registerUser(registrationData);
 
     expectSuccess(response, 201, registrationData);
   });
@@ -22,7 +22,7 @@ test.describe('Toolshop API - Create user', () => {
     registeredUser,
     registrationData,
   }) => {
-    const response = await userApi.register({
+    const response = await userApi.registerUser({
       ...registrationData,
       email: registeredUser.email,
     });
@@ -38,7 +38,7 @@ test.describe('Toolshop API - Create user', () => {
 
     for (let i = 0; i < numberOfUsers; i++) {
       const email = uniqueEmail();
-      const response = await userApi.register({
+      const response = await userApi.registerUser({
         ...registrationData,
         email,
       });
@@ -54,7 +54,7 @@ test.describe('Toolshop API - Create user', () => {
       const { value, description, error } = missingReqFieldsInput[key];
 
       test(description, async ({ userApi, registrationData }) => {
-        const response = await userApi.register({
+        const response = await userApi.registerUser({
           ...registrationData,
           [key]: value,
         });
@@ -71,7 +71,7 @@ test.describe('Toolshop API - Create user', () => {
       const { value, description, error } = invalidPasswordInput[key];
 
       test(description, async ({ userApi, registrationData }) => {
-        const response = await userApi.register({
+        const response = await userApi.registerUser({
           ...registrationData,
           password: value,
         });

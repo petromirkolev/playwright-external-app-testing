@@ -14,7 +14,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateUser(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
@@ -24,7 +24,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await userApi.get(
+    const updatedResponse = await userApi.getUser(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -36,7 +36,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.updateWithAuthHeader(
+    const response = await userApi.updateUserWithAuthHeader(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       'Bearer: abc',
@@ -49,7 +49,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.updateWithAuthHeader(
+    const response = await userApi.updateUserWithAuthHeader(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
       'abc',
@@ -62,7 +62,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.updateWithoutAuth(
+    const response = await userApi.updateUserWithoutAuth(
       { ...userUpdateInput, email },
       registeredAndLoggedInUser.id,
     );
@@ -74,7 +74,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.partialUpdate(
+    const response = await userApi.partialUserUpdate(
       { email },
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
@@ -84,7 +84,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await userApi.get(
+    const updatedResponse = await userApi.getUser(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -99,7 +99,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredUser,
     loggedInAdmin,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateUser(
       { ...userUpdateInput, email },
       registeredUser.id,
       loggedInAdmin.access_token,
@@ -109,7 +109,7 @@ test.describe('Toolshop API - Update user', () => {
     const body = await response.json();
     expect(body.success).toBeTruthy();
 
-    const updatedResponse = await userApi.get(
+    const updatedResponse = await userApi.getUser(
       registeredUser.id,
       loggedInAdmin.access_token,
     );
@@ -121,7 +121,7 @@ test.describe('Toolshop API - Update user', () => {
     userApi,
     loggedInAdmin,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateUser(
       { ...userUpdateInput, email },
       '99999',
       loggedInAdmin.access_token,
@@ -135,7 +135,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.update(
+    const response = await userApi.updateUser(
       { ...userUpdateInput, email },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
@@ -149,7 +149,7 @@ test.describe('Toolshop API - Update user', () => {
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.partialUpdate(
+    const response = await userApi.partialUserUpdate(
       { email },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,

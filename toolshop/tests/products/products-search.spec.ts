@@ -6,7 +6,7 @@ test.describe('Toolshop API - Search products', () => {
   }) => {
     const page = 1;
 
-    const listResponse = await productApi.getAll();
+    const listResponse = await productApi.getAllProducts();
     expect(listResponse.status()).toBe(200);
 
     const listBody = await listResponse.json();
@@ -14,7 +14,7 @@ test.describe('Toolshop API - Search products', () => {
 
     const product = listBody.data[0];
 
-    const searchResponse = await productApi.search(product.name, page);
+    const searchResponse = await productApi.searchProduct(product.name, page);
     expect(searchResponse.status()).toBe(200);
 
     const searchBody = await searchResponse.json();
@@ -34,7 +34,7 @@ test.describe('Toolshop API - Search products', () => {
   }) => {
     const page = 1;
 
-    const searchResponse = await productApi.search(
+    const searchResponse = await productApi.searchProduct(
       'testing-query-non-existing',
       page,
     );

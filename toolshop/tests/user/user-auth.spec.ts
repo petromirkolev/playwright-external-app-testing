@@ -23,7 +23,7 @@ test.describe('Toolshop API - User authentication', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.refreshToken(
+    const response = await userApi.refreshUserToken(
       registeredAndLoggedInUser.access_token,
     );
     expect(response.status()).toBe(200);
@@ -51,7 +51,7 @@ test.describe('Toolshop API - User authentication', () => {
       .slice(0, 2)
       .join('.');
 
-    const response = await userApi.refreshToken(malformedToken);
+    const response = await userApi.refreshUserToken(malformedToken);
     expect(response.status()).toBe(500);
   });
 
@@ -59,11 +59,11 @@ test.describe('Toolshop API - User authentication', () => {
     userApi,
     registeredUser,
   }) => {
-    const firstResponse = await userApi.login(registeredUser);
+    const firstResponse = await userApi.loginUser(registeredUser);
     const firstBody = await firstResponse.json();
     const firstToken = firstBody.access_token;
 
-    const secondResponse = await userApi.login(registeredUser);
+    const secondResponse = await userApi.loginUser(registeredUser);
     const secondBody = await secondResponse.json();
     const secondToken = secondBody.access_token;
 
@@ -81,7 +81,7 @@ test.describe('Toolshop API - User authentication', () => {
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.get(
+    const response = await userApi.getUser(
       registeredUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -93,7 +93,7 @@ test.describe('Toolshop API - User authentication', () => {
     registeredUser,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.partialUpdate(
+    const response = await userApi.partialUserUpdate(
       { first_name: userUpdateInput.first_name },
       registeredUser.id,
       registeredAndLoggedInUser.access_token,

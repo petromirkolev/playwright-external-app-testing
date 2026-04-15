@@ -7,7 +7,7 @@ test.describe('Toolshop API - Get user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.get(
+    const response = await userApi.getUser(
       registeredAndLoggedInUser.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -54,7 +54,7 @@ test.describe('Toolshop API - Get user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.get(
+    const response = await userApi.getUser(
       '999999999999999',
       registeredAndLoggedInUser.access_token,
     );
@@ -66,7 +66,7 @@ test.describe('Toolshop API - Get user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.getWithAuthHeader(
+    const response = await userApi.getUserWithAuthHeader(
       registeredAndLoggedInUser.id,
       'Bearer: abc',
     );
@@ -78,7 +78,7 @@ test.describe('Toolshop API - Get user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.getWithAuthHeader(
+    const response = await userApi.getUserWithAuthHeader(
       registeredAndLoggedInUser.id,
       'abc',
     );
@@ -90,7 +90,9 @@ test.describe('Toolshop API - Get user', () => {
     userApi,
     registeredAndLoggedInUser,
   }) => {
-    const response = await userApi.getWithoutAuth(registeredAndLoggedInUser.id);
+    const response = await userApi.getUserWithoutAuth(
+      registeredAndLoggedInUser.id,
+    );
 
     expectError(response, 401, 'message', msg.UNAUTH);
   });

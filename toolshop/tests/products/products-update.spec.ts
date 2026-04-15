@@ -15,7 +15,10 @@ test.describe('Toolshop API - Update product', () => {
     product,
     productUpdateInput,
   }) => {
-    const response = await productApi.update(productUpdateInput, product.id);
+    const response = await productApi.updateProduct(
+      productUpdateInput,
+      product.id,
+    );
 
     await expectUpdateProductSuccess(
       response,
@@ -28,7 +31,7 @@ test.describe('Toolshop API - Update product', () => {
   test.describe('Partial valid update', () => {
     for (const { name, data } of validPartialUpdate) {
       test(name, async ({ productApi, product }) => {
-        const response = await productApi.partialUpdate(
+        const response = await productApi.partialUpdateProduct(
           { ...data },
           product.id,
         );
@@ -46,7 +49,7 @@ test.describe('Toolshop API - Update product', () => {
   test.describe('Partial invalid update', () => {
     for (const { name, data } of invalidPartialUpdate) {
       test(name, async ({ productApi, product }) => {
-        const response = await productApi.partialUpdateRaw(
+        const response = await productApi.partialUpdateProductRaw(
           { ...data },
           product.id,
         );

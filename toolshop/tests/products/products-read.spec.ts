@@ -7,7 +7,7 @@ import {
 
 test.describe('Toolshop API - Read product', () => {
   test('Get all products returns 200 and data', async ({ productApi }) => {
-    const response = await productApi.getAll();
+    const response = await productApi.getAllProducts();
 
     expect(response.status()).toBe(200);
     expect(response.body()).toBeDefined();
@@ -17,7 +17,7 @@ test.describe('Toolshop API - Read product', () => {
     productApi,
     product,
   }) => {
-    const response = await productApi.getOne(product.id);
+    const response = await productApi.getOneProduct(product.id);
 
     expectGetProductSuccess(response, product.id);
   });
@@ -26,7 +26,7 @@ test.describe('Toolshop API - Read product', () => {
     productApi,
   }) => {
     const nonExistingId = '999999';
-    const response = await productApi.getOne(nonExistingId);
+    const response = await productApi.getOneProduct(nonExistingId);
 
     expectGetProductError(response, 'message', msg.PROD_NOT_FOUND);
   });
@@ -34,7 +34,7 @@ test.describe('Toolshop API - Read product', () => {
   test('Get product with invalid id returns 201 and data', async ({
     productApi,
   }) => {
-    const response = await productApi.getOneRaw(1);
+    const response = await productApi.getOneProductRaw(1);
 
     expectGetProductError(response, 'message', msg.PROD_NOT_FOUND);
   });

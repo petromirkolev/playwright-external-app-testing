@@ -11,7 +11,7 @@ test.describe('Toolshop API - Update product', () => {
     product,
     loggedInAdmin,
   }) => {
-    const response = await productApi.delete(
+    const response = await productApi.deleteProduct(
       product.id,
       loggedInAdmin.access_token,
     );
@@ -23,7 +23,7 @@ test.describe('Toolshop API - Update product', () => {
     productApi,
     product,
   }) => {
-    const response = await productApi.delete(product.id, 'invalidtoken');
+    const response = await productApi.deleteProduct(product.id, 'invalidtoken');
 
     await expectDeleteProductError(response, 401, msg.UNAUTH);
   });
@@ -33,7 +33,7 @@ test.describe('Toolshop API - Update product', () => {
     product,
     registeredAndLoggedInUser,
   }) => {
-    const response = await productApi.delete(
+    const response = await productApi.deleteProduct(
       product.id,
       registeredAndLoggedInUser.access_token,
     );
@@ -45,7 +45,7 @@ test.describe('Toolshop API - Update product', () => {
     productApi,
     loggedInAdmin,
   }) => {
-    const response = await productApi.delete(
+    const response = await productApi.deleteProduct(
       'nonexistent-product-id',
       loggedInAdmin.access_token,
     );

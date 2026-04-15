@@ -9,39 +9,42 @@ import {
 export class ProductApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async create(input: ProductInput): Promise<APIResponse> {
+  async createProduct(input: ProductInput): Promise<APIResponse> {
     return this.request.post('products', {
       data: input,
     });
   }
 
-  async createRaw(input: Record<string, unknown>): Promise<APIResponse> {
+  async createProductRaw(input: Record<string, unknown>): Promise<APIResponse> {
     return this.request.post('products', {
       data: input,
     });
   }
 
-  async getOne(id: string): Promise<APIResponse> {
+  async getOneProduct(id: string): Promise<APIResponse> {
     return this.request.get(`products/${id}`);
   }
 
-  async getOneRaw(
+  async getOneProductRaw(
     id: string | number | null | undefined,
   ): Promise<APIResponse> {
     return this.request.get(`products/${id}`);
   }
 
-  async getAll(): Promise<APIResponse> {
+  async getAllProducts(): Promise<APIResponse> {
     return this.request.get('products');
   }
 
-  async update(input: ProductUpdateInput, id: string): Promise<APIResponse> {
+  async updateProduct(
+    input: ProductUpdateInput,
+    id: string,
+  ): Promise<APIResponse> {
     return this.request.put(`products/${id}`, {
       data: input,
     });
   }
 
-  async updateRaw(
+  async updateProductRaw(
     input: Record<string, unknown>,
     id: string,
   ): Promise<APIResponse> {
@@ -50,7 +53,7 @@ export class ProductApiClient {
     });
   }
 
-  async partialUpdate(
+  async partialUpdateProduct(
     input: PartialProductUpdateInput,
     id: string,
   ): Promise<APIResponse> {
@@ -59,7 +62,7 @@ export class ProductApiClient {
     });
   }
 
-  async partialUpdateRaw(
+  async partialUpdateProductRaw(
     input: Record<string, unknown>,
     id: string,
   ): Promise<APIResponse> {
@@ -68,24 +71,24 @@ export class ProductApiClient {
     });
   }
 
-  async delete(id: string, token: string): Promise<APIResponse> {
+  async deleteProduct(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`products/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async search(q: string, page: number): Promise<APIResponse> {
+  async searchProduct(q: string, page: number): Promise<APIResponse> {
     return this.request.get(`products/search?q=${q}&page=${page}`);
   }
 
-  async sort(
+  async sortProducts(
     query: 'name' | 'price' | string,
     order: 'asc' | 'desc' | string,
   ): Promise<APIResponse> {
     return this.request.get(`products/?sort=${query}%2C${order}`);
   }
 
-  async filter(filters: ProductFilters): Promise<APIResponse> {
+  async filterProducts(filters: ProductFilters): Promise<APIResponse> {
     const params = new URLSearchParams();
 
     if (filters.by_brand) params.set('by_brand', filters.by_brand);

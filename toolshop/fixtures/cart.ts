@@ -13,10 +13,11 @@ type CartFixtures = {
 
 export const test = base.extend<CartFixtures>({
   userWithEmptyCart: async ({ cartApi, registeredAndLoggedInUser }, use) => {
-    const response = await cartApi.create();
+    const response = await cartApi.createCart();
     expect(response.status()).toBe(201);
 
     const body = await response.json();
+
     const cartResponse = await cartApi.getCart(body.id);
     expect(cartResponse.status()).toBe(200);
 
@@ -38,11 +39,11 @@ export const test = base.extend<CartFixtures>({
 
       if (status !== 204 && status !== 404) {
         console.warn(
-          `Cleanup failed for product ${body.id}. Expected 204 or 404, got ${status}`,
+          `Cleanup failed for cart ${body.id}. Expected 204 or 404, got ${status}`,
         );
       }
     } catch (error) {
-      console.warn(`Cleanup request failed for product ${body.id}:`, error);
+      console.warn(`Cleanup request failed for cart ${body.id}:`, error);
     }
   },
 
@@ -50,7 +51,7 @@ export const test = base.extend<CartFixtures>({
     { cartApi, product, userWithEmptyCart },
     use,
   ) => {
-    const response = await cartApi.addToCart(userWithEmptyCart.id, {
+    const response = await cartApi.addToCartValid(userWithEmptyCart.id, {
       product_id: product.id,
       quantity: 1,
     });

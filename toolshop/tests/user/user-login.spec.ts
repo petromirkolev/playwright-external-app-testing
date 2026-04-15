@@ -11,21 +11,21 @@ test.describe('Toolshop API - Login user', () => {
     userApi,
     registeredUser,
   }) => {
-    await expectSuccessAndToken(await userApi.login(registeredUser));
+    await expectSuccessAndToken(await userApi.loginUser(registeredUser));
   });
 
   test('Login with valid admin credentials returns 200 and access token', async ({
     userApi,
     adminData,
   }) => {
-    await expectSuccessAndToken(await userApi.login(adminData));
+    await expectSuccessAndToken(await userApi.loginUser(adminData));
   });
 
   test('Login with wrong password returns 401', async ({
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.login({
+    const response = await userApi.loginUser({
       email: registeredUser.email,
       password: nonExistingUserInput.password,
     });
@@ -37,7 +37,7 @@ test.describe('Toolshop API - Login user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.login({
+    const response = await userApi.loginUser({
       email: userInput.email,
       password: registeredUser.password,
     });
@@ -49,7 +49,7 @@ test.describe('Toolshop API - Login user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.login({
+    const response = await userApi.loginUser({
       email: '',
       password: registeredUser.password,
     });
@@ -61,7 +61,7 @@ test.describe('Toolshop API - Login user', () => {
     userApi,
     registeredUser,
   }) => {
-    const response = await userApi.login({
+    const response = await userApi.loginUser({
       email: registeredUser.email,
       password: '',
     });
@@ -70,7 +70,7 @@ test.describe('Toolshop API - Login user', () => {
   });
 
   test('Login with empty credentials returns 401', async ({ userApi }) => {
-    const response = await userApi.login({ email: '', password: '' });
+    const response = await userApi.loginUser({ email: '', password: '' });
 
     expectError(response, 401, 'error', msg.ERR_INV_LOGIN_REQ);
   });

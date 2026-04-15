@@ -9,29 +9,29 @@ import {
 export class UserApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async register(input: RegistrationInput): Promise<APIResponse> {
+  async registerUser(input: RegistrationInput): Promise<APIResponse> {
     return this.request.post('users/register', {
       data: input,
     });
   }
 
-  async login(input: LoginInput): Promise<APIResponse> {
+  async loginUser(input: LoginInput): Promise<APIResponse> {
     return this.request.post('users/login', {
       data: input,
     });
   }
 
-  async delete(id: string, token: string): Promise<APIResponse> {
+  async deleteUser(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async deleteWithoutAuth(id: string): Promise<APIResponse> {
+  async deleteUserWithoutAuth(id: string): Promise<APIResponse> {
     return this.request.delete(`users/${id}`);
   }
 
-  async deleteWithAuthHeader(
+  async deleteUserWithAuthHeader(
     id: string,
     authValue: string,
   ): Promise<APIResponse> {
@@ -40,7 +40,7 @@ export class UserApiClient {
     });
   }
 
-  async update(
+  async updateUser(
     input: UpdateInput,
     id: string,
     token: string,
@@ -51,7 +51,7 @@ export class UserApiClient {
     });
   }
 
-  async updateWithoutAuth(
+  async updateUserWithoutAuth(
     input: UpdateInput,
     id: string,
   ): Promise<APIResponse> {
@@ -60,7 +60,7 @@ export class UserApiClient {
     });
   }
 
-  async updateWithAuthHeader(
+  async updateUserWithAuthHeader(
     input: UpdateInput,
     id: string,
     authValue: string,
@@ -71,7 +71,7 @@ export class UserApiClient {
     });
   }
 
-  async partialUpdate(
+  async partialUserUpdate(
     input: PartialUpdateInput,
     id: string,
     token: string,
@@ -82,7 +82,7 @@ export class UserApiClient {
     });
   }
 
-  async partialUpdateWithoutAuth(
+  async partialUserUpdateWithoutAuth(
     input: PartialUpdateInput,
     id: string,
   ): Promise<APIResponse> {
@@ -91,7 +91,7 @@ export class UserApiClient {
     });
   }
 
-  async partialUpdateWithAuthHeader(
+  async partialUserUpdateWithAuthHeader(
     input: PartialUpdateInput,
     id: string,
     authValue: string,
@@ -102,17 +102,20 @@ export class UserApiClient {
     });
   }
 
-  async get(id: string, token: string): Promise<APIResponse> {
+  async getUser(id: string, token: string): Promise<APIResponse> {
     return this.request.get(`users/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
   }
 
-  async getWithoutAuth(id: string): Promise<APIResponse> {
+  async getUserWithoutAuth(id: string): Promise<APIResponse> {
     return this.request.get(`users/${id}`);
   }
 
-  async getWithAuthHeader(id: string, authValue: string): Promise<APIResponse> {
+  async getUserWithAuthHeader(
+    id: string,
+    authValue: string,
+  ): Promise<APIResponse> {
     return this.request.get(`users/${id}`, {
       headers: { Authorization: authValue },
     });
@@ -134,7 +137,7 @@ export class UserApiClient {
     });
   }
 
-  async refreshToken(token: string): Promise<APIResponse> {
+  async refreshUserToken(token: string): Promise<APIResponse> {
     return this.request.get('users/refresh', {
       headers: {
         Authorization: `Bearer ${token}`,

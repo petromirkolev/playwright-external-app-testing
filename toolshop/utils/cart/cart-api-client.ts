@@ -4,13 +4,22 @@ import { InvalidCartInput, ValidCartInput } from '../../types/cart';
 export class CartApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async create(): Promise<APIResponse> {
+  async createCart(): Promise<APIResponse> {
     return this.request.post('carts');
   }
 
-  async addToCart(
+  async addToCartValid(
     cartId: string,
-    input: ValidCartInput | InvalidCartInput,
+    input: ValidCartInput,
+  ): Promise<APIResponse> {
+    return this.request.post(`carts/${cartId}`, {
+      data: input,
+    });
+  }
+
+  async addToCartInvalid(
+    cartId: string,
+    input: InvalidCartInput,
   ): Promise<APIResponse> {
     return this.request.post(`carts/${cartId}`, {
       data: input,
@@ -30,9 +39,18 @@ export class CartApiClient {
     return this.request.get(`carts/${cartId}`);
   }
 
-  async updateCartQuantity(
+  async updateCartQuantityValid(
     cartId: string,
-    input: ValidCartInput | InvalidCartInput,
+    input: ValidCartInput,
+  ): Promise<APIResponse> {
+    return this.request.put(`carts/${cartId}/product/quantity`, {
+      data: input,
+    });
+  }
+
+  async updateCartQuantityInvalid(
+    cartId: string,
+    input: InvalidCartInput,
   ): Promise<APIResponse> {
     return this.request.put(`carts/${cartId}/product/quantity`, {
       data: input,

@@ -8,7 +8,7 @@ test.describe('Toolshop API - Filter products', () => {
   }) => {
     const brandId = productList[0].brand.id;
 
-    const response = await productApi.filter({ by_brand: brandId });
+    const response = await productApi.filterProducts({ by_brand: brandId });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -24,7 +24,9 @@ test.describe('Toolshop API - Filter products', () => {
   }) => {
     const categoryId = productList[0].category.id;
 
-    const response = await productApi.filter({ by_category: categoryId });
+    const response = await productApi.filterProducts({
+      by_category: categoryId,
+    });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -37,7 +39,9 @@ test.describe('Toolshop API - Filter products', () => {
   test('Non-existent brand_id filter returns 200 and no matching products', async ({
     productApi,
   }) => {
-    const response = await productApi.filter({ by_brand: 'non-existing' });
+    const response = await productApi.filterProducts({
+      by_brand: 'non-existing',
+    });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -47,7 +51,9 @@ test.describe('Toolshop API - Filter products', () => {
   test('Non-existent category_id filter returns 200 and no matching products', async ({
     productApi,
   }) => {
-    const response = await productApi.filter({ by_category: 'non-existing' });
+    const response = await productApi.filterProducts({
+      by_category: 'non-existing',
+    });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -57,7 +63,7 @@ test.describe('Toolshop API - Filter products', () => {
   test('is_rental=true filter returns 200 and matching products', async ({
     productApi,
   }) => {
-    const response = await productApi.filter({
+    const response = await productApi.filterProducts({
       is_rental: true,
     });
     expect(response.status()).toBe(200);
@@ -69,7 +75,7 @@ test.describe('Toolshop API - Filter products', () => {
   test('is_rental=false filter returns 200 and matching products', async ({
     productApi,
   }) => {
-    const response = await productApi.filter({
+    const response = await productApi.filterProducts({
       is_rental: false,
     });
     expect(response.status()).toBe(200);
@@ -81,7 +87,9 @@ test.describe('Toolshop API - Filter products', () => {
   test('Valid price range returns 200 and in range results', async ({
     productApi,
   }) => {
-    const response = await productApi.filter({ between: 'price,10,30' });
+    const response = await productApi.filterProducts({
+      between: 'price,10,30',
+    });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -95,7 +103,7 @@ test.describe('Toolshop API - Filter products', () => {
     productApi,
     productList,
   }) => {
-    const response = await productApi.filter({ between: '10,30' });
+    const response = await productApi.filterProducts({ between: '10,30' });
     expect(response.status()).toBe(200);
 
     const body = await response.json();
@@ -113,7 +121,7 @@ test.describe('Toolshop API - Filter products', () => {
     const brandId = productList[0].brand.id;
     const categoryId = productList[0].category.id;
 
-    const response = await productApi.filter({
+    const response = await productApi.filterProducts({
       by_brand: brandId,
       by_category: categoryId,
     });
@@ -133,7 +141,7 @@ test.describe('Toolshop API - Filter products', () => {
   }) => {
     const categoryId = productList[0].category.id;
 
-    const response = await productApi.filter({
+    const response = await productApi.filterProducts({
       by_category: categoryId,
       between: 'price,10,30',
     });
@@ -155,7 +163,7 @@ test.describe('Toolshop API - Filter products', () => {
   }) => {
     const brandId = productList[0].brand.id;
 
-    const response = await productApi.filter({
+    const response = await productApi.filterProducts({
       by_brand: brandId,
       between: 'price,10,30',
     });

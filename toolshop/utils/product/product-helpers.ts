@@ -5,7 +5,7 @@ import { ProductApiClient } from './product-api-client';
 export async function expectAddProductSuccess(
   response: APIResponse,
   input: ProductInput,
-) {
+): Promise<void> {
   expect(response.status()).toBe(201);
 
   const body = await response.json();
@@ -21,7 +21,7 @@ export async function expectAddProductError(
   response: APIResponse,
   field: string,
   errorMessage: string,
-) {
+): Promise<void> {
   expect(response.status()).toBe(422);
 
   const body = await response.json();
@@ -37,7 +37,7 @@ export async function expectUpdateProductSuccess(
 ): Promise<void> {
   expect(response.status()).toBe(200);
 
-  const productResponse = await client.getOne(id);
+  const productResponse = await client.getOneProduct(id);
   expect(productResponse.status()).toBe(200);
 
   const productBody = await productResponse.json();
@@ -52,7 +52,7 @@ export async function expectDeleteProductSuccess(
 ): Promise<void> {
   expect(response.status()).toBe(204);
 
-  const getResponse = await client.getOne(id);
+  const getResponse = await client.getOneProduct(id);
 
   expect(getResponse.status()).toBe(404);
 }
@@ -73,7 +73,7 @@ export async function expectSortProductSuccess(
   response: APIResponse,
   field: string,
   order: string,
-) {
+): Promise<void> {
   expect(response.status()).toBe(200);
 
   const body = await response.json();
@@ -104,7 +104,7 @@ export async function expectUpdateProductError(
 ): Promise<void> {
   expect(response.status()).toBe(422);
 
-  const productResponse = await client.getOne(id);
+  const productResponse = await client.getOneProduct(id);
   expect(productResponse.status()).toBe(200);
 
   const productBody = await productResponse.json();
@@ -115,7 +115,7 @@ export async function expectUpdateProductError(
 export async function expectGetProductSuccess(
   response: APIResponse,
   id: string,
-) {
+): Promise<void> {
   expect(response.status()).toBe(200);
 
   const body = await response.json();
@@ -127,7 +127,7 @@ export async function expectGetProductError(
   response: APIResponse,
   field: string,
   message: string,
-) {
+): Promise<void> {
   expect(response.status()).toBe(404);
 
   const body = await response.json();

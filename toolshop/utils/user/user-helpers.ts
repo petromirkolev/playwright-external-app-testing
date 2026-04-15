@@ -5,7 +5,7 @@ export async function expectSuccess(
   response: APIResponse,
   status: number,
   registrationData: Partial<RegistrationInput>,
-) {
+): Promise<void> {
   expect(response.status()).toBe(status);
 
   const body = await response.json();
@@ -21,7 +21,7 @@ export async function expectError(
   status: number,
   field: string,
   message: string,
-) {
+): Promise<void> {
   expect(response.status()).toBe(status);
 
   const body = await response.json();
@@ -31,7 +31,9 @@ export async function expectError(
   expect(messages).toContain(message);
 }
 
-export async function expectSuccessAndToken(response: APIResponse) {
+export async function expectSuccessAndToken(
+  response: APIResponse,
+): Promise<void> {
   expect(response.status()).toBe(200);
   const body = await response.json();
   expect(body.access_token).toBeDefined();
