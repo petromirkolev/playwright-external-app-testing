@@ -30,4 +30,5 @@ export const msg = {
   UNAUTH_UPDATE: 'You can only update your own data.',
 
   FORBIDDEN: 'Forbidden',
+  RES_NOT_FOUND: 'Resource not found',
 };
