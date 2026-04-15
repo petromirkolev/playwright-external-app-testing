@@ -3,7 +3,7 @@ import { RegistrationInput } from '../types/user';
 import { UserApiClient } from './user-api-client';
 import { CartApiClient } from './cart-api-client';
 
-export async function registerUser(
+export async function addToCart(
   input: RegistrationInput,
   api: UserApiClient,
 ): Promise<any> {
@@ -16,11 +16,12 @@ export async function registerUser(
   return userBody;
 }
 
-export async function expectEmptyCartSuccess(
+export async function expectEmptyCart(
   response: APIResponse,
+  status: number,
   cartId: string,
 ) {
-  expect(response.status()).toBe(200);
+  expect(response.status()).toBe(status);
 
   const body = await response.json();
 
@@ -38,7 +39,7 @@ export async function expectAddItemSuccess(
 ) {
   expect(response.status()).toBe(200);
 
-  const cartResponse = await api.get(cartId);
+  const cartResponse = await api.getCart(cartId);
   expect(cartResponse.status()).toBe(200);
 
   const cartBody = await cartResponse.json();
@@ -48,9 +49,8 @@ export async function expectAddItemSuccess(
   expect(cartBody.cart_items).toHaveLength(items);
 
   const isPresent = cartBody.cart_items.some(
-    (item) => item.product_id === productId,
+    (item: { product_id: string }) => item.product_id === productId,
   );
-
   expect(isPresent).toBeTruthy();
 }
 
@@ -60,13 +60,14 @@ export async function expectCartQuantity(
   productId: string,
   quantity: number,
 ) {
-  const response = await api.get(cartId);
+  const response = await api.getCart(cartId);
   expect(response.status()).toBe(200);
 
   const body = await response.json();
 
-  const item = body.cart_items.find((item) => item.product_id === productId);
-
+  const item = body.cart_items.find(
+    (item: { product_id: string }) => item.product_id === productId,
+  );
   expect(item.quantity).toBe(quantity);
 }
 

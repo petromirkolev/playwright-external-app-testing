@@ -1,34 +1,81 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
+import { InvalidCartInput, ValidCartInput } from '../types/cart';
 
 export class CartApiClient {
   constructor(private readonly request: APIRequestContext) {}
 
-  async create(token: string): Promise<APIResponse> {
-    return this.request.post('carts', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  async create(): Promise<APIResponse> {
+    return this.request.post('carts');
   }
 
-  async add(
+  async addToCart(
     cartId: string,
-    product_id: string,
-    quantity: number,
-    token: string,
+    input: ValidCartInput | InvalidCartInput,
   ): Promise<APIResponse> {
     return this.request.post(`carts/${cartId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-      data: {
-        product_id,
-        quantity,
-      },
+      data: input,
     });
   }
 
-  async get(id: string | undefined): Promise<APIResponse> {
-    return this.request.get(`carts/${id}`);
+  async addToCartRaw(
+    cartId: string,
+    input: Record<string, unknown>,
+  ): Promise<APIResponse> {
+    return this.request.post(`carts/${cartId}`, {
+      data: input,
+    });
   }
 
-  async delete(id: string, token: string): Promise<APIResponse> {
+  async getCart(cartId: string): Promise<APIResponse> {
+    return this.request.get(`carts/${cartId}`);
+  }
+
+  async updateCartQuantity(
+    cartId: string,
+    input: ValidCartInput | InvalidCartInput,
+  ): Promise<APIResponse> {
+    return this.request.put(`carts/${cartId}/product/quantity`, {
+      data: input,
+    });
+  }
+
+  async updateCartQuantityRaw(
+    cartId: string,
+    input: Record<string, unknown>,
+  ): Promise<APIResponse> {
+    return this.request.put(`carts/${cartId}/product/quantity`, {
+      data: input,
+    });
+  }
+
+  async deleteFromCart(
+    cartId: string,
+    productId: string,
+    token: string,
+  ): Promise<APIResponse> {
+    return this.request.delete(`carts/${cartId}/product/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  }
+
+  async deleteFromCartWithoutAuth(
+    cartId: string,
+    productId: string,
+  ): Promise<APIResponse> {
+    return this.request.delete(`carts/${cartId}/product/${productId}`);
+  }
+
+  async deleteFromCartWithHeaders(
+    cartId: string,
+    productId: string,
+    authValue: string,
+  ): Promise<APIResponse> {
+    return this.request.delete(`carts/${cartId}/product/${productId}`, {
+      headers: { Authorization: authValue },
+    });
+  }
+
+  async deleteCart(id: string, token: string): Promise<APIResponse> {
     return this.request.delete(`carts/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
