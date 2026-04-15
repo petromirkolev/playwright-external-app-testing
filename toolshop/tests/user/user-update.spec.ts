@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError, expectSuccess } from '../../utils/user-helpers';
-import { uniqueEmail, userUpdateInput } from '../../utils/user-data';
+import { expectError, expectSuccess } from '../../utils/user/user-helpers';
+import { uniqueEmail, userUpdateInput } from '../../utils/user/user-data';
 
 test.describe('Toolshop API - Update user', () => {
   let email: string;

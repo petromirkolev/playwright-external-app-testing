@@ -1,12 +1,15 @@
 import { test, expect } from '../../fixtures/cart';
-import { addProductCases, updateQuantityCases } from '../../utils/cart-data';
+import {
+  addProductCases,
+  updateQuantityCases,
+} from '../../utils/cart/cart-data';
 import {
   expectAddItemSuccess,
   expectCartQuantity,
   expectEmptyCart,
-} from '../../utils/cart-helpers';
+} from '../../utils/cart/cart-helpers';
 import { msg } from '../../utils/constants';
-import { expectError } from '../../utils/user-helpers';
+import { expectError } from '../../utils/user/user-helpers';
 
 test.describe('Toolshop API - Cart', () => {
   test.describe('Get cart', () => {

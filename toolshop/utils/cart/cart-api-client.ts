@@ -1,5 +1,5 @@
 import { APIRequestContext, APIResponse } from '@playwright/test';
-import { InvalidCartInput, ValidCartInput } from '../types/cart';
+import { InvalidCartInput, ValidCartInput } from '../../types/cart';
 
 export class CartApiClient {
   constructor(private readonly request: APIRequestContext) {}

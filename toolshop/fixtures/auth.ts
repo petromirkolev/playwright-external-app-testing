@@ -1,6 +1,6 @@
 import { test as base, expect } from './api';
 import { LoginInput, RegistrationInput } from '../types/user';
-import { adminInput, uniqueEmail, userInput } from '../utils/user-data';
+import { adminInput, uniqueEmail, userInput } from '../utils/user/user-data';
 
 type AuthFixtures = {
   registrationData: RegistrationInput;

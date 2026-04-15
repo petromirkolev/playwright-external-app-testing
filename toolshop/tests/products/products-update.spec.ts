@@ -2,12 +2,12 @@ import { test } from '../../fixtures/products';
 import {
   expectUpdateProductError,
   expectUpdateProductSuccess,
-} from '../../utils/product-helpers';
+} from '../../utils/product/product-helpers';
 import {
   invalidPartialUpdate,
   validPartialUpdate,
   validUpdateInput,
-} from '../../utils/product-data';
+} from '../../utils/product/product-data';
 
 test.describe('Toolshop API - Update product', () => {
   test('Update product with valid data returns 201 and updated product', async ({

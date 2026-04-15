@@ -4,7 +4,7 @@ import {
   PartialUpdateInput,
   RegistrationInput,
   UpdateInput,
-} from '../types/user';
+} from '../../types/user';
 
 export class UserApiClient {
   constructor(private readonly request: APIRequestContext) {}

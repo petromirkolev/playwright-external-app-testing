@@ -3,8 +3,8 @@ import { msg } from '../../utils/constants';
 import {
   expectAddProductError,
   expectAddProductSuccess,
-} from '../../utils/product-helpers';
-import { missingProductInput } from '../../utils/product-data';
+} from '../../utils/product/product-helpers';
+import { missingProductInput } from '../../utils/product/product-data';
 
 test.describe('Toolshop API - Create product', () => {
   test('Create product with valid data returns 200 and the created product', async ({

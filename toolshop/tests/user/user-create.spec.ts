@@ -1,11 +1,11 @@
 import { test } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError, expectSuccess } from '../../utils/user-helpers';
+import { expectError, expectSuccess } from '../../utils/user/user-helpers';
 import {
   invalidPasswordInput,
   missingReqFieldsInput,
   uniqueEmail,
-} from '../../utils/user-data';
+} from '../../utils/user/user-data';
 
 test.describe('Toolshop API - Create user', () => {
   test('Create user with valid unique data returns 201', async ({

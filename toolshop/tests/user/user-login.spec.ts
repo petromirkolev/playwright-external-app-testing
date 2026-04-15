@@ -1,7 +1,10 @@
 import { test } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError, expectSuccessAndToken } from '../../utils/user-helpers';
-import { nonExistingUserInput, userInput } from '../../utils/user-data';
+import {
+  expectError,
+  expectSuccessAndToken,
+} from '../../utils/user/user-helpers';
+import { nonExistingUserInput, userInput } from '../../utils/user/user-data';
 
 test.describe('Toolshop API - Login user', () => {
   test('Login with valid customer credentials returns 200 and access token', async ({

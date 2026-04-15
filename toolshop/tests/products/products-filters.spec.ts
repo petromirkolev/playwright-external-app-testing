@@ -1,5 +1,5 @@
 import { test, expect } from '../../fixtures/products';
-import { expectAllProductsMatch } from '../../utils/product-helpers';
+import { expectAllProductsMatch } from '../../utils/product/product-helpers';
 
 test.describe('Toolshop API - Filter products', () => {
   test('Valid brand_id filter returns 200 and matching products only', async ({

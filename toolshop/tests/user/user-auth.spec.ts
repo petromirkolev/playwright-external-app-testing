@@ -1,7 +1,7 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError } from '../../utils/user-helpers';
-import { userUpdateInput } from '../../utils/user-data';
+import { expectError } from '../../utils/user/user-helpers';
+import { userUpdateInput } from '../../utils/user/user-data';
 
 test.describe('Toolshop API - User authentication', () => {
   test('Reusing a valid access token on a protected endpoint succeeds', async ({

@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/auth';
 import { msg } from '../../utils/constants';
-import { expectError } from '../../utils/user-helpers';
+import { expectError } from '../../utils/user/user-helpers';
 
 test.describe('Toolshop API - Delete user', () => {
   test('Delete created user as an admin succeeds', async ({

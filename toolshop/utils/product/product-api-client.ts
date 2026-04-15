@@ -4,7 +4,7 @@ import {
   ProductFilters,
   ProductInput,
   ProductUpdateInput,
-} from '../types/product';
+} from '../../types/product';
 
 export class ProductApiClient {
   constructor(private readonly request: APIRequestContext) {}

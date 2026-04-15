@@ -1,7 +1,7 @@
 import { test as base, expect } from '@playwright/test';
-import { UserApiClient } from '../utils/user-api-client';
-import { ProductApiClient } from '../utils/product-api-client';
-import { CartApiClient } from '../utils/cart-api-client';
+import { UserApiClient } from '../utils/user/user-api-client';
+import { ProductApiClient } from '../utils/product/product-api-client';
+import { CartApiClient } from '../utils/cart/cart-api-client';
 
 type AuthFixtures = {
   userApi: UserApiClient;

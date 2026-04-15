@@ -4,7 +4,7 @@ import {
   uniqueProductName,
   validProductInput,
   validUpdateInput,
-} from '../utils/product-data';
+} from '../utils/product/product-data';
 
 type ProductFixtures = {
   productInput: ProductInput;

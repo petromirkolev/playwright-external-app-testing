@@ -1,6 +1,6 @@
 import { test, expect } from '../../fixtures/products';
-import { expectSortProductSuccess } from '../../utils/product-helpers';
-import { sortCases } from '../../utils/product-data';
+import { expectSortProductSuccess } from '../../utils/product/product-helpers';
+import { sortCases } from '../../utils/product/product-data';
 
 test.describe('Toolshop API - Sort products', () => {
   test.describe('Valid sort', () => {
