@@ -1,5 +1,5 @@
 import { APIResponse, expect } from '@playwright/test';
-import { RegistrationInput } from '../types/user';
+import { RegistrationInput } from '../../types/user';
 
 export async function expectSuccess(
   response: APIResponse,

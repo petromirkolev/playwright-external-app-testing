@@ -1,6 +1,6 @@
 import { APIResponse, expect } from '@playwright/test';
 import { RegistrationInput } from '../../types/user';
-import { UserApiClient } from './user-api-client';
+import { UserApiClient } from '../user/user-api-client';
 import { CartApiClient } from './cart-api-client';
 
 export async function addToCart(

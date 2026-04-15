@@ -1,4 +1,4 @@
-import { msg } from './constants';
+import { msg } from '../constants';
 
 export const adminInput = {
   email: 'admin@practicesoftwaretesting.com',
