@@ -34,14 +34,32 @@ export const test = base.extend<AuthFixtures>({
   registeredUser: async ({ userApi, loggedInAdmin }, use) => {
     const input = makeRegistrationData();
 
-    const response = await userApi.registerUser(input);
-    expect(response.status()).toBe(201);
+    const registrationResponse = await userApi.registerUser(input);
+    expect(registrationResponse.status()).toBe(201);
 
-    const data = await response.json();
+    const registrationBody = await registrationResponse.json();
 
-    await use({ ...input, id: data.id });
+    await use({ ...input, id: registrationBody.id });
 
-    await userApi.deleteUser(data.id, loggedInAdmin.access_token);
+    try {
+      const deleteResponse = await userApi.deleteUser(
+        registrationBody.id,
+        loggedInAdmin.access_token,
+      );
+
+      const status = deleteResponse.status();
+
+      if (status !== 204 && status !== 404) {
+        console.warn(
+          `Cleanup failed for user ${registrationBody.id}. Expected 204 or 404, got ${status}`,
+        );
+      }
+    } catch (error) {
+      console.warn(
+        `Cleanup request failed for user ${registrationBody.id}:`,
+        error,
+      );
+    }
   },
 
   registeredAndLoggedInUser: async ({ userApi, loggedInAdmin }, use) => {
@@ -63,7 +81,25 @@ export const test = base.extend<AuthFixtures>({
       access_token: loginBody.access_token,
     });
 
-    await userApi.deleteUser(registrationBody.id, loggedInAdmin.access_token);
+    try {
+      const deleteResponse = await userApi.deleteUser(
+        registrationBody.id,
+        loggedInAdmin.access_token,
+      );
+
+      const status = deleteResponse.status();
+
+      if (status !== 204 && status !== 404) {
+        console.warn(
+          `Cleanup failed for user ${registrationBody.id}. Expected 204 or 404, got ${status}`,
+        );
+      }
+    } catch (error) {
+      console.warn(
+        `Cleanup request failed for user ${registrationBody.id}:`,
+        error,
+      );
+    }
   },
 
   loggedInAdmin: async ({ userApi }, use) => {
