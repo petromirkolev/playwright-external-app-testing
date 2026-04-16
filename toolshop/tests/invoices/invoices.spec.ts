@@ -1,8 +1,10 @@
 import { test, expect } from '../../fixtures/invoice';
+import { msg } from '../../utils/constants';
+import { expectError } from '../../utils/user/user-helpers';
 
 test.describe('Toolshop API - Invoices', () => {
   test.describe('Get invoice', () => {
-    test('Get all invoices succeeds', async ({
+    test('Get all invoices returns 200 and invoices data', async ({
       invoiceApi,
       registeredAndLoggedInUser,
     }) => {
@@ -16,15 +18,63 @@ test.describe('Toolshop API - Invoices', () => {
       expect(body.data.length).toBe(0);
     });
 
-    test('Get invoice by valid id succeeds', async () => {});
+    test('Get invoice by valid id returns 200 and invoice data', async ({
+      invoiceApi,
+      issuedInvoice,
+      userWithProductInCart,
+    }) => {
+      const response = await invoiceApi.getOneInvoice(
+        issuedInvoice.id,
+        userWithProductInCart.access_token,
+      );
+      expect(response.status()).toBe(200);
 
-    test('Get invoice by nonexistent id is rejected', async () => {});
+      const body = await response.json();
 
-    test('Get invoice by malformed id is rejected', async () => {});
+      expect(body.id).toBe(issuedInvoice.id);
 
-    test('Get invoice without auth behaves as observed', async () => {});
+      const isProduct = body.invoicelines.find(
+        (line: any) => line.product.id === userWithProductInCart.product_id,
+      );
 
-    test('Get invoice with invalid auth behaves as observed', async () => {});
+      if (isProduct)
+        expect(isProduct.product_id).toBe(userWithProductInCart.product_id);
+    });
+
+    test('Get invoice by nonexistent id returns 404', async ({
+      invoiceApi,
+      userWithProductInCart,
+    }) => {
+      const response = await invoiceApi.getOneInvoice(
+        'test',
+        userWithProductInCart.access_token,
+      );
+
+      await expectError(response, 404, 'message', msg.PROD_NOT_FOUND);
+    });
+
+    test('Get invoice without auth behaves as observed', async ({
+      invoiceApi,
+      issuedInvoice,
+    }) => {
+      const response = await invoiceApi.getOneInvoiceWithoutAuth(
+        issuedInvoice.id,
+      );
+
+      await expectError(response, 401, 'message', msg.UNAUTH);
+    });
+
+    test('Get invoice with invalid auth behaves as observed', async ({
+      invoiceApi,
+      issuedInvoice,
+    }) => {
+      const response = await invoiceApi.getOneInvoiceWithHeaders(
+        issuedInvoice.id,
+        'test',
+      );
+
+      await expectError(response, 401, 'message', msg.UNAUTH);
+    });
   });
 
   test.describe('Search invoice', () => {
