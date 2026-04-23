@@ -50,6 +50,6 @@ test.describe('Toolshop API - Update product', () => {
       loggedInAdmin.access_token,
     );
 
-    await expectDeleteProductError(response, 422, undefined);
+    await expectDeleteProductError(response, 404, msg.PROD_NOT_FOUND);
   });
 });
