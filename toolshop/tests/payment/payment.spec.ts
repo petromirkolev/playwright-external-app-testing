@@ -1,11 +1,15 @@
 import { test, expect } from '../../fixtures/payment';
+import { msg } from '../../utils/constants';
 
 test.describe('Toolshop API - Payment', () => {
-  test('Payment check with valid payload succeeds', async () => {});
-});
+  test('Payment check with valid payload returns 200', async ({
+    paymentApi,
+    paymentData,
+  }) => {
+    const response = await paymentApi.checkPayment(paymentData);
+    expect(response.status()).toBe(200);
 
-// - Payment check with valid payload succeeds.
-// - Missing required fields are rejected.
-// - Invalid payment data is rejected.
-// - Wrong total or malformed payload behavior is characterized.
-// - Validation messages and response shape are checked for consistency.
+    const body = await response.json();
+    expect(body.message).toBe(msg.PAY_SUCCESS);
+  });
+});
