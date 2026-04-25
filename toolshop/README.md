@@ -4,27 +4,37 @@
 
 A Playwright + TypeScript API automation project for the public Practice Software Testing / Toolshop API.
 
-This project is part of my QA Automation portfolio and focuses on testing a public system that I did not build myself. The goal is to demonstrate practical API testing skills: authentication handling, CRUD coverage, business-flow validation, negative testing, permission checks, and realistic scope control on a shared external environment.
+This project focuses on API QA for an **external system** (not locally controlled), with emphasis on realistic test isolation, auth handling, CRUD coverage, and behavior characterization.
 
-## ⁉️ Why this project exists
+## Why this project exists
 
-My other portfolio projects focus on apps I built and tested myself. This project covers a different QA scenario: testing an external public API where I do not control the backend implementation, data state, validation behavior, or deployment stability. That changes the work from "testing my own code" to:
+Most portfolio projects test apps owned by the same engineer. This project intentionally tests a third-party public API where environment state, validation behavior, and runtime reliability can change at any time.
 
-- understanding the real behavior of the system
-- validating documented vs actual API behavior
-- handling auth and role-based access
-- building clean setup/teardown patterns
-- keeping tests isolated in a shared environment
-- distinguishing test issues from target-system issues
+Key QA goals:
+
+- validate documented vs observed behavior
+- test authorization boundaries (admin vs customer)
+- build reusable setup/teardown fixtures without hiding failures
+- keep coverage meaningful and maintainable in shared environments
 
 ## 🔎 API under test
 
 Practice Software Testing / Toolshop public API documentation:
 
-- API docs: https://api.practicesoftwaretesting.com/api/documentation
-- Public UI: https://practicesoftwaretesting.com/
+- API docs: <https://api.practicesoftwaretesting.com/api/documentation>
+- Public UI: <https://practicesoftwaretesting.com/>
+- Default API base URL used in this suite: `https://api.practicesoftwaretesting.com/`
 
-The API includes realistic business domains such as authentication, users, products, brands, categories, carts, payment, invoices, messages, images, and reports.
+## Current suite contents
+
+The suite currently covers these API domains:
+
+- Authentication / user session
+- Users
+- Products
+- Carts
+- Payment
+- Invoices
 
 ## 🧪 Test approach
 
@@ -48,38 +58,85 @@ Key principles:
 - API client abstraction
 - CI-ready test structure
 
-## 📖 Project structure
+## 📖 Repository structure for this test package:
 
 ```text
 toolshop/
-├── tests/
-├── fixtures/
-├── utils/
-├── types/
-├── README.md
-└── test-plan.md
+├── fixtures/      # shared Playwright fixtures (auth, entities, api clients)
+├── tests/         # spec files grouped by domain
+├── types/         # API payload / response typing
+├── utils/         # api clients, data factories, helper assertions
+├── playwright.config.ts
+├── test-plan.md
+└── README.md
 ```
 
-## How to run
+## Tech stack
 
-### Install dependencies
+- Playwright test runner + request API
+- TypeScript
+- Allure reporter (`allure-playwright`)
+- Fixture-driven composition for API client reuse
+
+## Running locally
+
+### 1) Install dependencies
 
 ```bash
 npm install
 ```
 
-### Run all tests
+### 2) Run the full suite
 
 ```bash
 npm test
 ```
 
-### Run in UI mode
+### 3) Useful targeted runs
 
 ```bash
+npx playwright test tests/products
+npx playwright test tests/user
+npx playwright test --grep "authorization"
+```
+
+### 4) Debug / interactive modes
+
+```bash
+npm run test:headed
+npm run test:debug
 npm run test:ui
 ```
 
-## Notes
+### 5) Reports
 
-Because this is a public demo system, some API behavior may differ from ideal production-grade validation expectations. When that happens, the goal is to characterize and document the real behavior clearly rather than assume the docs are always fully enforced.
+```bash
+npm run test:allure
+npx playwright show-report
+```
+
+## Configuration
+
+The `playwright.config.ts` defaults to:
+
+- `testDir: ./tests`
+- `timeout: 30s`
+- retries: `2` in CI, `0` locally
+- reporters: HTML + Allure
+- artifacts on failure: screenshot/video/trace
+
+Override API target when needed:
+
+```bash
+BASE_URL="https://api.practicesoftwaretesting.com/" npm test
+```
+
+## Notes on external-environment behavior
+
+Because this suite targets a shared public system:
+
+- some negative cases intentionally assert non-ideal but observed status codes
+- parallel external traffic can affect data visibility and ordering
+- network availability can fail test execution independently of test logic
+
+When observed behavior diverges from documentation, the suite favors explicit characterization over assumption.
