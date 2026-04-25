@@ -1,21 +1,14 @@
 # Practice Software Testing API - Test Plan
 
-## Purpose
+## 1) Purpose
 
-This project automates API checks against the public Practice Software Testing / Toolshop API using Playwright and TypeScript.
+This plan defines API coverage for the public Practice Software Testing / Toolshop API using Playwright + TypeScript.
 
-The goal is to demonstrate practical QA automation skills on a real external system through:
+Primary objective: demonstrate practical API QA capability on a shared external environment through reusable fixtures, realistic setup/teardown, positive + negative paths, and clear documentation of runtime behavior.
 
-- authentication and authorization testing
-- CRUD and negative-path coverage
-- runtime behavior characterization
-- realistic handling of shared-environment instability
+## 2) Scope
 
----
-
-## In scope
-
-This project covers:
+### In scope
 
 1. Authentication and session
 2. Users
@@ -24,161 +17,125 @@ This project covers:
 5. Payment
 6. Invoices
 
----
+### Out of scope (current phase)
 
-## Principles and constraints
+- Brands / Categories endpoint-specific suites
+- Messages / contact
+- Images and reports
+- broad security fuzzing / performance testing
+- exhaustive schema-contract validation for every field
 
-- The target is a shared public environment.
-- Tests should use unique data where possible.
-- Cleanup should be best-effort and must not hide real failures.
-- Runtime behavior may differ from documentation and should be documented honestly.
-- Representative coverage is preferred over exhaustive endpoint counting.
+## 3) Test strategy
 
----
+- Use unique entity data where possible (especially users/products).
+- Prefer API-assisted setup over brittle hardcoded assumptions.
+- Keep teardown best-effort and observable (do not suppress real failures).
+- Verify both functional behavior and response-shape consistency.
+- Capture docs-vs-runtime mismatches directly in assertions and test names.
 
-# 1. Authentication and session
+## 4) Environment and execution assumptions
 
-## Coverage
+- Target system is publicly hosted and shared.
+- Suite requires outbound internet connectivity.
+- Data can be affected by other users concurrently.
+- Default base URL is `https://api.practicesoftwaretesting.com/`.
+
+## 5) Coverage map by domain
+
+## 5.1 Authentication and session
 
 - Login with valid customer credentials succeeds.
 - Login with valid admin credentials succeeds.
 - Login with invalid credentials is rejected.
-- Missing bearer token on protected endpoints is rejected.
-- Invalid bearer token on protected endpoints is rejected.
-- Admin token can access admin-only operations.
-- Customer token is blocked from admin-only operations.
-- Runtime quirks are documented where observed behavior differs from documentation.
+- Missing/invalid bearer token on protected endpoints is rejected.
+- Token refresh behavior is validated.
+- Customer/admin access boundaries are validated.
 
----
-
-# 2. Users
-
-## Coverage
+## 5.2 Users
 
 ### Create
 
 - Create user with valid unique data succeeds.
 - Duplicate email is rejected.
 - Missing required fields are rejected.
-- Invalid password values are rejected.
-- Multiple unique users can be created in sequence.
+- Invalid password constraints are rejected.
 
 ### Read
 
-- Get created user by id succeeds.
-- Get current authenticated user succeeds.
-- Missing access token is rejected.
-- Invalid access token is rejected.
-- Non-existing user lookup behavior is characterized.
+- Get created user by ID succeeds.
+- Get current authenticated user (`/users/me`) succeeds.
+- Missing/invalid token behavior is validated.
+- Non-existing/unauthorized lookup behavior is characterized.
 
-### Update and delete
+### Update / Delete
 
-- Update current user with valid data succeeds.
-- Partial update of current user succeeds.
-- Unauthorized update attempts are rejected.
-- Customer update of another user is rejected.
-- Admin update of another user is characterized.
-- Delete user as admin succeeds.
-- Unauthorized delete attempts are rejected.
-- Deleted user is no longer retrievable.
+- Full and partial update flows are validated.
+- Unauthorized or cross-user updates are rejected.
+- Admin delete behavior is validated.
+- Deletion follow-up behavior is validated.
 
----
+## 5.3 Products
 
-# 3. Products
+### Read/Search/Sort/Filter
 
-## Coverage
-
-### Read
-
-- Get all products succeeds.
-- Product list returns a valid paginated shape.
-- Default and explicit page handling behave correctly.
-- Get product by valid id succeeds.
-- Invalid or nonexistent product lookup is characterized.
-
-### Search
-
-- Search by existing catalog product returns expected matches.
-- Search with no matching term returns empty results.
-- Newly created products are not used as the basis for core search assertions due to delayed visibility in runtime behavior.
-
-### Sort
-
-- Sort by name ascending and descending works.
-- Sort by price ascending and descending works.
-- Invalid sort field behavior is characterized.
-- Invalid sort direction behavior is characterized.
-
-### Filter
-
-- Filter by brand returns matching products only.
-- Filter by category returns matching products only.
-- Filter by rental flag returns matching products only.
-- Filter by price range behaves correctly for valid ranges.
-- Invalid filter input behavior is characterized.
-- Combined filter behavior is checked for key query combinations.
+- Product list and pagination structure are validated.
+- Product read-by-id behavior is validated.
+- Search behavior for hit/no-hit terms is validated.
+- Sort behavior (`name`, `price`, direction) is validated.
+- Filter behavior (`brand`, `category`, rental, price range) is validated.
+- Invalid query input behavior is characterized.
 
 ### Write
 
-- Create product with valid payload succeeds.
-- Missing required fields are rejected.
-- Invalid payload behavior is characterized.
-- Update product with valid payload succeeds.
-- Partial update product with valid payload succeeds.
-- Delete product as admin succeeds.
-- Delete product as customer is rejected.
-- Delete nonexistent or already deleted product behavior is characterized.
+- Required field validation is checked.
+- Invalid payload edge cases are characterized.
+- Update (full + partial) is validated.
+- Delete behavior for admin/customer paths is validated.
 
----
+## 5.4 Carts
 
-# 4. Carts
+- Create/get cart behavior is validated.
+- Add/update/remove cart item behavior is validated.
+- Cart quantity/totals consistency is validated after mutations.
+- Invalid input behavior is characterized.
 
-## Coverage
+## 5.5 Payment
 
-- Get cart for authenticated user succeeds.
-- Add valid product to cart succeeds.
-- Add invalid or nonexistent product is rejected.
-- Update cart item quantity succeeds.
-- Remove cart item succeeds.
-- Cart totals and structure remain valid after changes.
-- Cart behavior is isolated per user.
-- Unauthorized cart access is rejected where applicable.
+- Payment success path is validated.
+- Missing field and invalid field cases are validated.
+- Response shape/message consistency is checked.
 
----
+## 5.6 Invoices
 
-# 5. Payment
+- Invoice retrieval by valid identifier is validated.
+- Non-existing identifier behavior is validated.
+- Authorization-related behavior is characterized.
+- Response shape consistency is checked.
 
-## Coverage
+## 6) Risks and mitigation
 
-- Payment check with valid payload succeeds.
-- Missing required fields are rejected.
-- Invalid payment data is rejected.
-- Wrong total or malformed payload behavior is characterized.
-- Validation messages and response shape are checked for consistency.
+- **External API instability / outages** → treat connectivity failures separately from functional regressions.
+- **Shared test data collisions** → generate unique data and isolate by fixture lifecycle.
+- **Runtime behavior changes over time** → keep assertions explicit and documented when behavior differs from docs.
+- **Long-running failure diagnosis** → rely on Playwright trace/video/screenshot artifacts and HTML/Allure reporting.
 
----
+## 7) Entry / Exit criteria
 
-# 6. Invoices
+### Entry
 
-## Coverage
+- Dependencies installed (`npm install`).
+- API target reachable.
+- Valid admin/customer credentials available via fixtures.
 
-- Get invoice by valid identifier succeeds.
-- Non-existing invoice is rejected.
-- Invoice search or lookup behavior is characterized.
-- Authorization behavior is characterized.
-- Invoice response shape is checked for consistency.
+### Exit
 
----
+- Planned domain suites executed.
+- Failures triaged into: test defect / known external issue / product behavior change.
+- Artifacts and report generated for review.
 
-## Out of scope
+## 8) Recommended near-term plan updates
 
-The following areas are not part of the current project scope:
-
-- Categories
-- Brands
-- Messages / Contact
-- Images
-- Reports
-- Broad security fuzzing
-- Full cross-resource consistency matrix
-- Exhaustive generic validation matrix
+1. Add a small smoke subset script for quick health checks (`auth + users/me + products read`).
+2. Add CI tagging strategy (`@smoke`, `@regression`, `@negative`) for selective pipeline runs.
+3. Add a lightweight contract-check layer for high-value responses (users, cart, invoice).
+4. Track known docs-vs-runtime mismatches in a dedicated changelog section.
